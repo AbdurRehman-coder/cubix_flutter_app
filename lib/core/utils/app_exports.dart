@@ -7,3 +7,7 @@ export 'package:cubix_app/core/utils/text_styles.dart';
 export 'package:cubix_app/core/utils/responsive_config.dart';
 export 'package:cubix_app/features/auth/presentation/screens/ui_login.dart';
 export 'package:cubix_app/core/widgets/w_primary_button.dart';
+export 'package:cubix_app/core/constants/app_assets.dart';
+export 'package:cubix_app/features/bottom_navbar/provider/navbar_provider.dart';
+export 'package:flutter_riverpod/flutter_riverpod.dart';
+export 'package:flutter_svg/flutter_svg.dart';

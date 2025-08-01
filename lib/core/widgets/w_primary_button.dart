@@ -95,7 +95,7 @@ class PrimaryButton extends StatelessWidget {
 
     if (icon != null) {
       final textWidget = Text(text, style: AppTextStyles.buttonTextStyle);
-      const spacing = SizedBox();
+      const spacing = SizedBox(width: 20);
 
       return Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

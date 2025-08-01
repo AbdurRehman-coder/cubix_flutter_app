@@ -11,3 +11,10 @@ export 'package:cubix_app/core/constants/app_assets.dart';
 export 'package:cubix_app/features/bottom_navbar/provider/navbar_provider.dart';
 export 'package:flutter_riverpod/flutter_riverpod.dart';
 export 'package:flutter_svg/flutter_svg.dart';
+
+export 'package:cubix_app/features/home/presentation/widgets/w_academic_boost_section.dart';
+export 'package:cubix_app/features/home/presentation/widgets/w_banner_slider.dart';
+export 'package:cubix_app/features/home/presentation/widgets/w_brain_bites_section.dart';
+export 'package:cubix_app/features/home/presentation/widgets/w_career_skills_section.dart';
+export 'package:cubix_app/features/home/presentation/widgets/w_habits_section.dart';
+export 'package:cubix_app/features/home/presentation/widgets/w_self_insights_section.dart';

@@ -4,7 +4,8 @@ import 'package:cubix_app/features/home/models/home_banner_model.dart';
 final List<HomeBannerModel> homeBannerList = [
   HomeBannerModel(
     title: 'Learn Smarter, Not Harder',
-    subtitle: 'Bite-sized lessons designed to fit into\nyour day',
+    subtitle:
+        'Short, focused lessons that fit between\nclasses, homework, or even lunch.',
     colorTheme: BannerThemeColor(
       background: Color(0xFF8CC7A8),
       circle1: Color(0xFF199051),
@@ -14,7 +15,7 @@ final List<HomeBannerModel> homeBannerList = [
   HomeBannerModel(
     title: 'Make Progress Fast',
     subtitle:
-        'Built to give you quick wins and\nlasting takeaways in just minutes',
+        'Get quick wins that actually help\nyou score higher on quizzes,\ntests, and assignments.',
     colorTheme: BannerThemeColor(
       background: Color(0xFFFDB400),
       circle1: Color(0xFFFE7101),
@@ -23,7 +24,8 @@ final List<HomeBannerModel> homeBannerList = [
   ),
   HomeBannerModel(
     title: 'Learn What Matters to You',
-    subtitle: 'From school subjects to personal\ngrowth',
+    subtitle:
+        'From economics to psychology, focus\nonly on the subjects that help you\npass your classes.',
     colorTheme: BannerThemeColor(
       background: Color(0xFF00A3FE),
       circle1: Color(0xFF096EF9),

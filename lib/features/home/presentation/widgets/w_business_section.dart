@@ -2,41 +2,41 @@ import 'package:cubix_app/core/utils/app_exports.dart';
 import 'package:cubix_app/features/home/presentation/widgets/w_custom_cube.dart';
 import 'package:cubix_app/features/home/presentation/widgets/w_section_card.dart';
 
-class BrainBitesSection extends StatelessWidget {
-  const BrainBitesSection({super.key});
+class BusinessSection extends StatelessWidget {
+  const BusinessSection({super.key});
 
   @override
   Widget build(BuildContext context) {
     final items = [
       {
         'icon': 'assets/icons/psychology.svg',
-        'title': 'Psychology',
-        'subtitle': 'Personality Types\n(MBTI, Enneagram)',
+        'title': 'ECON 101',
+        'subtitle': 'Microeconomics',
       },
       {
         'icon': 'assets/icons/literature.svg',
-        'title': 'Literature',
-        'subtitle': 'Poetry Basics',
+        'title': 'MKT 101',
+        'subtitle': 'Marketing ',
       },
       {
         'icon': 'assets/icons/finance.svg',
-        'title': 'Everyday Life Skills',
-        'subtitle': 'Budgeting & Saving',
+        'title': 'ACC 101',
+        'subtitle': 'Accounting I',
       },
       {
         'icon': 'assets/icons/tech.svg',
-        'title': 'Technology',
-        'subtitle': 'Artificial Intelligence',
+        'title': 'BUS 201',
+        'subtitle': 'Business Law',
       },
     ];
 
     return SectionCard(
-      title: 'Brain Bites',
+      title: 'Business & Econ',
       child: SizedBox(
         height: 130,
         child: GridView.count(
           crossAxisCount: 2,
-          crossAxisSpacing: 20,
+          crossAxisSpacing: 60,
           mainAxisSpacing: 16,
           childAspectRatio: 2.8,
           physics: const NeverScrollableScrollPhysics(),

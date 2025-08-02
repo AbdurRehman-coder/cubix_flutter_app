@@ -2,6 +2,7 @@ class AppAssets {
   // Images
   static const String onboardingImage = 'assets/images/onboarding_image.png';
   static const String appLogo = 'assets/images/app_logo.png';
+  static const String nutritionIcon = 'assets/images/nutriton_image.png';
 
   // Icons
   static const String appleIcon = 'assets/icons/apple_icon.svg';

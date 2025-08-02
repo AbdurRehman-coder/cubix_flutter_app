@@ -47,58 +47,62 @@ class _HomeBannerSliderState extends ConsumerState<HomeBannerSlider> {
   Widget build(BuildContext context) {
     final currentPage = ref.watch(bannerPageProvider);
 
-    return SizedBox(
-      height: getProportionateScreenHeight(170),
-      child: PageView.builder(
-        controller: _controller,
-        itemCount: homeBannerList.length,
-        onPageChanged:
-            (index) => ref.read(bannerPageProvider.notifier).state = index,
-        itemBuilder: (context, index) {
-          final banner = homeBannerList[index];
-          return Stack(
-            fit: StackFit.expand,
-            children: [
-              ColoredBannerBackground(theme: banner.colorTheme),
-              Positioned(
-                left: 45,
-                top: 45,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      banner.title,
-                      style: AppTextStyles.bodyTextStyle.copyWith(
-                        color: AppColors.whiteColor,
-                        fontSize: 18,
-                        wordSpacing: 1.5,
-                        fontWeight: FontWeight.w800,
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(16),
+      child: SizedBox(
+        height: getProportionateScreenHeight(170),
+        child: PageView.builder(
+          controller: _controller,
+
+          itemCount: homeBannerList.length,
+          onPageChanged:
+              (index) => ref.read(bannerPageProvider.notifier).state = index,
+          itemBuilder: (context, index) {
+            final banner = homeBannerList[index];
+            return Stack(
+              fit: StackFit.expand,
+              children: [
+                ColoredBannerBackground(theme: banner.colorTheme),
+                Positioned(
+                  left: 45,
+                  top: 45,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        banner.title,
+                        style: AppTextStyles.bodyTextStyle.copyWith(
+                          color: AppColors.whiteColor,
+                          fontSize: 18,
+                          wordSpacing: 1.5,
+                          fontWeight: FontWeight.w800,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      banner.subtitle,
-                      style: AppTextStyles.bodyTextStyle.copyWith(
-                        color: AppColors.whiteColor,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w400,
+                      const SizedBox(height: 8),
+                      Text(
+                        banner.subtitle,
+                        style: AppTextStyles.bodyTextStyle.copyWith(
+                          color: AppColors.whiteColor,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              Positioned(
-                bottom: 10,
-                right: 0,
-                left: 0,
-                child: DotIndicator(
-                  currentIndex: currentPage,
-                  length: homeBannerList.length,
+                Positioned(
+                  bottom: 10,
+                  right: 0,
+                  left: 0,
+                  child: DotIndicator(
+                    currentIndex: currentPage,
+                    length: homeBannerList.length,
+                  ),
                 ),
-              ),
-            ],
-          );
-        },
+              ],
+            );
+          },
+        ),
       ),
     );
   }

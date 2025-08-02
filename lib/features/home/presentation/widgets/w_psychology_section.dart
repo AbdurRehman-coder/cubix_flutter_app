@@ -1,20 +1,18 @@
 import 'package:cubix_app/core/utils/app_exports.dart';
 import 'package:cubix_app/features/home/presentation/widgets/w_section_card.dart';
 
-class CareerSkillsSection extends StatelessWidget {
-  const CareerSkillsSection({super.key});
+class PsychologySection extends StatelessWidget {
+  const PsychologySection({super.key});
 
   @override
   Widget build(BuildContext context) {
     final items = [
-      {'title': 'Career Communication', 'sections': '4 Sections'},
-      {'title': 'Leadership', 'sections': '4 Sections'},
-      {'title': 'Leadership', 'sections': '4 Sections'},
-      {'title': 'Leadership', 'sections': '4 Sections'},
+      {'title': 'Instroductory Psychology', 'sections': 'PSY 101'},
+      {'title': 'Cognitive Psychology', 'sections': 'PSY 201'},
     ];
 
     return SectionCard(
-      title: 'Career Skills',
+      title: 'Psychology & Behavior',
       child: SizedBox(
         height: 80,
         child: ListView.separated(

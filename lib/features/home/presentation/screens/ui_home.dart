@@ -14,13 +14,7 @@ class HomeScreen extends StatelessWidget {
         children: [
           Row(
             children: [
-              Text(
-                'CUBIX',
-                style: AppTextStyles.headingTextStyle.copyWith(
-                  fontSize: 30,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
+              SvgPicture.asset('assets/icons/app_logo_2.svg'),
               Spacer(),
               GestureDetector(
                 child: SvgPicture.asset(
@@ -31,18 +25,18 @@ class HomeScreen extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: getProportionateScreenHeight(46)),
+          SizedBox(height: getProportionateScreenHeight(36)),
           HomeBannerSlider(),
           SizedBox(height: getProportionateScreenHeight(16)),
-          HabitsSection(),
+          GeneralEducationSection(),
           SizedBox(height: getProportionateScreenHeight(25)),
-          BrainBitesSection(),
+          BusinessSection(),
           SizedBox(height: getProportionateScreenHeight(25)),
-          CareerSkillsSection(),
+          PsychologySection(),
           SizedBox(height: getProportionateScreenHeight(25)),
-          SelfInsightSection(),
+          ArtsHumanitiesSection(),
           SizedBox(height: getProportionateScreenHeight(25)),
-          AcademicBoostSection(),
+          HealthScienceSection(),
         ],
       ),
     );

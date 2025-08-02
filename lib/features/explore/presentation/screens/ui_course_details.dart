@@ -210,7 +210,7 @@ class LessonItem extends StatelessWidget {
 
         Expanded(
           child: Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
               color: AppColors.whiteColor,
               border: Border.all(

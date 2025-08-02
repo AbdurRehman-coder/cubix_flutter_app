@@ -1,4 +1,5 @@
 import 'package:cubix_app/core/utils/app_exports.dart';
+import 'package:cubix_app/features/home/presentation/widgets/w_feedback_dialog.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -21,7 +22,7 @@ class HomeScreen extends StatelessWidget {
                   AppAssets.feedbackIcon,
                   height: getProportionateScreenHeight(25),
                 ),
-                onTap: () {},
+                onTap: () => showFeedbackDialog(context),
               ),
             ],
           ),
@@ -39,6 +40,16 @@ class HomeScreen extends StatelessWidget {
           HealthScienceSection(),
         ],
       ),
+    );
+  }
+
+  // Usage example:
+  void showFeedbackDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return const FeedbackDialog();
+      },
     );
   }
 }

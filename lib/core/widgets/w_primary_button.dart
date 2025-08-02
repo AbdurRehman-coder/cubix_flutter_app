@@ -98,11 +98,14 @@ class PrimaryButton extends StatelessWidget {
       const spacing = SizedBox(width: 20);
 
       return Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment:
+            iconLeading
+                ? MainAxisAlignment.spaceBetween
+                : MainAxisAlignment.center,
         children:
             iconLeading
                 ? [icon!, textWidget, spacing]
-                : [textWidget, spacing, icon!],
+                : [spacing, icon!, textWidget, spacing],
       );
     }
 

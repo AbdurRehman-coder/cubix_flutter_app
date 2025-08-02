@@ -813,4 +813,8 @@ class MockCourseData {
       ),
     ],
   };
+
+  static List<Course> getAllCourses() {
+    return courses.values.expand((courseList) => courseList).toList();
+  }
 }

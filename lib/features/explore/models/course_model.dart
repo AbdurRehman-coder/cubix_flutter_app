@@ -1,4 +1,16 @@
-// models/course.dart
+// Models
+enum LessonStatus { completed, current, locked }
+
+enum CourseCategory {
+  core('Core'),
+  business('Business'),
+  mind('Mind'),
+  humanities('Humanities');
+
+  const CourseCategory(this.displayName);
+  final String displayName;
+}
+
 class Course {
   final String id;
   final String title;
@@ -17,6 +29,26 @@ class Course {
     required this.description,
     required this.chapters,
   });
+
+  Course copyWith({
+    String? id,
+    String? title,
+    String? code,
+    String? icon,
+    String? category,
+    String? description,
+    List<Chapter>? chapters,
+  }) {
+    return Course(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      code: code ?? this.code,
+      icon: icon ?? this.icon,
+      category: category ?? this.category,
+      description: description ?? this.description,
+      chapters: chapters ?? this.chapters,
+    );
+  }
 }
 
 class Chapter {
@@ -25,6 +57,14 @@ class Chapter {
   final List<Lesson> lessons;
 
   const Chapter({required this.id, required this.title, required this.lessons});
+
+  Chapter copyWith({String? id, String? title, List<Lesson>? lessons}) {
+    return Chapter(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      lessons: lessons ?? this.lessons,
+    );
+  }
 }
 
 class Lesson {
@@ -33,17 +73,12 @@ class Lesson {
   final LessonStatus status;
 
   const Lesson({required this.id, required this.title, required this.status});
-}
 
-enum LessonStatus { completed, current, locked }
-
-// models/category.dart
-enum CourseCategory {
-  core('Core'),
-  business('Business'),
-  mind('Mind'),
-  humanities('Humanities');
-
-  const CourseCategory(this.displayName);
-  final String displayName;
+  Lesson copyWith({String? id, String? title, LessonStatus? status}) {
+    return Lesson(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      status: status ?? this.status,
+    );
+  }
 }

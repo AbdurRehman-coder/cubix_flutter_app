@@ -2,6 +2,7 @@ import 'package:cubix_app/features/bottom_navbar/presentation/widgets/w_custom_n
 import 'package:cubix_app/features/bottom_navbar/provider/navbar_provider.dart';
 import 'package:cubix_app/features/explore/presentation/screens/ui_explore.dart';
 import 'package:cubix_app/features/home/presentation/screens/ui_home.dart';
+import 'package:cubix_app/features/lessons/presentation/screens/ui_lessons.dart';
 import 'package:cubix_app/features/settings/presentation/screens/ui_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -11,7 +12,7 @@ class MainScreen extends ConsumerWidget {
 
   static final _pages = [
     HomeScreen(),
-    HomeScreen(),
+    LessonsScreen(),
     ExploreScreen(),
     SettingsScreen(),
   ];

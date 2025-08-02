@@ -1,7 +1,5 @@
-// screens/lessons_screen.dart
 import 'package:cubix_app/core/utils/app_exports.dart';
 import 'package:cubix_app/features/explore/models/course_model.dart';
-import 'package:dotted_border/dotted_border.dart';
 
 class CourseDetailsScreen extends StatelessWidget {
   final Course course;

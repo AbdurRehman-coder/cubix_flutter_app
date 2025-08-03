@@ -57,6 +57,7 @@ class CourseCard extends StatelessWidget {
                 children: [
                   Text(
                     course.code,
+                    maxLines: 1,
                     textAlign: TextAlign.center,
                     style: AppTextStyles.bodyTextStyle.copyWith(
                       fontSize: 11,
@@ -67,6 +68,7 @@ class CourseCard extends StatelessWidget {
                   const SizedBox(height: 4),
                   Text(
                     course.title,
+
                     textAlign: TextAlign.center,
                     style: AppTextStyles.bodyTextStyle.copyWith(
                       fontSize: 14,

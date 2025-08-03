@@ -47,11 +47,11 @@ class LessonsScreen extends ConsumerWidget {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 27),
               child: GridView.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
-                  childAspectRatio: 0.8,
-                  crossAxisSpacing: 40,
-                  mainAxisSpacing: 24,
+                  childAspectRatio: 0.7,
+                  crossAxisSpacing: getProportionateScreenWidth(36),
+                  mainAxisSpacing: getProportionateScreenHeight(24),
                 ),
                 itemCount: _getFilteredCourses(courses, selectedTab).length,
                 itemBuilder: (context, index) {
@@ -62,6 +62,7 @@ class LessonsScreen extends ConsumerWidget {
               ),
             ),
           ),
+          SizedBox(height: 20),
         ],
       ),
     );
@@ -153,7 +154,7 @@ class LessonsScreen extends ConsumerWidget {
             // Course Icon
             Container(
               width: double.infinity,
-              height: 96,
+              height: getProportionateScreenHeight(96),
               decoration: BoxDecoration(
                 color: cardColor,
                 borderRadius: BorderRadius.only(

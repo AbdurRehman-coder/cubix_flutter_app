@@ -1,8 +1,6 @@
 import 'package:cubix_app/core/utils/app_exports.dart';
 import 'package:cubix_app/features/home/presentation/widgets/w_feedback_dialog.dart';
 
-import '../../../../core/widgets/w_custom_dialog.dart';
-
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
@@ -19,7 +17,10 @@ class HomeScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SvgPicture.asset('assets/icons/app_logo_2.svg',  fit: BoxFit.scaleDown,),
+              SvgPicture.asset(
+                'assets/icons/app_logo_2.svg',
+                fit: BoxFit.scaleDown,
+              ),
               GestureDetector(
                 child: SvgPicture.asset(
                   AppAssets.feedbackIcon,

@@ -1,4 +1,3 @@
-import 'package:cubix_app/core/constants/app_assets.dart';
 import 'package:cubix_app/core/utils/app_exports.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -13,7 +12,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
 
-    Future.delayed(const Duration(seconds: 2), () {
+    Future.delayed(const Duration(seconds: 4), () {
       if (!mounted) return;
       Navigator.pushReplacement(
         context,

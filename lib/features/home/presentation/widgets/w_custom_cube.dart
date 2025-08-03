@@ -43,7 +43,7 @@ class _CubePainter extends CustomPainter {
           ..shader = LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [Colors.white.withOpacity(0.25), Colors.transparent],
+            colors: [Colors.white.withValues(alpha: 0.25), Colors.transparent],
           ).createShader(Rect.fromLTWH(0, 0, size.width, size.height));
 
     canvas.drawRRect(roundedRect, light);

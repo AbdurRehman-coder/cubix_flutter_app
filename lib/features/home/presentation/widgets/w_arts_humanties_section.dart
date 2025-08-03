@@ -1,9 +1,5 @@
-import 'package:cubix_app/core/theming/app_colors.dart';
 import 'package:cubix_app/core/utils/app_exports.dart';
-import 'package:cubix_app/core/utils/text_styles.dart';
 import 'package:cubix_app/features/home/presentation/widgets/w_section_card.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
 class ArtsHumanitiesSection extends StatelessWidget {
   const ArtsHumanitiesSection({super.key});

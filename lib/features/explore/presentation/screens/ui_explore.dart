@@ -55,11 +55,11 @@ class ExploreScreen extends ConsumerWidget {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               child: GridView.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
-                  childAspectRatio: 1.0,
-                  crossAxisSpacing: 16,
-                  mainAxisSpacing: 30,
+                  childAspectRatio: 0.85,
+                  crossAxisSpacing: getProportionateScreenWidth(16),
+                  mainAxisSpacing: getProportionateScreenHeight(30),
                 ),
                 itemCount: courses.length,
                 itemBuilder: (context, index) {

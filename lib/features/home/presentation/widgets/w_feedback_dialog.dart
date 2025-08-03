@@ -58,14 +58,15 @@ class _FeedbackDialogState extends State<FeedbackDialog>
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       backgroundColor: AppColors.whiteColor,
       insetPadding: const EdgeInsets.symmetric(horizontal: 28),
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-          return ConstrainedBox(
-            constraints: BoxConstraints(
-              maxHeight: MediaQuery.of(context).size.height * 0.9,
-            ),
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.all(24),
+      clipBehavior: Clip.none,
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.all(24),
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            return ConstrainedBox(
+              constraints: BoxConstraints(
+                maxHeight: MediaQuery.of(context).size.height * 0.9,
+              ),
               child: AnimatedSwitcher(
                 duration: const Duration(milliseconds: 300),
                 child:
@@ -73,9 +74,9 @@ class _FeedbackDialogState extends State<FeedbackDialog>
                         ? _buildThankYouView()
                         : _buildFeedbackForm(),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }
@@ -140,7 +141,11 @@ class _FeedbackDialogState extends State<FeedbackDialog>
 
           Column(
             children: [
-              PrimaryButton(text: 'Submit', onPressed: _submitFeedback),
+              PrimaryButton(
+                text: 'Submit',
+                onPressed: _submitFeedback,
+                height: 48,
+              ),
               const SizedBox(height: 12),
               TextButton(
                 onPressed: _closeFeedbackForm,
@@ -209,7 +214,7 @@ class _FeedbackDialogState extends State<FeedbackDialog>
           Image.asset('assets/images/send.gif', height: 200),
           const SizedBox(height: 28),
 
-          PrimaryButton(text: 'Done', onPressed: _closeThankYou),
+          PrimaryButton(text: 'Done', onPressed: _closeThankYou, height: 48),
           const SizedBox(height: 35),
         ],
       ),

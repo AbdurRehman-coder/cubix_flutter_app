@@ -24,7 +24,7 @@ class PsychologySection extends StatelessWidget {
             final item = items[index];
             return Container(
               padding: const EdgeInsets.fromLTRB(16, 16, 7, 16),
-              width: 178,
+              width: 180,
               decoration: BoxDecoration(
                 color: const Color(0xFFE6F0FE),
                 borderRadius: BorderRadius.circular(12),

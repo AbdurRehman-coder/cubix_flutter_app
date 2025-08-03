@@ -1,4 +1,5 @@
 import 'package:cubix_app/core/theming/app_colors.dart';
+import 'package:cubix_app/core/utils/app_exports.dart';
 import 'package:cubix_app/core/utils/text_styles.dart';
 import 'package:cubix_app/features/home/presentation/widgets/w_section_card.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +19,7 @@ class ArtsHumanitiesSection extends StatelessWidget {
     return SectionCard(
       title: 'Arts & Humanities',
       child: SizedBox(
-        height: 98,
+        height: getProportionateScreenHeight(100),
         child: ListView.separated(
           scrollDirection: Axis.horizontal,
           itemCount: items.length,
@@ -29,7 +30,7 @@ class ArtsHumanitiesSection extends StatelessWidget {
               children: [
                 Container(
                   width: 123,
-                  height: 93,
+                  height: 100,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16),
                     color: const Color(0xFFFFF5CB),

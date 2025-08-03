@@ -21,16 +21,16 @@ class LessonsScreen extends ConsumerWidget {
               'Lessons',
               style: AppTextStyles.headingTextStyle.copyWith(
                 fontSize: 30,
-                fontWeight: FontWeight.w700,
+                fontWeight: FontWeight.bold,
                 color: AppColors.blackColor,
                 height: 22 / 30,
               ),
             ),
           ),
-          // Tab Bar
+          SizedBox(height: getProportionateScreenHeight(18)),
           Container(
             width: double.infinity,
-            margin: const EdgeInsets.symmetric(horizontal: 24),
+            margin: const EdgeInsets.symmetric(horizontal: 16),
             child: Row(
               children: [
                 _buildTab('Ongoing', 0, selectedTab, ref),
@@ -40,18 +40,18 @@ class LessonsScreen extends ConsumerWidget {
             ),
           ),
 
-          const SizedBox(height: 24),
+          const SizedBox(height: 16),
 
           // Course Grid
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
+              padding: const EdgeInsets.symmetric(horizontal: 27),
               child: GridView.builder(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   childAspectRatio: 0.8,
-                  crossAxisSpacing: 16,
-                  mainAxisSpacing: 16,
+                  crossAxisSpacing: 40,
+                  mainAxisSpacing: 24,
                 ),
                 itemCount: _getFilteredCourses(courses, selectedTab).length,
                 itemBuilder: (context, index) {
@@ -79,7 +79,8 @@ class LessonsScreen extends ConsumerWidget {
               title,
               style: AppTextStyles.bodyTextStyle.copyWith(
                 fontSize: 16,
-                fontWeight: isSelected ? FontWeight.w700 : FontWeight.w400,
+                fontWeight: isSelected ? FontWeight.bold : FontWeight.w400,
+                height: 1.5,
                 color:
                     isSelected ? AppColors.blackColor : const Color(0xFF8E8E93),
               ),
@@ -92,7 +93,7 @@ class LessonsScreen extends ConsumerWidget {
                 color:
                     isSelected
                         ? AppColors.primaryOrangeColor
-                        : const Color(0xFF8E8E93),
+                        : Color(0xFF8E8E93).withValues(alpha: 0.2),
                 borderRadius: BorderRadius.circular(5),
               ),
             ),
@@ -113,7 +114,6 @@ class LessonsScreen extends ConsumerWidget {
         );
       }).toList();
     } else {
-      // Completed courses - courses where all lessons are completed
       return courses.where((course) {
         return course.chapters.every(
           (chapter) => chapter.lessons.every(
@@ -151,103 +151,98 @@ class LessonsScreen extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Course Icon
-            Expanded(
-              flex: 3,
-              child: Container(
-                width: double.infinity,
-
-                decoration: BoxDecoration(
-                  color: cardColor,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(10),
-                    topRight: Radius.circular(10),
-                  ),
+            Container(
+              width: double.infinity,
+              height: 96,
+              decoration: BoxDecoration(
+                color: cardColor,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(10),
+                  topRight: Radius.circular(10),
                 ),
-                child: Center(
-                  child: Image.asset(
-                    'assets/images/brain_image.png',
-                    fit: BoxFit.cover,
-                    height: 91,
-                    width: 91,
-                  ),
+              ),
+              child: Center(
+                child: Image.asset(
+                  'assets/images/brain_image.png',
+                  fit: BoxFit.cover,
+                  height: getProportionateScreenHeight(85),
+                  width: getProportionateScreenHeight(85),
                 ),
               ),
             ),
 
-            // Course Info
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    course.code,
-                    textAlign: TextAlign.start,
-                    style: AppTextStyles.bodyTextStyle.copyWith(
-                      fontSize: 11,
-                      color: AppColors.textSecondaryColor,
-                      fontWeight: FontWeight.w400,
+            SizedBox(height: 9),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      course.code,
+                      textAlign: TextAlign.start,
+                      style: AppTextStyles.bodyTextStyle.copyWith(
+                        fontSize: 11,
+                        color: AppColors.textSecondaryColor,
+                        fontWeight: FontWeight.w400,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    course.title,
-                    textAlign: TextAlign.start,
-                    style: AppTextStyles.bodyTextStyle.copyWith(
-                      fontSize: 14,
-                      color: AppColors.blackColor,
-                      fontWeight: FontWeight.w700,
+                    const SizedBox(height: 4),
+                    Text(
+                      course.title,
+                      textAlign: TextAlign.start,
+                      style: AppTextStyles.bodyTextStyle.copyWith(
+                        fontSize: 14,
+                        color: AppColors.blackColor,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 16),
+                    Spacer(),
 
-                  // Progress
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Progress',
-                        style: AppTextStyles.bodyTextStyle.copyWith(
-                          fontSize: 11,
-                          color: AppColors.textSecondaryColor,
-                          fontWeight: FontWeight.w400,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Progress',
+                          style: AppTextStyles.bodyTextStyle.copyWith(
+                            fontSize: 11,
+                            color: AppColors.textSecondaryColor,
+                            fontWeight: FontWeight.w400,
+                          ),
                         ),
-                      ),
-                      Text(
-                        '${progress.completed}/${progress.total}',
-                        style: AppTextStyles.bodyTextStyle.copyWith(
-                          fontSize: 11,
-                          color: AppColors.textSecondaryColor,
-                          fontWeight: FontWeight.w400,
+                        Text(
+                          '${progress.completed}/${progress.total}',
+                          style: AppTextStyles.bodyTextStyle.copyWith(
+                            fontSize: 11,
+                            color: AppColors.textSecondaryColor,
+                            fontWeight: FontWeight.w400,
+                            height: 1.5,
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 4),
+                      ],
+                    ),
 
-                  // Progress Bar
-                  Container(
-                    height: 4,
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFE0E0E0),
-                      borderRadius: BorderRadius.circular(2),
-                    ),
-                    child: FractionallySizedBox(
-                      alignment: Alignment.centerLeft,
-                      widthFactor:
-                          progress.total > 0
-                              ? progress.completed / progress.total
-                              : 0,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: AppColors.primaryOrangeColor,
-                          borderRadius: BorderRadius.circular(2),
+                    SizedBox(height: 4),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: LinearProgressIndicator(
+                        value:
+                            progress.total > 0
+                                ? progress.completed / progress.total
+                                : 0,
+                        minHeight: 4,
+                        backgroundColor: const Color(
+                          0xFF8E8E93,
+                        ).withValues(alpha: 0.1),
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                          AppColors.primaryOrangeColor,
                         ),
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 16),
-                ],
+
+                    const SizedBox(height: 16),
+                  ],
+                ),
               ),
             ),
           ],
@@ -259,13 +254,13 @@ class LessonsScreen extends ConsumerWidget {
   Color _getCourseColor(String courseCode) {
     switch (courseCode) {
       case 'NUTR 101':
-        return const Color(0xFFB39DDB);
+        return const Color(0xFFE5D3F1);
       case 'ECON 101':
-        return const Color(0xFF81C784);
+        return const Color(0xFFC5E3D3);
       case 'PSY 101':
-        return const Color(0xFF64B5F6);
+        return const Color(0xFFE6F0FE);
       default:
-        return const Color(0xFF90A4AE);
+        return const Color(0xFFE5D3F1);
     }
   }
 

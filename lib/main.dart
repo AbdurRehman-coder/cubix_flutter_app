@@ -1,8 +1,16 @@
 import 'package:cubix_app/features/bottom_navbar/presentation/screens/ui_main_screen.dart';
+import 'package:flutter/services.dart';
 
 import 'core/utils/app_exports.dart';
 
 void main() {
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.dark,
+      statusBarBrightness: Brightness.light,
+    ),
+  );
   runApp(const ProviderScope(child: MyApp()));
 }
 

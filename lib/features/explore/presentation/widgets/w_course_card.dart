@@ -16,7 +16,6 @@ class CourseCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          // Icon container
           Expanded(
             flex: 3,
             child: Container(
@@ -24,12 +23,12 @@ class CourseCard extends StatelessWidget {
               decoration: BoxDecoration(
                 color:
                     course.category == CourseCategory.core.displayName
-                        ? Color(0xffFFDBBF).withValues(alpha: 0.4)
+                        ? Color(0xffFFDBBF)
                         : course.category == CourseCategory.business.displayName
-                        ? Color(0xffC5E3D3).withValues(alpha: 0.4)
+                        ? Color(0xffC5E3D3)
                         : course.category == CourseCategory.mind.displayName
-                        ? Color(0xffC1DBFD).withValues(alpha: 0.4)
-                        : Color(0xffFFDBBF).withValues(alpha: 0.4),
+                        ? Color(0xffC1DBFD)
+                        : Color(0xffFFDBBF),
 
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(10),
@@ -38,7 +37,9 @@ class CourseCard extends StatelessWidget {
               ),
               child: Center(
                 child: Image.asset(
-                  'assets/images/brain_image.png',
+                  course.category == CourseCategory.core.displayName
+                      ? 'assets/images/english_image.png'
+                      : 'assets/images/brain_image.png',
                   fit: BoxFit.cover,
                   height: 91,
                   width: 91,

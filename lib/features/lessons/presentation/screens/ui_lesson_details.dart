@@ -43,46 +43,49 @@ class _LessonDetailsScreenState extends ConsumerState<LessonDetailsScreen> {
           Container(
             decoration: BoxDecoration(
               color: Colors.white,
-
               boxShadow: [
                 BoxShadow(
-                  blurRadius: 4,
+                  blurRadius: 8,
                   color: AppColors.blackColor.withValues(alpha: 0.25),
                 ),
               ],
             ),
             padding: const EdgeInsets.only(
               left: 16,
-              right: 16,
+              right: 65,
               top: 21,
-              bottom: 14,
+              bottom: 20,
             ),
             child: SafeArea(
+              bottom: false,
               child: Row(
                 children: [
                   GestureDetector(
                     onTap: () => Navigator.pop(context),
-                    child: const Icon(
-                      Icons.close_rounded,
-                      size: 30,
-                      color: AppColors.blackColor,
+                    child: SvgPicture.asset(
+                      'assets/icons/cross_icon.svg',
+                      height: 25,
                     ),
                   ),
                   const SizedBox(width: 20),
                   Expanded(
                     child: Container(
-                      height: 4,
+                      padding: EdgeInsets.all(2),
                       decoration: BoxDecoration(
-                        color: const Color(0xFFE0E0E0),
+                        border: Border.all(color: Color(0xFFE3E3E4), width: 1),
                         borderRadius: BorderRadius.circular(30),
                       ),
-                      child: FractionallySizedBox(
-                        alignment: Alignment.centerLeft,
-                        widthFactor: (currentStep + 1) / lessonContents.length,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: AppColors.primaryOrangeColor,
-                            borderRadius: BorderRadius.circular(30),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(30),
+                        child: LinearProgressIndicator(
+                          value: (currentStep + 1) / lessonContents.length,
+                          minHeight: 7,
+                          backgroundColor: const Color(0xFFE3E3E4),
+                          borderRadius: BorderRadius.circular(
+                            30,
+                          ), // Replace with your inactive color
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                            AppColors.primaryOrangeColor,
                           ),
                         ),
                       ),
@@ -93,14 +96,13 @@ class _LessonDetailsScreenState extends ConsumerState<LessonDetailsScreen> {
             ),
           ),
 
-          // Content
           Expanded(child: _buildStepContent()),
 
-          // Action Button
           Padding(
             padding: const EdgeInsets.all(30),
             child: PrimaryButton(
               borderRadius: 12,
+              height: 48,
               text: _getButtonText(),
               onPressed: _handleButtonPress,
             ),
@@ -203,45 +205,24 @@ class _LessonDetailsScreenState extends ConsumerState<LessonDetailsScreen> {
     return SingleChildScrollView(
       padding: const EdgeInsets.all(24),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // EEG Image placeholder - replace with actual image
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(32),
-            decoration: BoxDecoration(
-              color: const Color(0xFFFFF8E1),
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: Column(
-              children: [
-                // This should be your actual EEG image
-                Container(
-                  height: 200,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: const Color(0xFFE0E0E0)),
-                  ),
-                  child: const Center(
-                    child: Text(
-                      'EEG Image\n(Replace with actual image asset)',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: Colors.grey, fontSize: 14),
-                    ),
-                  ),
-                ),
-              ],
+          Center(
+            child: Image.network(
+              'https://www.neuroinjuryspecialists.com/wp-content/uploads/2024/09/electroencephalogram-test-eeg-in-brooklyn.jpg.webp',
+              height: 300,
+              width: 300,
             ),
           ),
-
           const SizedBox(height: 32),
 
-          const Text(
+          Text(
             'EEG',
-            style: TextStyle(
-              fontSize: 32,
-              fontWeight: FontWeight.w600,
-              color: Colors.black,
+            style: AppTextStyles.bodyTextStyle.copyWith(
+              fontSize: 22,
+              fontWeight: FontWeight.w700,
+              color: AppColors.blackColor,
+              height: 1.2,
             ),
           ),
 
@@ -303,9 +284,9 @@ class _LessonDetailsScreenState extends ConsumerState<LessonDetailsScreen> {
           Text(
             'Choosing among EEG, fMRI, PET, and lesions/stimulation involves trade-offs:',
             style: AppTextStyles.bodyTextStyle.copyWith(
-              fontSize: 22,
-              fontWeight: FontWeight.w700,
-              color: AppColors.blackColor,
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+              color: Color(0xff242425),
               height: 1.2,
             ),
           ),
@@ -348,44 +329,44 @@ class _LessonDetailsScreenState extends ConsumerState<LessonDetailsScreen> {
       children: [
         Text(
           title,
-          style: const TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.w600,
-            color: Colors.black,
+          style: AppTextStyles.bodyTextStyle.copyWith(
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+            color: Color(0xff242425),
+            height: 1.2,
           ),
         ),
         const SizedBox(height: 12),
-        ...points
-            .map(
-              (point) => Padding(
-                padding: const EdgeInsets.only(bottom: 8),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.only(top: 8, right: 12),
-                      width: 4,
-                      height: 4,
-                      decoration: const BoxDecoration(
-                        color: Colors.black,
-                        shape: BoxShape.circle,
-                      ),
-                    ),
-                    Expanded(
-                      child: Text(
-                        point,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          color: Colors.black87,
-                          height: 1.5,
-                        ),
-                      ),
-                    ),
-                  ],
+        ...points.map(
+          (point) => Padding(
+            padding: const EdgeInsets.only(bottom: 8),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  margin: const EdgeInsets.only(top: 8, right: 12),
+                  width: 4,
+                  height: 4,
+                  decoration: const BoxDecoration(
+                    color: Colors.black,
+                    shape: BoxShape.circle,
+                  ),
                 ),
-              ),
-            )
-            .toList(),
+                Expanded(
+                  child: Text(
+                    point,
+                    style: AppTextStyles.bodyTextStyle.copyWith(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                      color: Color(0xff242425),
+                      height: 1.2,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
       ],
     );
   }
@@ -414,12 +395,22 @@ class _LessonDetailsScreenState extends ConsumerState<LessonDetailsScreen> {
               children: [
                 TextSpan(
                   text: '$method: ',
-                  style: const TextStyle(
+                  style: AppTextStyles.bodyTextStyle.copyWith(
+                    fontSize: 14,
                     fontWeight: FontWeight.w600,
-                    color: Colors.black,
+                    color: Color(0xff242425),
+                    height: 1.2,
                   ),
                 ),
-                TextSpan(text: description),
+                TextSpan(
+                  text: description,
+                  style: AppTextStyles.bodyTextStyle.copyWith(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                    color: Color(0xff242425),
+                    height: 1.2,
+                  ),
+                ),
               ],
             ),
           ),

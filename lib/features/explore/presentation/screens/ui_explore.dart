@@ -11,7 +11,6 @@ class ExploreScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final courses = ref.watch(coursesProvider);
-
     return SafeArea(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

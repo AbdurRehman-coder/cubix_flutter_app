@@ -50,7 +50,7 @@ class _HomeBannerSliderState extends ConsumerState<HomeBannerSlider> {
     return ClipRRect(
       borderRadius: BorderRadius.circular(16),
       child: SizedBox(
-        height: getProportionateScreenHeight(170),
+        height: getProportionateScreenHeight(160),
         child: PageView.builder(
           controller: _controller,
 
@@ -64,7 +64,7 @@ class _HomeBannerSliderState extends ConsumerState<HomeBannerSlider> {
               children: [
                 ColoredBannerBackground(theme: banner.colorTheme),
                 Positioned(
-                  left: 45,
+                  left: 30,
                   top: 45,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,

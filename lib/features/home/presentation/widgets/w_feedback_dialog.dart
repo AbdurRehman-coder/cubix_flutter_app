@@ -1,4 +1,5 @@
 import 'package:cubix_app/core/utils/app_exports.dart';
+import 'package:cubix_app/core/widgets/w_custom_form_field.dart';
 
 class FeedbackDialog extends StatefulWidget {
   const FeedbackDialog({super.key});
@@ -13,6 +14,7 @@ class _FeedbackDialogState extends State<FeedbackDialog>
   final TextEditingController _feedbackController = TextEditingController();
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -34,10 +36,12 @@ class _FeedbackDialogState extends State<FeedbackDialog>
   }
 
   void _submitFeedback() {
-    setState(() {
-      _isFeedbackSent = true;
-    });
-    _animationController.forward();
+    if (_formKey.currentState!.validate()) {
+      setState(() {
+        _isFeedbackSent = true;
+      });
+      _animationController.forward();
+    }
   }
 
   void _closeFeedbackForm() {
@@ -52,110 +56,108 @@ class _FeedbackDialogState extends State<FeedbackDialog>
   Widget build(BuildContext context) {
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      child: Container(
-        width: 350,
-        padding: const EdgeInsets.all(24),
-        child: AnimatedSwitcher(
-          duration: const Duration(milliseconds: 300),
-          child: _isFeedbackSent ? _buildThankYouView() : _buildFeedbackForm(),
-        ),
+      backgroundColor: AppColors.whiteColor,
+      insetPadding: const EdgeInsets.symmetric(horizontal: 28),
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          return ConstrainedBox(
+            constraints: BoxConstraints(
+              maxHeight: MediaQuery.of(context).size.height * 0.9,
+            ),
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(24),
+              child: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 300),
+                child:
+                    _isFeedbackSent
+                        ? _buildThankYouView()
+                        : _buildFeedbackForm(),
+              ),
+            ),
+          );
+        },
       ),
     );
   }
 
   Widget _buildFeedbackForm() {
-    return Column(
-      key: const ValueKey('feedback_form'),
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        // Icon
-        Center(
-          child: SvgPicture.asset(
-            AppAssets.feedbackIcon,
-            height: getProportionateScreenHeight(88),
-            colorFilter: ColorFilter.mode(
-              AppColors.primaryOrangeColor,
-              BlendMode.srcIn,
-            ),
-          ),
-        ),
-        const SizedBox(height: 24),
-
-        // Title
-        Text(
-          'Help us improve!',
-          style: AppTextStyles.bodyTextStyle.copyWith(
-            fontSize: 28,
-            fontWeight: FontWeight.w700,
-            color: AppColors.blackColor,
-          ),
-          textAlign: TextAlign.center,
-        ),
-        const SizedBox(height: 16),
-
-        // Description
-        Text(
-          'This is the early version of Cubix. It\'s free while we build it and your feedback helps shape what it becomes.',
-          style: AppTextStyles.bodyTextStyle.copyWith(
-            fontSize: 16,
-            fontWeight: FontWeight.w400,
-            color: Color(0xff47474A),
-            height: 26 / 16,
-          ),
-          textAlign: TextAlign.center,
-        ),
-        const SizedBox(height: 24),
-
-        // Text Field
-        Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8),
-            border: Border.all(color: const Color(0xffE5E5E5)),
-          ),
-          child: TextField(
-            controller: _feedbackController,
-            maxLines: 4,
-            decoration: InputDecoration(
-              hintText:
-                  'What\'s one thing you liked or didn\'t like about the app?',
-              hintStyle: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w400,
-                color: const Color(0xff9E9E9E),
-                height: 1.2,
+    return Form(
+      key: _formKey,
+      child: Column(
+        key: const ValueKey('feedback_form'),
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Center(
+            child: SvgPicture.asset(
+              AppAssets.feedbackIcon,
+              height: getProportionateScreenHeight(88),
+              width: getProportionateScreenWidth(92),
+              colorFilter: ColorFilter.mode(
+                AppColors.primaryOrangeColor,
+                BlendMode.srcIn,
               ),
-              border: InputBorder.none,
-              contentPadding: const EdgeInsets.all(16),
             ),
-            style: TextStyle(
+          ),
+          const SizedBox(height: 24),
+
+          Text(
+            'Help us improve!',
+            style: AppTextStyles.bodyTextStyle.copyWith(
+              fontSize: 28,
+              fontWeight: FontWeight.w700,
+              color: AppColors.blackColor,
+              height: 22 / 28,
+              wordSpacing: 1.5,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 16),
+          Text(
+            'This is the early version of Cubix. It\'s free while we build it and your feedback helps shape what it becomes.',
+            style: AppTextStyles.bodyTextStyle.copyWith(
               fontSize: 16,
               fontWeight: FontWeight.w400,
-              color: const Color(0xff242425),
-              height: 1.2,
+              color: Color(0xff47474A),
+              height: 30 / 16,
+              wordSpacing: 1.5,
             ),
+            textAlign: TextAlign.center,
           ),
-        ),
-        const SizedBox(height: 24),
+          const SizedBox(height: 28),
 
-        // Buttons
-        Column(
-          children: [
-            PrimaryButton(text: 'Submit', onPressed: _submitFeedback),
-            const SizedBox(height: 12),
-            TextButton(
-              onPressed: _closeFeedbackForm,
-              child: Text(
-                'Cancel',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                  color: const Color(0xff242425),
+          CustomTextField(
+            controller: _feedbackController,
+            maxLines: 5,
+            validator: (value) {
+              if (value == null || value.trim().isEmpty) {
+                return 'Feedback cannot be empty';
+              }
+              return null;
+            },
+          ),
+
+          const SizedBox(height: 28),
+
+          Column(
+            children: [
+              PrimaryButton(text: 'Submit', onPressed: _submitFeedback),
+              const SizedBox(height: 12),
+              TextButton(
+                onPressed: _closeFeedbackForm,
+                child: Text(
+                  'Cancel',
+                  style: AppTextStyles.bodyTextStyle.copyWith(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.blackColor,
+                    height: 22 / 16,
+                  ),
                 ),
               ),
-            ),
-          ],
-        ),
-      ],
+            ],
+          ),
+        ],
+      ),
     );
   }
 
@@ -184,36 +186,31 @@ class _FeedbackDialogState extends State<FeedbackDialog>
             'Thanks for the feedback!',
             style: AppTextStyles.bodyTextStyle.copyWith(
               fontSize: 28,
-              fontWeight: FontWeight.w400,
+              fontWeight: FontWeight.w700,
               color: AppColors.blackColor,
-              height: 26 / 16,
+              height: 22 / 28,
             ),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 16),
 
-          // Description
           Text(
             'We really appreciate you helping us making the app better.',
             style: AppTextStyles.bodyTextStyle.copyWith(
               fontSize: 16,
               fontWeight: FontWeight.w400,
               color: Color(0xff47474A),
-              height: 26 / 16,
+              height: 30 / 16,
             ),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 40),
+          const SizedBox(height: 28),
 
-          // Play Icon
-          SvgPicture.asset(
-            AppAssets.feedbackIcon,
-            height: getProportionateScreenHeight(25),
-          ),
-          const SizedBox(height: 40),
+          Image.asset('assets/images/send.gif', height: 200),
+          const SizedBox(height: 28),
 
-          // Done Button
           PrimaryButton(text: 'Done', onPressed: _closeThankYou),
+          const SizedBox(height: 35),
         ],
       ),
     );

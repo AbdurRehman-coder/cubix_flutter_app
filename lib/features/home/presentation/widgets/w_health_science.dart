@@ -34,7 +34,7 @@ class HealthScienceSection extends StatelessWidget {
                     left: getProportionateScreenWidth(10),
                     right: 0,
                     top: getProportionateScreenHeight(16),
-                    bottom: getProportionateScreenHeight(35),
+                    bottom: getProportionateScreenHeight(32),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [

@@ -1,13 +1,14 @@
 import 'package:cubix_app/core/utils/app_exports.dart';
 
-class SectionCard extends StatelessWidget {
+class SectionCard extends ConsumerWidget {
   final String title;
   final Widget child;
 
   const SectionCard({super.key, required this.title, required this.child});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final notifier = ref.read(bottomNavIndexProvider.notifier);
     return Container(
       padding: EdgeInsets.symmetric(
         horizontal: getProportionateScreenWidth(16),
@@ -38,18 +39,32 @@ class SectionCard extends StatelessWidget {
                 ),
               ),
               const Spacer(),
-              Text(
-                "View all",
-                style: AppTextStyles.bodyTextStyle.copyWith(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w400,
-                  color: AppColors.blackColor,
+              SizedBox(
+                height: 20,
+                child: TextButton.icon(
+                  style: TextButton.styleFrom(
+                    padding: EdgeInsets.symmetric(horizontal: 8),
+                    minimumSize: Size.zero,
+                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  ),
+                  iconAlignment: IconAlignment.end,
+                  onPressed: () {
+                    notifier.state = 2;
+                  },
+                  label: Text(
+                    "View all",
+                    style: AppTextStyles.bodyTextStyle.copyWith(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w400,
+                      color: AppColors.blackColor,
+                    ),
+                  ),
+                  icon: Icon(
+                    Icons.arrow_forward_ios,
+                    size: 12,
+                    color: AppColors.blackColor,
+                  ),
                 ),
-              ),
-              const Icon(
-                Icons.arrow_forward_ios,
-                size: 12,
-                color: AppColors.blackColor,
               ),
             ],
           ),

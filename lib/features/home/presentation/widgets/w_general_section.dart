@@ -26,13 +26,10 @@ class GeneralEducationSection extends StatelessWidget {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Cube3D(
-                      size: 36,
-                      gradient: const LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        colors: [Color(0xFFFE7101), Color(0xFFFFB880)],
-                      ),
+                    Image.asset(
+                      'assets/images/english_image.png',
+                      height: 45,
+                      width: 45,
                     ),
                     const SizedBox(height: 8),
                     Text(

@@ -1,26 +1,27 @@
-import 'package:cubix_app/core/constants/app_assets.dart';
 import 'package:cubix_app/core/utils/app_exports.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:cubix_app/features/bottom_navbar/presentation/screens/ui_main_screen.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends ConsumerWidget {
   const LoginScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final currentIndex = ref.watch(bottomNavIndexProvider);
+    final notifier = ref.read(bottomNavIndexProvider.notifier);
     return Scaffold(
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(
           horizontal: getProportionateScreenWidth(34),
-          vertical: getProportionateScreenHeight(12),
+          vertical: getProportionateScreenHeight(30),
         ),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Image.asset(
               AppAssets.onboardingImage,
-              height: getProportionateScreenHeight(331),
-              width: getProportionateScreenWidth(345),
+              fit: BoxFit.fill,
             ),
-            SizedBox(height: getProportionateScreenHeight(40)),
+            SizedBox(height: getProportionateScreenHeight(45)),
             RichText(
               textAlign: TextAlign.center,
               text: TextSpan(
@@ -29,50 +30,73 @@ class LoginScreen extends StatelessWidget {
                     text: 'Any topic. Anytime.',
                     style: AppTextStyles.headingTextStyle.copyWith(
                       color: AppColors.brownColor,
+                      height: 40 / 32,
+                      fontSize: 32
                     ),
                   ),
                   TextSpan(
                     text: '\nYour way.',
                     style: AppTextStyles.headingTextStyle.copyWith(
                       color: AppColors.blueColor,
+                      fontSize: 32
                     ),
                   ),
                 ],
               ),
             ),
-            SizedBox(height: getProportionateScreenHeight(8)),
-            Text(
-              'Powered by AI',
-              textAlign: TextAlign.center,
-              style: AppTextStyles.bodyTextStyle.copyWith(
-                color: AppColors.textSecondaryColor,
-              ),
-            ),
+
             SizedBox(height: getProportionateScreenHeight(65)),
             Text(
               textAlign: TextAlign.center,
               'Sign in to continue with',
               style: AppTextStyles.bodyTextStyle.copyWith(
                 color: AppColors.brownColor,
-                fontSize: getProportionateScreenHeight(18),
+                fontSize: getProportionateScreenHeight(16),
                 fontWeight: FontWeight.w500,
+                wordSpacing: 1.4
               ),
             ),
             SizedBox(height: getProportionateScreenHeight(24)),
             PrimaryButton(
               text: 'Apple',
-              icon: SvgPicture.asset(AppAssets.appleIcon),
-              iconLeading: true,
-              onPressed: () {},
+              icon: SvgPicture.asset(
+                AppAssets.appleIcon,
+                fit: BoxFit.scaleDown,
+              ),
+              height: getProportionateScreenHeight(56),
+              onPressed: () {
+                if (currentIndex != 0) {
+                  notifier.state = 0;
+                }
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (_) => const MainScreen()),
+                );
+              },
               textColor: AppColors.blackColor,
               backgroundColor: AppColors.whiteColor,
             ),
             SizedBox(height: getProportionateScreenHeight(12)),
             PrimaryButton(
               text: 'Google',
-              icon: SvgPicture.asset(AppAssets.googleIcon),
-              iconLeading: true,
-              onPressed: () {},
+              height: getProportionateScreenHeight(56),
+              icon: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+                child: SvgPicture.asset(
+                  AppAssets.googleIcon,
+                  fit: BoxFit.scaleDown,
+                ),
+              ),
+
+              onPressed: () {
+                if (currentIndex != 0) {
+                  notifier.state = 0;
+                }
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (_) => const MainScreen()),
+                );
+              },
               textColor: AppColors.blackColor,
               backgroundColor: AppColors.whiteColor,
             ),

@@ -29,12 +29,8 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Column(
           children: [
             const Spacer(flex: 3),
-            Image.asset(
-              AppAssets.appLogo,
-              height: getProportionateScreenHeight(90),
-              width: getProportionateScreenWidth(90),
-            ),
-            SizedBox(height: getProportionateScreenHeight(14)),
+            Image.asset(AppAssets.appLogo, height: 90, width: 90),
+            SizedBox(height: 14),
             Text(
               'Cubix',
               style: AppTextStyles.headingTextStyleInter.copyWith(
@@ -43,9 +39,7 @@ class _SplashScreenState extends State<SplashScreen> {
             ),
             const Spacer(flex: 3),
             Padding(
-              padding: EdgeInsets.only(
-                bottom: getProportionateScreenHeight(30),
-              ),
+              padding: EdgeInsets.only(bottom: 90),
               child: Text(
                 'Where learning clicks into place',
                 style: AppTextStyles.bodyTextStyleInter.copyWith(

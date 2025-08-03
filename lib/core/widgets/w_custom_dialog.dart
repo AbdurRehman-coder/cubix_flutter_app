@@ -45,7 +45,7 @@ class CustomDialog extends StatelessWidget {
             Text(
               title,
               style: AppTextStyles.bodyTextStyle.copyWith(
-                fontSize: 28,
+                fontSize: 24,
                 fontWeight: FontWeight.bold,
                 color: AppColors.blackColor,
                 wordSpacing: 1.5,

@@ -30,12 +30,6 @@ class _LessonDetailsScreenState extends ConsumerState<LessonDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final courses = ref.watch(coursesNotifierProvider);
-    final course = courses.firstWhere((c) => c.id == widget.courseId);
-    final chapter = course.chapters.firstWhere(
-      (ch) => ch.id == widget.chapterId,
-    );
-
     return Scaffold(
       body: Column(
         children: [

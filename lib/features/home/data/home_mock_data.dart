@@ -1,5 +1,4 @@
 import 'package:cubix_app/core/utils/app_exports.dart';
-import 'package:cubix_app/features/home/models/home_banner_model.dart';
 
 final List<HomeBannerModel> homeBannerList = [
   HomeBannerModel(

@@ -2,15 +2,11 @@ import 'package:cubix_app/core/utils/app_exports.dart';
 import 'package:cubix_app/features/home/presentation/widgets/w_section_card.dart';
 
 class PsychologySection extends StatelessWidget {
-  const PsychologySection({super.key});
+  final List<Subject> subjects;
+  const PsychologySection({super.key, required this.subjects});
 
   @override
   Widget build(BuildContext context) {
-    final items = [
-      {'title': 'Instroductory Psychology', 'sections': 'PSY 101'},
-      {'title': 'Cognitive Psychology', 'sections': 'PSY 201'},
-    ];
-
     return SectionCard(
       title: 'Psychology & Behavior',
       child: SizedBox(
@@ -18,10 +14,10 @@ class PsychologySection extends StatelessWidget {
         child: ListView.separated(
           padding: EdgeInsets.zero,
           scrollDirection: Axis.horizontal,
-          itemCount: items.length,
+          itemCount: subjects.length,
           separatorBuilder: (_, __) => const SizedBox(width: 10),
           itemBuilder: (context, index) {
-            final item = items[index];
+            final item = subjects[index];
             return Container(
               padding: const EdgeInsets.fromLTRB(16, 16, 7, 16),
               width: 180,
@@ -37,7 +33,7 @@ class PsychologySection extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        item['title']!,
+                        item.title,
                         style: AppTextStyles.bodyTextStyle.copyWith(
                           fontSize: 12,
                           fontWeight: FontWeight.w700,
@@ -46,7 +42,7 @@ class PsychologySection extends StatelessWidget {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        item['sections']!,
+                        item.abbreviation,
                         style: AppTextStyles.bodyTextStyle.copyWith(
                           fontSize: 11,
                           fontWeight: FontWeight.w400,

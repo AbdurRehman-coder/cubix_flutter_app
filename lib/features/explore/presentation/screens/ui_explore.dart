@@ -1,16 +1,14 @@
 import 'package:cubix_app/core/utils/app_exports.dart';
-import 'package:cubix_app/features/explore/models/course_model.dart';
 import 'package:cubix_app/features/explore/presentation/screens/ui_course_details.dart';
-import 'package:cubix_app/features/explore/presentation/widgets/w_course_card.dart';
-import 'package:cubix_app/features/explore/presentation/widgets/w_course_tab.dart';
-import 'package:cubix_app/features/explore/providers/course_provider.dart';
+import 'package:cubix_app/features/explore/presentation/widgets/w_explore_shimmer.dart';
 
 class ExploreScreen extends ConsumerWidget {
   const ExploreScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final courses = ref.watch(coursesProvider);
+    final selectedCategory = ref.watch(selectedCategoryProvider);
+    final subjectsAsync = ref.watch(subjectsProvider);
     return SafeArea(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -30,7 +28,6 @@ class ExploreScreen extends ConsumerWidget {
 
           Divider(height: 1, thickness: 1, color: Color(0xffE3E3E4)),
 
-          // Category tabs
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 27),
             child: SingleChildScrollView(
@@ -51,34 +48,79 @@ class ExploreScreen extends ConsumerWidget {
             ),
           ),
 
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              child: GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  childAspectRatio: 0.85,
-                  crossAxisSpacing: getProportionateScreenWidth(16),
-                  mainAxisSpacing: getProportionateScreenHeight(30),
+          subjectsAsync.when(
+            loading: () => ExploreShimmer(),
+            error:
+                (error, _) => Center(
+                  child: Text(
+                    'Error loading the subjects',
+                    style: AppTextStyles.bodyTextStyle.copyWith(
+                      fontSize: 14,
+                      color: AppColors.textSecondaryColor,
+                    ),
+                  ),
                 ),
-                itemCount: courses.length,
-                itemBuilder: (context, index) {
-                  return GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder:
-                              (context) =>
-                                  CourseDetailsScreen(course: courses[index]),
-                        ),
+            data: (subjects) {
+              if (subjects == null) {
+                return Center(
+                  child: Text(
+                    "No subjects found.",
+                    style: AppTextStyles.bodyTextStyle.copyWith(
+                      fontSize: 14,
+                      color: AppColors.textSecondaryColor,
+                    ),
+                  ),
+                );
+              }
+
+              List<Subject> tempList = [];
+
+              if (selectedCategory == CourseCategory.core) {
+                tempList = subjects.gen;
+              } else if (selectedCategory == CourseCategory.business) {
+                tempList = subjects.busiEcon;
+              } else if (selectedCategory == CourseCategory.mind) {
+                tempList = subjects.psyHuman;
+              } else if (selectedCategory == CourseCategory.humanities) {
+                tempList = subjects.artsHuman;
+              } else {
+                tempList = subjects.healLife;
+              }
+
+              return Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 10,
+                  ),
+                  child: GridView.builder(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      childAspectRatio: 0.85,
+                      crossAxisSpacing: getProportionateScreenWidth(16),
+                      mainAxisSpacing: getProportionateScreenHeight(30),
+                    ),
+                    itemCount: tempList.length,
+                    itemBuilder: (context, index) {
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder:
+                                  (context) => CourseDetailsScreen(
+                                    subjectId: tempList[index].id,
+                                  ),
+                            ),
+                          );
+                        },
+                        child: CourseCard(subject: tempList[index]),
                       );
                     },
-                    child: CourseCard(course: courses[index]),
-                  );
-                },
-              ),
-            ),
+                  ),
+                ),
+              );
+            },
           ),
         ],
       ),

@@ -1,3 +1,4 @@
+import 'package:cubix_app/core/services/shared_prefs.dart';
 import 'package:cubix_app/features/bottom_navbar/presentation/widgets/w_custom_navbar.dart';
 import 'package:cubix_app/features/bottom_navbar/provider/navbar_provider.dart';
 import 'package:cubix_app/features/explore/presentation/screens/ui_explore.dart';
@@ -44,19 +45,22 @@ class _MainScreenState extends ConsumerState<MainScreen> {
     );
   }
 
-  void showWelcomeDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder:
-          (_) => CustomDialog(
-            title: '🎉 Welcome to Cubix 🎉',
-            description:
-                'You’re one of the first to try our\nearly version — totally free while\nwe build.',
-            buttonText: 'Let\'s Go',
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-    );
+  Future<void> showWelcomeDialog(BuildContext context) async {
+    final isFirstTime = await SharedPrefs.isFirstTimeUser();
+    if (isFirstTime && context.mounted) {
+      showDialog(
+        context: context,
+        builder:
+            (_) => CustomDialog(
+              title: '🎉 Welcome to Cubix 🎉',
+              description:
+                  'You’re one of the first to try our\nearly version — totally free while\nwe build.',
+              buttonText: 'Let\'s Go',
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+      );
+    }
   }
 }

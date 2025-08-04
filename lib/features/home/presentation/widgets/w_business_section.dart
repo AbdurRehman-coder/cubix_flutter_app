@@ -2,17 +2,11 @@ import 'package:cubix_app/core/utils/app_exports.dart';
 import 'package:cubix_app/features/home/presentation/widgets/w_section_card.dart';
 
 class BusinessSection extends StatelessWidget {
-  const BusinessSection({super.key});
+  final List<Subject> subjects;
+  const BusinessSection({super.key, required this.subjects});
 
   @override
   Widget build(BuildContext context) {
-    final items = [
-      {'title': 'ECON 101', 'subtitle': 'Microeconomics'},
-      {'title': 'MKT 101', 'subtitle': 'Marketing '},
-      {'title': 'ACC 101', 'subtitle': 'Accounting I'},
-      {'title': 'BUS 201', 'subtitle': 'Business Law'},
-    ];
-
     return SectionCard(
       title: 'Business & Econ',
       child: SizedBox(
@@ -20,11 +14,11 @@ class BusinessSection extends StatelessWidget {
         child: SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Row(
-            children: List.generate((items.length / 2).ceil(), (colIndex) {
-              final firstItem = items[colIndex * 2];
+            children: List.generate((subjects.length / 2).ceil(), (colIndex) {
+              final firstItem = subjects[colIndex * 2];
               final secondItem =
-                  (colIndex * 2 + 1 < items.length)
-                      ? items[colIndex * 2 + 1]
+                  (colIndex * 2 + 1 < subjects.length)
+                      ? subjects[colIndex * 2 + 1]
                       : null;
               return SizedBox(
                 width: 237,
@@ -44,7 +38,7 @@ class BusinessSection extends StatelessWidget {
     );
   }
 
-  Widget _buildItem(Map<String, String> item) {
+  Widget _buildItem(Subject item) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -55,7 +49,7 @@ class BusinessSection extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                item['title']!,
+                item.abbreviation,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: AppTextStyles.bodyTextStyle.copyWith(
@@ -66,7 +60,7 @@ class BusinessSection extends StatelessWidget {
                 ),
               ),
               Text(
-                item['subtitle']!,
+                item.title,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 style: AppTextStyles.bodyTextStyle.copyWith(

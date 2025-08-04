@@ -1,7 +1,6 @@
 // Providers
 import 'package:cubix_app/core/utils/app_exports.dart';
 import 'package:cubix_app/features/explore/data/mock_course_data.dart';
-import 'package:cubix_app/features/explore/models/course_model.dart';
 
 // Providers
 class CoursesNotifier extends StateNotifier<List<Course>> {

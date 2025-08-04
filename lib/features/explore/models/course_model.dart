@@ -5,7 +5,8 @@ enum CourseCategory {
   core('Core'),
   business('Business'),
   mind('Mind'),
-  humanities('Humanities');
+  humanities('Humanities'),
+  health('Health');
 
   const CourseCategory(this.displayName);
   final String displayName;

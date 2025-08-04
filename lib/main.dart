@@ -1,7 +1,10 @@
+import 'package:cubix_app/core/services/app_services.dart';
+import 'package:cubix_app/features/bottom_navbar/presentation/screens/ui_main_screen.dart';
 import 'package:flutter/services.dart';
 import 'core/utils/app_exports.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
@@ -9,6 +12,9 @@ void main() {
       statusBarBrightness: Brightness.light,
     ),
   );
+
+  await initServices();
+
   runApp(const ProviderScope(child: MyApp()));
 }
 
@@ -27,7 +33,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: AppTheme.lightTheme,
         title: 'Cubix App',
-        home: const SplashScreen(),
+        home: const MainScreen(),
       ),
     );
   }

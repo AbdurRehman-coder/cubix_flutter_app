@@ -1,0 +1,46 @@
+import 'dart:developer';
+import 'package:cubix_app/core/services/api_client.dart';
+import 'package:cubix_app/features/home/models/subject_details_model.dart';
+import 'package:dio/dio.dart';
+
+import '../models/subject_model.dart';
+
+class HomeServices {
+  final ApiClient apiClient;
+
+  HomeServices({required this.apiClient});
+
+  Future<SubjectsData?> getSubjects() async {
+    const String url = "/subjects";
+    try {
+      Response response = await apiClient.dio.get(url);
+
+      if (response.statusCode == 201 && response.data['data'] != null) {
+        final dataJson = response.data['data'];
+        final subjectsData = SubjectsData.fromJson(dataJson);
+        log('Subjects loaded successfully');
+        return subjectsData;
+      } else {
+        return null;
+      }
+    } catch (e) {
+      log('Failed to fetch subjects: $e');
+      throw Exception("Failed to fetch subjects: $e");
+    }
+  }
+
+  Future<SubjectDetail?> getSubjectDetail(String subjectId) async {
+    final String url = "/subjects/$subjectId";
+    try {
+      final response = await apiClient.dio.get(url);
+      if (response.statusCode == 200 && response.data['data'] != null) {
+        final dataJson = response.data['data'];
+        return SubjectDetail.fromJson(dataJson);
+      }
+      return null;
+    } catch (e) {
+      log("Failed to fetch subject detail: $e");
+      throw Exception("Failed to fetch subject detail: $e");
+    }
+  }
+}

@@ -1,7 +1,6 @@
 import 'package:cubix_app/features/lessons/presentation/screens/ui_lesson_details.dart';
 import 'package:cubix_app/features/lessons/provider/lessons_provider.dart';
 import 'package:cubix_app/core/utils/app_exports.dart';
-import 'package:cubix_app/features/explore/models/course_model.dart';
 
 class LessonsScreen extends ConsumerWidget {
   const LessonsScreen({super.key});
@@ -131,16 +130,16 @@ class LessonsScreen extends ConsumerWidget {
 
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder:
-                (context) => LessonDetailsScreen(
-                  courseId: course.id,
-                  chapterId: course.chapters.first.id,
-                ),
-          ),
-        );
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder:
+        //         (context) => LessonDetailsScreen(
+        //           courseId: course.id,
+        //           chapterId: course.chapters.first.id,
+        //         ),
+        //   ),
+        // );
       },
       child: Container(
         decoration: BoxDecoration(

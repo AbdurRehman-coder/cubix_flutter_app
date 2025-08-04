@@ -2,17 +2,11 @@ import 'package:cubix_app/core/utils/app_exports.dart';
 import 'package:cubix_app/features/home/presentation/widgets/w_section_card.dart';
 
 class HealthScienceSection extends StatelessWidget {
-  const HealthScienceSection({super.key});
+  final List<Subject> subjects;
+  const HealthScienceSection({super.key, required this.subjects});
 
   @override
   Widget build(BuildContext context) {
-    final subjects = [
-      'Nutrition',
-      'Kinesiology',
-      'Medical Terminology',
-      'Biology 101',
-    ];
-
     return SectionCard(
       title: 'Health & Life Science',
       child: SizedBox(
@@ -39,7 +33,7 @@ class HealthScienceSection extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          subjects[index],
+                          subjects[index].title,
                           textAlign: TextAlign.center,
                           style: AppTextStyles.bodyTextStyle.copyWith(
                             fontSize: 14,

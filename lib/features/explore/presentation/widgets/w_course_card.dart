@@ -1,10 +1,9 @@
 import 'package:cubix_app/core/utils/app_exports.dart';
-import 'package:cubix_app/features/explore/models/course_model.dart';
 
 class CourseCard extends StatelessWidget {
-  final Course course;
+  final Subject subject;
 
-  const CourseCard({super.key, required this.course});
+  const CourseCard({super.key, required this.subject});
 
   @override
   Widget build(BuildContext context) {
@@ -22,11 +21,12 @@ class CourseCard extends StatelessWidget {
               width: double.infinity,
               decoration: BoxDecoration(
                 color:
-                    course.category == CourseCategory.core.displayName
+                    subject.category == CourseCategory.core.displayName
                         ? Color(0xffFFDBBF)
-                        : course.category == CourseCategory.business.displayName
+                        : subject.category ==
+                            CourseCategory.business.displayName
                         ? Color(0xffC5E3D3)
-                        : course.category == CourseCategory.mind.displayName
+                        : subject.category == CourseCategory.mind.displayName
                         ? Color(0xffC1DBFD)
                         : Color(0xffFFDBBF),
 
@@ -37,7 +37,7 @@ class CourseCard extends StatelessWidget {
               ),
               child: Center(
                 child: Image.asset(
-                  course.category == CourseCategory.core.displayName
+                  subject.category == CourseCategory.core.displayName
                       ? 'assets/images/english_image.png'
                       : 'assets/images/brain_image.png',
                   fit: BoxFit.cover,
@@ -56,7 +56,7 @@ class CourseCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    course.code,
+                    subject.abbreviation,
                     maxLines: 1,
                     textAlign: TextAlign.center,
                     style: AppTextStyles.bodyTextStyle.copyWith(
@@ -67,7 +67,7 @@ class CourseCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    course.title,
+                    subject.title,
 
                     textAlign: TextAlign.center,
                     style: AppTextStyles.bodyTextStyle.copyWith(

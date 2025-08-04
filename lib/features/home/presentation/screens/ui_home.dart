@@ -1,11 +1,13 @@
 import 'package:cubix_app/core/utils/app_exports.dart';
 import 'package:cubix_app/features/home/presentation/widgets/w_feedback_dialog.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final subjectsAsync = ref.watch(subjectsProvider);
+
     return SafeArea(
       child: ListView(
         padding: EdgeInsets.symmetric(
@@ -31,17 +33,50 @@ class HomeScreen extends StatelessWidget {
             ],
           ),
           SizedBox(height: getProportionateScreenHeight(30)),
-          HomeBannerSlider(),
-          SizedBox(height: getProportionateScreenHeight(16)),
-          GeneralEducationSection(),
-          SizedBox(height: getProportionateScreenHeight(24)),
-          BusinessSection(),
-          SizedBox(height: getProportionateScreenHeight(24)),
-          PsychologySection(),
-          SizedBox(height: getProportionateScreenHeight(24)),
-          ArtsHumanitiesSection(),
-          SizedBox(height: getProportionateScreenHeight(24)),
-          HealthScienceSection(),
+
+          subjectsAsync.when(
+            loading: () => HomeShimmer(),
+            error:
+                (error, _) => Center(
+                  child: Text(
+                    'Error loading the subjects',
+                    style: AppTextStyles.bodyTextStyle.copyWith(
+                      fontSize: 14,
+                      color: AppColors.textSecondaryColor,
+                    ),
+                  ),
+                ),
+            data: (subjects) {
+              if (subjects == null) {
+                return Center(
+                  child: Text(
+                    "No subjects found.",
+                    style: AppTextStyles.bodyTextStyle.copyWith(
+                      fontSize: 14,
+                      color: AppColors.textSecondaryColor,
+                    ),
+                  ),
+                );
+              }
+
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  HomeBannerSlider(),
+                  SizedBox(height: getProportionateScreenHeight(16)),
+                  GeneralEducationSection(subjects: subjects.gen),
+                  SizedBox(height: getProportionateScreenHeight(24)),
+                  BusinessSection(subjects: subjects.busiEcon),
+                  SizedBox(height: getProportionateScreenHeight(24)),
+                  PsychologySection(subjects: subjects.psyHuman),
+                  SizedBox(height: getProportionateScreenHeight(24)),
+                  ArtsHumanitiesSection(subjects: subjects.artsHuman),
+                  SizedBox(height: getProportionateScreenHeight(24)),
+                  HealthScienceSection(subjects: subjects.healLife),
+                ],
+              );
+            },
+          ),
         ],
       ),
     );
@@ -50,9 +85,7 @@ class HomeScreen extends StatelessWidget {
   void showFeedbackDialog(BuildContext context) {
     showDialog(
       context: context,
-      builder: (BuildContext context) {
-        return const FeedbackDialog();
-      },
+      builder: (BuildContext context) => const FeedbackDialog(),
     );
   }
 }

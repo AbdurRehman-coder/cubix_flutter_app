@@ -1,8 +1,4 @@
 import 'package:cubix_app/core/utils/app_exports.dart';
-import 'package:cubix_app/features/home/data/home_mock_data.dart';
-import 'package:cubix_app/features/home/models/home_banner_model.dart';
-import 'package:cubix_app/features/home/presentation/widgets/w_dot_indicator.dart';
-import 'package:cubix_app/features/home/providers/home_provider.dart';
 
 import 'dart:async';
 

@@ -64,8 +64,8 @@ class _HomeBannerSliderState extends ConsumerState<HomeBannerSlider> {
               children: [
                 ColoredBannerBackground(theme: banner.colorTheme),
                 Positioned(
-                  left: 30,
-                  top: 45,
+                  left: getProportionateScreenWidth(35),
+                  top: getProportionateScreenHeight(30),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [

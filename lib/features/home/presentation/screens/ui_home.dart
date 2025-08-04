@@ -37,23 +37,29 @@ class HomeScreen extends ConsumerWidget {
           subjectsAsync.when(
             loading: () => HomeShimmer(),
             error:
-                (error, _) => Center(
-                  child: Text(
-                    'Error loading the subjects',
-                    style: AppTextStyles.bodyTextStyle.copyWith(
-                      fontSize: 14,
-                      color: AppColors.textSecondaryColor,
+                (error, _) => SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.7,
+                  child: Center(
+                    child: Text(
+                      'Error loading the subjects',
+                      style: AppTextStyles.bodyTextStyle.copyWith(
+                        fontSize: 14,
+                        color: AppColors.textSecondaryColor,
+                      ),
                     ),
                   ),
                 ),
             data: (subjects) {
               if (subjects == null) {
-                return Center(
-                  child: Text(
-                    "No subjects found.",
-                    style: AppTextStyles.bodyTextStyle.copyWith(
-                      fontSize: 14,
-                      color: AppColors.textSecondaryColor,
+                return SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.7,
+                  child: Center(
+                    child: Text(
+                      "No subjects found.",
+                      style: AppTextStyles.bodyTextStyle.copyWith(
+                        fontSize: 14,
+                        color: AppColors.textSecondaryColor,
+                      ),
                     ),
                   ),
                 );

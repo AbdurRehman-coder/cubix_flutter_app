@@ -14,23 +14,29 @@ class CourseDetailsScreen extends ConsumerWidget {
       body: subjectDetailAsync.when(
         loading: () => CourseDetailsShimmer(),
         error:
-            (error, _) => Center(
-              child: Text(
-                'Error loading the details',
-                style: AppTextStyles.bodyTextStyle.copyWith(
-                  fontSize: 14,
-                  color: AppColors.textSecondaryColor,
+            (error, _) => SizedBox(
+              height: MediaQuery.of(context).size.height * 0.7,
+              child: Center(
+                child: Text(
+                  'Error loading the details',
+                  style: AppTextStyles.bodyTextStyle.copyWith(
+                    fontSize: 14,
+                    color: AppColors.textSecondaryColor,
+                  ),
                 ),
               ),
             ),
         data: (subject) {
           if (subject == null) {
-            return Center(
-              child: Text(
-                "No details found.",
-                style: AppTextStyles.bodyTextStyle.copyWith(
-                  fontSize: 14,
-                  color: AppColors.textSecondaryColor,
+            return SizedBox(
+              height: MediaQuery.of(context).size.height * 0.7,
+              child: Center(
+                child: Text(
+                  "No details found.",
+                  style: AppTextStyles.bodyTextStyle.copyWith(
+                    fontSize: 14,
+                    color: AppColors.textSecondaryColor,
+                  ),
                 ),
               ),
             );

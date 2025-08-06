@@ -21,7 +21,7 @@ class CourseCard extends StatelessWidget {
             child: Container(
               width: double.infinity,
               decoration: BoxDecoration(
-                color: getCategoryColor(subject.category),
+                color: AppAssets.getCategoryColor(subject.category),
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(10),
                   topRight: Radius.circular(10),
@@ -74,24 +74,5 @@ class CourseCard extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  Color getCategoryColor(String categoryName) {
-    switch (categoryName) {
-      case 'gen':
-        return const Color(0xffFFDBBF);
-      case 'busi_econ':
-        return const Color(0xffC5E3D3);
-      case 'psy_human':
-        return const Color(0xffC1DBFD);
-      case 'arts_human':
-        return const Color(0xffFFF5CB);
-      case 'heal_life':
-        return const Color(0xffE5D3F1);
-      case 'Innovation':
-        return const Color(0xffD4F8E8);
-      default:
-        return const Color(0xffF0F0F0); // fallback color
-    }
   }
 }

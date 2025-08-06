@@ -1,3 +1,5 @@
+import '../utils/app_exports.dart';
+
 class AppAssets {
   // Images
   static const String onboardingImage = 'assets/images/onboarding_image.png';
@@ -17,5 +19,27 @@ class AppAssets {
   static String getIconPath(String courseCode) {
     final formattedCode = courseCode.replaceAll(' ', '').toLowerCase();
     return 'assets/images/$formattedCode.png';
+  }
+
+
+
+
+  static  Color getCategoryColor(String categoryName) {
+    switch (categoryName) {
+      case 'gen':
+        return const Color(0xffFFDBBF);
+      case 'busi_econ':
+        return const Color(0xffC5E3D3);
+      case 'psy_human':
+        return const Color(0xffC1DBFD);
+      case 'arts_human':
+        return const Color(0xffFFF5CB);
+      case 'heal_life':
+        return const Color(0xffE5D3F1);
+      case 'Innovation':
+        return const Color(0xffD4F8E8);
+      default:
+        return const Color(0xffF0F0F0); // fallback color
+    }
   }
 }

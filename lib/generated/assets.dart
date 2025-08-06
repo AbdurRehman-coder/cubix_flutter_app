@@ -17,7 +17,8 @@ class Assets {
   static const String iconsHomeIcon = 'assets/icons/home_icon.svg';
   static const String iconsLessonsIcon = 'assets/icons/lessons_icon.svg';
   static const String iconsMaskCurve = 'assets/icons/mask_curve.svg';
-  static const String iconsNotificationIcon = 'assets/icons/notification_icon.svg';
+  static const String iconsNotificationIcon =
+      'assets/icons/notification_icon.svg';
   static const String iconsNutritianIcon = 'assets/icons/nutritian_icon.svg';
   static const String iconsPrivacyIcon = 'assets/icons/privacy_icon.svg';
   static const String iconsSendIcon = 'assets/icons/send_icon.svg';
@@ -58,7 +59,8 @@ class Assets {
   static const String imagesNurs101 = 'assets/images/nurs101.png';
   static const String imagesNutr101 = 'assets/images/nutr101.png';
   static const String imagesNutritonImage = 'assets/images/nutriton_image.png';
-  static const String imagesOnboardingImage = 'assets/images/onboarding_image.png';
+  static const String imagesOnboardingImage =
+      'assets/images/onboarding_image.png';
   static const String imagesOrangeCard = 'assets/images/orange_card.png';
   static const String imagesPbh101 = 'assets/images/pbh101.png';
   static const String imagesPhil101 = 'assets/images/phil101.png';
@@ -76,5 +78,4 @@ class Assets {
   static const String imagesRel101 = 'assets/images/rel101.png';
   static const String imagesSend = 'assets/images/send.gif';
   static const String imagesThea101 = 'assets/images/thea101.png';
-
 }

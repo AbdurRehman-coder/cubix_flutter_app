@@ -1,6 +1,9 @@
+import 'package:cubix_app/core/services/app_services.dart';
 import 'package:cubix_app/core/utils/app_exports.dart';
+import 'package:cubix_app/features/explore/data/exposure_provider.dart';
 import 'package:cubix_app/features/explore/presentation/widgets/w_course_details_shimmer.dart';
 import 'package:cubix_app/features/explore/presentation/widgets/w_topic_item.dart';
+import 'package:cubix_app/features/lessons/data/progress_services.dart';
 
 class CourseDetailsScreen extends ConsumerWidget {
   final String subjectId;
@@ -10,8 +13,6 @@ class CourseDetailsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final subjectDetailAsync = ref.watch(subjectDetailProvider(subjectId));
-
-
 
     return Scaffold(
       body: subjectDetailAsync.when(
@@ -51,7 +52,7 @@ class CourseDetailsScreen extends ConsumerWidget {
                 Container(
                   width: double.infinity,
                   decoration: BoxDecoration(
-                    color: getCategoryColor(subject.category),
+                    color: AppAssets.getCategoryColor(subject.category),
                   ),
                   child: SafeArea(
                     child: Padding(
@@ -151,8 +152,9 @@ class CourseDetailsScreen extends ConsumerWidget {
                             .pages
                             ?.isEmpty ??
                         true;
-                    final isLoading = ref.watch(sectionLoadingProvider(chapter.sectionTitle));
-
+                    final isLoading = ref.watch(
+                      sectionLoadingProvider(chapter.sectionTitle),
+                    );
 
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -162,14 +164,16 @@ class CourseDetailsScreen extends ConsumerWidget {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                             Expanded(child:  Text(
-                               'Chapter ${chapterIndex + 1}: ${chapter.sectionTitle}',
-                               style: AppTextStyles.bodyTextStyle.copyWith(
-                                 fontSize: 18,
-                                 color: AppColors.blackColor,
-                                 fontWeight: FontWeight.w700,
-                               ),
-                             ),),
+                              Expanded(
+                                child: Text(
+                                  'Chapter ${chapterIndex + 1}: ${chapter.sectionTitle}',
+                                  style: AppTextStyles.bodyTextStyle.copyWith(
+                                    fontSize: 18,
+                                    color: AppColors.blackColor,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                              ),
                               if (needToGenerate)
                                 isLoading
                                     ? Padding(
@@ -181,23 +185,25 @@ class CourseDetailsScreen extends ConsumerWidget {
                                         height: 27,
                                         child: CircularProgressIndicator(
                                           strokeWidth: 4.5,
-                                         strokeCap: StrokeCap.round,
-                                         backgroundColor: Color(0xfffFFDBBF),
+                                          strokeCap: StrokeCap.round,
+                                          backgroundColor: Color(0xfffFFDBBF),
                                           color: AppColors.primaryOrangeColor,
                                         ),
                                       ),
                                     )
                                     : IconButton(
-                                  onPressed: () {
-                                    createSectionAndRefresh(
-                                      ref: ref,
-                                      context: context,
-                                      subjectId: subjectId,
-                                      sectionTitle: chapter.sectionTitle,
-                                    );
-                                  },
+                                      onPressed: () {
+                                        createSectionAndRefresh(
+                                          ref: ref,
+                                          context: context,
+                                          subjectId: subjectId,
+                                          sectionTitle: chapter.sectionTitle,
+                                        );
+                                      },
 
-                                  icon: SvgPicture.asset('assets/icons/download_icon.svg')
+                                      icon: SvgPicture.asset(
+                                        'assets/icons/download_icon.svg',
+                                      ),
                                     ),
                             ],
                           ),
@@ -214,6 +220,12 @@ class CourseDetailsScreen extends ConsumerWidget {
                                   topic: topic,
                                   needToGenerate: needToGenerate,
                                   showConnector: !(isLastTopic),
+                                  onCompletion: () async {
+                                    final success = await locator.get<ProgressServices>().createProgress(
+                                      deviceId: "abcd1234",
+                                      subjectId: "6890c1497e1f43eb1d09982c",
+                                    );
+                                  },
                                 );
                               }).toList(),
                         ),
@@ -227,24 +239,5 @@ class CourseDetailsScreen extends ConsumerWidget {
         },
       ),
     );
-  }
-
-  Color getCategoryColor(String categoryName) {
-    switch (categoryName) {
-      case 'gen':
-        return const Color(0xffFFDBBF);
-      case 'busi_econ':
-        return const Color(0xffC5E3D3);
-      case 'psy_human':
-        return const Color(0xffC1DBFD);
-      case 'arts_human':
-        return const Color(0xffFFF5CB);
-      case 'heal_life':
-        return const Color(0xffE5D3F1);
-      case 'Innovation':
-        return const Color(0xffD4F8E8);
-      default:
-        return const Color(0xffF0F0F0); // fallback color
-    }
   }
 }

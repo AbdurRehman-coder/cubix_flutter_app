@@ -6,12 +6,14 @@ class TopicItem extends StatelessWidget {
   final SubjectTopic topic;
   final bool needToGenerate;
   final bool showConnector;
+  final Function() onCompletion;
 
   const TopicItem({
     super.key,
     required this.topic,
     required this.needToGenerate,
     required this.showConnector,
+    required this.onCompletion,
   });
 
   @override
@@ -85,12 +87,14 @@ class TopicItem extends StatelessWidget {
           child: GestureDetector(
             onTap: () {
               if (!needToGenerate) {
-                //todo: lesson.status != LessonStatus.locked
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder:
-                        (context) => LessonDetailsScreen(subjectTopic: topic),
+                        (context) => LessonDetailsScreen(
+                          subjectTopic: topic,
+                          onCompletion: onCompletion,
+                        ),
                   ),
                 );
               }
@@ -114,7 +118,8 @@ class TopicItem extends StatelessWidget {
                 style: AppTextStyles.bodyTextStyle.copyWith(
                   fontSize: 14,
                   fontWeight: FontWeight.w600,
-                  color:     needToGenerate ? Color(0xff8E8E93) :   AppColors.blackColor,
+                  color:
+                      needToGenerate ? Color(0xff8E8E93) : AppColors.blackColor,
                 ),
               ),
             ),

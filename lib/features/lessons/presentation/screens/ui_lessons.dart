@@ -1,5 +1,9 @@
-import 'package:cubix_app/features/lessons/presentation/screens/ui_lesson_details.dart';
-import 'package:cubix_app/features/lessons/provider/lessons_provider.dart';
+import 'dart:developer';
+
+import 'package:cubix_app/features/explore/data/exposure_provider.dart';
+import 'package:cubix_app/features/home/models/subject_details_model.dart';
+import 'package:cubix_app/features/lessons/models/progress_model.dart';
+import 'package:cubix_app/features/lessons/provider/progress_provider.dart';
 import 'package:cubix_app/core/utils/app_exports.dart';
 
 class LessonsScreen extends ConsumerWidget {
@@ -7,8 +11,10 @@ class LessonsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final courses = ref.watch(coursesNotifierProvider);
+
     final selectedTab = ref.watch(selectedTabProvider);
+
+    final lessonProvider = ref.watch(progressProvider);
 
     return SafeArea(
       child: Column(
@@ -41,25 +47,91 @@ class LessonsScreen extends ConsumerWidget {
 
           const SizedBox(height: 16),
 
-          // Course Grid
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 27),
-              child: GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  childAspectRatio: 0.7,
-                  crossAxisSpacing: getProportionateScreenWidth(36),
-                  mainAxisSpacing: getProportionateScreenHeight(24),
+          lessonProvider.when(
+            loading: () => ExploreShimmer(),
+            error:
+                (error, _) => SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.7,
+                  child: Center(
+                    child: Text(
+                      'Error loading the subjects',
+                      style: AppTextStyles.bodyTextStyle.copyWith(
+                        fontSize: 14,
+                        color: AppColors.textSecondaryColor,
+                      ),
+                    ),
+                  ),
                 ),
-                itemCount: _getFilteredCourses(courses, selectedTab).length,
-                itemBuilder: (context, index) {
-                  final course =
-                      _getFilteredCourses(courses, selectedTab)[index];
-                  return _buildCourseCard(context, course, ref);
-                },
-              ),
-            ),
+            data: (progressList) {
+              if (progressList == null || progressList.isEmpty) {
+                return SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.6,
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "You haven’t started any courses yet.",
+                          textAlign: TextAlign.center,
+                          style: AppTextStyles.bodyTextStyle.copyWith(
+                            fontSize: 22,
+                            color: AppColors.blackColor,
+                            fontWeight: FontWeight.bold
+                          ),
+                        ),
+                        SizedBox(height: 40,),
+
+                        Text(
+                          "Let’s pick a course and get learning!",
+                          textAlign: TextAlign.center,
+                          style: AppTextStyles.bodyTextStyle.copyWith(
+                            fontSize: 14,
+                            color: AppColors.textSecondaryColor,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              }
+
+              return Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 27),
+                  child: GridView.builder(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      childAspectRatio: 0.7,
+                      crossAxisSpacing: getProportionateScreenWidth(36),
+                      mainAxisSpacing: getProportionateScreenHeight(24),
+                    ),
+                    itemCount: progressList.length,
+                    itemBuilder: (context, index) {
+                      final subjectDetailAsync = ref.watch(
+                        subjectDetailProvider(progressList[index].subject),
+                      );
+
+                      return subjectDetailAsync.when(
+                        loading: () => CourseCardShimmer(),
+                        error: (err, _) => const Text("Failed to load"),
+                        data: (subjectDetail) {
+                          if (subjectDetail == null) {
+                            return const Text("No data");
+                          }
+
+                          return _buildSubjectCard(
+                            context,
+                            progressList[index],
+                            ref,
+                            subjectDetail,
+                          );
+                        },
+                      );
+                    },
+                  ),
+                ),
+              );
+            },
           ),
           SizedBox(height: 20),
         ],
@@ -103,43 +175,20 @@ class LessonsScreen extends ConsumerWidget {
     );
   }
 
-  List<Course> _getFilteredCourses(List<Course> courses, int selectedTab) {
-    if (selectedTab == 0) {
-      // Ongoing courses - courses with at least one lesson that's not completed
-      return courses.where((course) {
-        return course.chapters.any(
-          (chapter) => chapter.lessons.any(
-            (lesson) => lesson.status != LessonStatus.completed,
-          ),
-        );
-      }).toList();
-    } else {
-      return courses.where((course) {
-        return course.chapters.every(
-          (chapter) => chapter.lessons.every(
-            (lesson) => lesson.status == LessonStatus.completed,
-          ),
-        );
-      }).toList();
-    }
-  }
-
-  Widget _buildCourseCard(BuildContext context, Course course, WidgetRef ref) {
-    final progress = _calculateProgress(course);
-    final Color cardColor = _getCourseColor(course.code);
-
+  Widget _buildSubjectCard(
+    BuildContext context,
+    ProgressModel progress,
+    WidgetRef ref,
+    SubjectDetail subject,
+  ) {
     return GestureDetector(
       onTap: () {
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(
-        //     builder:
-        //         (context) => LessonDetailsScreen(
-        //           courseId: course.id,
-        //           chapterId: course.chapters.first.id,
-        //         ),
-        //   ),
-        // );
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => CourseDetailsScreen(subjectId: subject.id),
+          ),
+        );
       },
       child: Container(
         decoration: BoxDecoration(
@@ -155,7 +204,7 @@ class LessonsScreen extends ConsumerWidget {
               width: double.infinity,
               height: getProportionateScreenHeight(96),
               decoration: BoxDecoration(
-                color: cardColor,
+                color: AppAssets.getCategoryColor(subject.category),
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(10),
                   topRight: Radius.circular(10),
@@ -163,7 +212,8 @@ class LessonsScreen extends ConsumerWidget {
               ),
               child: Center(
                 child: Image.asset(
-                  'assets/images/brain_image.png',
+                  //'assets/images/brain_image.png',
+                  AppAssets.getIconPath(subject.abbreviation),
                   fit: BoxFit.cover,
                   height: getProportionateScreenHeight(85),
                   width: getProportionateScreenHeight(85),
@@ -179,7 +229,7 @@ class LessonsScreen extends ConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      course.code,
+                      subject.abbreviation,
                       textAlign: TextAlign.start,
                       style: AppTextStyles.bodyTextStyle.copyWith(
                         fontSize: 11,
@@ -189,8 +239,9 @@ class LessonsScreen extends ConsumerWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      course.title,
+                      subject.title,
                       textAlign: TextAlign.start,
+                      maxLines: 2,
                       style: AppTextStyles.bodyTextStyle.copyWith(
                         fontSize: 14,
                         color: AppColors.blackColor,
@@ -211,7 +262,7 @@ class LessonsScreen extends ConsumerWidget {
                           ),
                         ),
                         Text(
-                          '${progress.completed}/${progress.total}',
+                          '${progress.sectionProgress.length} / ${progress.totalSections}',
                           style: AppTextStyles.bodyTextStyle.copyWith(
                             fontSize: 11,
                             color: AppColors.textSecondaryColor,
@@ -227,8 +278,9 @@ class LessonsScreen extends ConsumerWidget {
                       borderRadius: BorderRadius.circular(20),
                       child: LinearProgressIndicator(
                         value:
-                            progress.total > 0
-                                ? progress.completed / progress.total
+                            progress.totalSections > 0
+                                ? progress.sectionProgress.length /
+                                    progress.totalSections
                                 : 0,
                         minHeight: 4,
                         backgroundColor: const Color(
@@ -250,40 +302,4 @@ class LessonsScreen extends ConsumerWidget {
       ),
     );
   }
-
-  Color _getCourseColor(String courseCode) {
-    switch (courseCode) {
-      case 'NUTR 101':
-        return const Color(0xFFE5D3F1);
-      case 'ECON 101':
-        return const Color(0xFFC5E3D3);
-      case 'PSY 101':
-        return const Color(0xFFE6F0FE);
-      default:
-        return const Color(0xFFE5D3F1);
-    }
-  }
-
-  CourseProgress _calculateProgress(Course course) {
-    int total = 0;
-    int completed = 0;
-
-    for (final chapter in course.chapters) {
-      for (final lesson in chapter.lessons) {
-        total++;
-        if (lesson.status == LessonStatus.completed) {
-          completed++;
-        }
-      }
-    }
-
-    return CourseProgress(completed: completed, total: total);
-  }
-}
-
-class CourseProgress {
-  final int completed;
-  final int total;
-
-  CourseProgress({required this.completed, required this.total});
 }

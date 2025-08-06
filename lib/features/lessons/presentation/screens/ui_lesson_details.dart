@@ -3,8 +3,13 @@ import 'package:cubix_app/core/utils/app_exports.dart';
 
 class LessonDetailsScreen extends ConsumerStatefulWidget {
   final SubjectTopic subjectTopic;
+  final Function() onCompletion;
 
-  const LessonDetailsScreen({super.key, required this.subjectTopic});
+  const LessonDetailsScreen({
+    super.key,
+    required this.subjectTopic,
+    required this.onCompletion,
+  });
 
   @override
   ConsumerState<LessonDetailsScreen> createState() =>
@@ -152,23 +157,7 @@ class _LessonDetailsScreenState extends ConsumerState<LessonDetailsScreen> {
         currentStep++;
       });
     } else {
-      // final courses = ref.read(coursesNotifierProvider);
-      // final course = courses.firstWhere(
-      //   (c) => c.id == widget.subjectTopic.topicTitle,
-      // );
-      // final chapter = course.chapters.firstWhere(
-      //   (ch) => ch.id == widget.subjectTopic,
-      // );
-
-      // for (final lesson in chapter.lessons) {
-      //   ref
-      //       .read(coursesNotifierProvider.notifier)
-      //       .completeLesson(
-      //         widget.subjectTopic.topicTitle,
-      //         widget.subjectTopic.topicTitle,
-      //         lesson.id,
-      //       );
-      // }
+      widget.onCompletion();
 
       Navigator.pop(context);
     }

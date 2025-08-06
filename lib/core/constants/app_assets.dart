@@ -21,10 +21,7 @@ class AppAssets {
     return 'assets/images/$formattedCode.png';
   }
 
-
-
-
-  static  Color getCategoryColor(String categoryName) {
+  static Color getCategoryColor(String categoryName) {
     switch (categoryName) {
       case 'gen':
         return const Color(0xffFFDBBF);

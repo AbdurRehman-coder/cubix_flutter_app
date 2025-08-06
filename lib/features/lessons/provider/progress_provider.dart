@@ -10,5 +10,4 @@ final progressProvider = FutureProvider<List<ProgressModel>?>((ref) async {
   return await progressServices.getAllProgress();
 });
 
-
 final selectedTabProvider = StateProvider<int>((ref) => 0);

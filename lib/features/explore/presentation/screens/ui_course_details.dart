@@ -221,10 +221,12 @@ class CourseDetailsScreen extends ConsumerWidget {
                                   needToGenerate: needToGenerate,
                                   showConnector: !(isLastTopic),
                                   onCompletion: () async {
-                                    final success = await locator.get<ProgressServices>().createProgress(
-                                      deviceId: "abcd1234",
-                                      subjectId: "6890c1497e1f43eb1d09982c",
-                                    );
+                                    final success = await locator
+                                        .get<ProgressServices>()
+                                        .createProgress(
+                                          deviceId: "abcd1234",
+                                          subjectId: "6890c1497e1f43eb1d09982c",
+                                        );
                                   },
                                 );
                               }).toList(),

@@ -11,7 +11,6 @@ class LessonsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-
     final selectedTab = ref.watch(selectedTabProvider);
 
     final lessonProvider = ref.watch(progressProvider);
@@ -76,10 +75,10 @@ class LessonsScreen extends ConsumerWidget {
                           style: AppTextStyles.bodyTextStyle.copyWith(
                             fontSize: 22,
                             color: AppColors.blackColor,
-                            fontWeight: FontWeight.bold
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
-                        SizedBox(height: 40,),
+                        SizedBox(height: 40),
 
                         Text(
                           "Let’s pick a course and get learning!",

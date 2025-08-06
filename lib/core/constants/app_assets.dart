@@ -13,4 +13,9 @@ class AppAssets {
   static const String exploreIcon = 'assets/icons/explore_icon.svg';
   static const String feedbackIcon = 'assets/icons/feedback_icon.svg';
   static const String bookIcon = 'assets/icons/book_icon.svg';
+
+  static String getIconPath(String courseCode) {
+    final formattedCode = courseCode.replaceAll(' ', '').toLowerCase();
+    return 'assets/images/$formattedCode.png';
+  }
 }

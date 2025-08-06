@@ -4,12 +4,13 @@ import 'package:cubix_app/features/lessons/presentation/screens/ui_lesson_detail
 
 class TopicItem extends StatelessWidget {
   final SubjectTopic topic;
-
+  final bool needToGenerate;
   final bool showConnector;
 
   const TopicItem({
     super.key,
     required this.topic,
+    required this.needToGenerate,
     required this.showConnector,
   });
 
@@ -83,7 +84,7 @@ class TopicItem extends StatelessWidget {
         Expanded(
           child: GestureDetector(
             onTap: () {
-              if (true) {
+              if (!needToGenerate) {
                 //todo: lesson.status != LessonStatus.locked
                 Navigator.push(
                   context,
@@ -97,7 +98,8 @@ class TopicItem extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
-                color: AppColors.whiteColor,
+                color:
+                    needToGenerate ? Color(0xffE3E3E4) : AppColors.whiteColor,
                 border: Border.all(
                   color:
                       // lesson.status == LessonStatus.current ||
@@ -112,7 +114,7 @@ class TopicItem extends StatelessWidget {
                 style: AppTextStyles.bodyTextStyle.copyWith(
                   fontSize: 14,
                   fontWeight: FontWeight.w600,
-                  color: AppColors.blackColor,
+                  color:     needToGenerate ? Color(0xff8E8E93) :   AppColors.blackColor,
                 ),
               ),
             ),

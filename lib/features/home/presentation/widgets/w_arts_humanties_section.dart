@@ -52,7 +52,8 @@ class ArtsHumanitiesSection extends StatelessWidget {
                   top: 8,
                   right: 14,
                   child: Image.asset(
-                    'assets/images/award_image.png',
+                    AppAssets.getIconPath(item.abbreviation),
+                    // 'assets/images/award_image.png',
                     height: 40,
                     width: 40,
                   ),

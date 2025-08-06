@@ -17,10 +17,7 @@ class LoginScreen extends ConsumerWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Image.asset(
-              AppAssets.onboardingImage,
-              fit: BoxFit.fill,
-            ),
+            Image.asset(AppAssets.onboardingImage, fit: BoxFit.fill),
             SizedBox(height: getProportionateScreenHeight(45)),
             RichText(
               textAlign: TextAlign.center,
@@ -31,14 +28,14 @@ class LoginScreen extends ConsumerWidget {
                     style: AppTextStyles.headingTextStyle.copyWith(
                       color: AppColors.brownColor,
                       height: 40 / 32,
-                      fontSize: 32
+                      fontSize: 32,
                     ),
                   ),
                   TextSpan(
                     text: '\nYour way.',
                     style: AppTextStyles.headingTextStyle.copyWith(
                       color: AppColors.blueColor,
-                      fontSize: 32
+                      fontSize: 32,
                     ),
                   ),
                 ],
@@ -53,7 +50,7 @@ class LoginScreen extends ConsumerWidget {
                 color: AppColors.brownColor,
                 fontSize: getProportionateScreenHeight(16),
                 fontWeight: FontWeight.w500,
-                wordSpacing: 1.4
+                wordSpacing: 1.4,
               ),
             ),
             SizedBox(height: getProportionateScreenHeight(24)),

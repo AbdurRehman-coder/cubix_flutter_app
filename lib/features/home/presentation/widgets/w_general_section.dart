@@ -23,7 +23,7 @@ class GeneralEducationSection extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Image.asset(
-                          'assets/images/english_image.png',
+                          AppAssets.getIconPath(item.abbreviation),
                           height: 45,
                           width: 45,
                           fit: BoxFit.cover,

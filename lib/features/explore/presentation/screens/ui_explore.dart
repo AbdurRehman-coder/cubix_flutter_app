@@ -73,19 +73,10 @@ class ExploreScreen extends ConsumerWidget {
                 );
               }
 
-              List<Subject> tempList = [];
-
-              if (selectedCategory == CourseCategory.core) {
-                tempList = subjects.gen;
-              } else if (selectedCategory == CourseCategory.business) {
-                tempList = subjects.busiEcon;
-              } else if (selectedCategory == CourseCategory.mind) {
-                tempList = subjects.psyHuman;
-              } else if (selectedCategory == CourseCategory.humanities) {
-                tempList = subjects.artsHuman;
-              } else {
-                tempList = subjects.healLife;
-              }
+              List<Subject> tempList = getSubjectsForCategory(
+                selectedCategory,
+                subjects,
+              );
 
               return Expanded(
                 child: Padding(
@@ -125,5 +116,25 @@ class ExploreScreen extends ConsumerWidget {
         ],
       ),
     );
+  }
+
+  List<Subject> getSubjectsForCategory(
+    CourseCategory category,
+    SubjectsData subjects,
+  ) {
+    switch (category) {
+      case CourseCategory.core:
+        return subjects.gen;
+      case CourseCategory.business:
+        return subjects.busiEcon;
+      case CourseCategory.mind:
+        return subjects.psyHuman;
+      case CourseCategory.humanities:
+        return subjects.artsHuman;
+      case CourseCategory.health:
+        return subjects.innovation;
+      case CourseCategory.gen:
+        return subjects.healLife;
+    }
   }
 }

@@ -2,13 +2,16 @@
 enum LessonStatus { completed, current, locked }
 
 enum CourseCategory {
-  core('Core'),
-  business('Business'),
-  mind('Mind'),
-  humanities('Humanities'),
-  health('Health');
+  core('gen', 'Core'),
+  business('busi_econ', 'Business'),
+  mind('psy_human', 'Mind'),
+  humanities('arts_human', 'Humanities'),
+  health('innovation', 'Innovation'),
+  gen('heal_life', 'Health'); // ✅ New category added
 
-  const CourseCategory(this.displayName);
+  const CourseCategory(this.category, this.displayName);
+
+  final String category;
   final String displayName;
 }
 

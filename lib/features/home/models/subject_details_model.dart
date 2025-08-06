@@ -26,9 +26,10 @@ class SubjectDetail {
       abbreviation: json['subject_abbreviation'],
       category: json['subject_category'],
       overview: json['subject_overview'],
-      sections: (json['subject_sections'] as List)
-          .map((e) => SubjectSection.fromJson(e))
-          .toList(),
+      sections:
+          (json['subject_sections'] as List)
+              .map((e) => SubjectSection.fromJson(e))
+              .toList(),
       createdAt: DateTime.parse(json['createdAt']),
       updatedAt: DateTime.parse(json['updatedAt']),
     );
@@ -39,17 +40,15 @@ class SubjectSection {
   final String sectionTitle;
   final List<SubjectTopic> topics;
 
-  SubjectSection({
-    required this.sectionTitle,
-    required this.topics,
-  });
+  SubjectSection({required this.sectionTitle, required this.topics});
 
   factory SubjectSection.fromJson(Map<String, dynamic> json) {
     return SubjectSection(
       sectionTitle: json['section_title'],
-      topics: (json['topics'] as List)
-          .map((e) => SubjectTopic.fromJson(e))
-          .toList(),
+      topics:
+          (json['topics'] as List)
+              .map((e) => SubjectTopic.fromJson(e))
+              .toList(),
     );
   }
 }
@@ -58,19 +57,17 @@ class SubjectTopic {
   final String topicTitle;
   final List<SubjectPage>? pages;
 
-  SubjectTopic({
-    required this.topicTitle,
-    this.pages,
-  });
+  SubjectTopic({required this.topicTitle, this.pages});
 
   factory SubjectTopic.fromJson(Map<String, dynamic> json) {
     return SubjectTopic(
       topicTitle: json['topic_title'],
-      pages: json['pages'] != null
-          ? (json['pages'] as List)
-              .map((e) => SubjectPage.fromJson(e))
-              .toList()
-          : null,
+      pages:
+          json['pages'] != null
+              ? (json['pages'] as List)
+                  .map((e) => SubjectPage.fromJson(e))
+                  .toList()
+              : null,
     );
   }
 }
@@ -79,10 +76,7 @@ class SubjectPage {
   final String pageTitle;
   final String pageData;
 
-  SubjectPage({
-    required this.pageTitle,
-    required this.pageData,
-  });
+  SubjectPage({required this.pageTitle, required this.pageData});
 
   factory SubjectPage.fromJson(Map<String, dynamic> json) {
     return SubjectPage(

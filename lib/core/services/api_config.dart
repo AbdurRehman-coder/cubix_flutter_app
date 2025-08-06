@@ -6,9 +6,9 @@ class ApiConfig {
   static String get baseUrl {
     switch (environment) {
       case Environment.prod:
-        return 'https://60b105915bda.ngrok-free.app';
+        return 'https://49c209c1c882.ngrok-free.app';
       case Environment.test:
-        return 'https://60b105915bda.ngrok-free.app';
+        return 'https://49c209c1c882.ngrok-free.app';
     }
   }
 }

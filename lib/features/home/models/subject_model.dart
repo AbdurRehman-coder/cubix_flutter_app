@@ -26,6 +26,7 @@ class SubjectsData {
   final List<Subject> healLife;
   final List<Subject> psyHuman;
   final List<Subject> artsHuman;
+  final List<Subject> innovation;
   final List<Subject> busiEcon;
 
   SubjectsData({
@@ -33,20 +34,36 @@ class SubjectsData {
     required this.healLife,
     required this.psyHuman,
     required this.artsHuman,
+    required this.innovation,
     required this.busiEcon,
   });
 
   factory SubjectsData.fromJson(Map<String, dynamic> json) {
     return SubjectsData(
-      gen: (json['gen'] as List).map((e) => Subject.fromJson(e)).toList(),
+      gen:
+          (json['gen'] as List<dynamic>? ?? [])
+              .map((e) => Subject.fromJson(e))
+              .toList(),
       healLife:
-          (json['heal_life'] as List).map((e) => Subject.fromJson(e)).toList(),
+          (json['heal_life'] as List<dynamic>? ?? [])
+              .map((e) => Subject.fromJson(e))
+              .toList(),
       psyHuman:
-          (json['psy_human'] as List).map((e) => Subject.fromJson(e)).toList(),
+          (json['psy_human'] as List<dynamic>? ?? [])
+              .map((e) => Subject.fromJson(e))
+              .toList(),
       artsHuman:
-          (json['arts_human'] as List).map((e) => Subject.fromJson(e)).toList(),
+          (json['arts_human'] as List<dynamic>? ?? [])
+              .map((e) => Subject.fromJson(e))
+              .toList(),
       busiEcon:
-          (json['busi_econ'] as List).map((e) => Subject.fromJson(e)).toList(),
+          (json['busi_econ'] as List<dynamic>? ?? [])
+              .map((e) => Subject.fromJson(e))
+              .toList(),
+      innovation:
+          (json['innovation'] as List<dynamic>? ?? [])
+              .map((e) => Subject.fromJson(e))
+              .toList(),
     );
   }
 }

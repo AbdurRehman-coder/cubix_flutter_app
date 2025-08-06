@@ -42,7 +42,11 @@ class BusinessSection extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Image.asset('assets/images/brain_image.png', height: 55, width: 55),
+        Image.asset(
+          AppAssets.getIconPath(item.abbreviation),
+          height: 55,
+          width: 55,
+        ),
         SizedBox(width: getProportionateScreenWidth(18)),
         Expanded(
           child: Column(

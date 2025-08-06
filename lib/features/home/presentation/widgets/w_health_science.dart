@@ -43,9 +43,9 @@ class HealthScienceSection extends StatelessWidget {
                         ),
                         const Spacer(),
                         Image.asset(
-                          AppAssets.nutritionIcon,
-                          color: AppColors.blackColor,
-                          height: 30,
+                          AppAssets.getIconPath(subjects[index].abbreviation),
+
+                          height: getProportionateScreenHeight(35),
                         ),
                       ],
                     ),

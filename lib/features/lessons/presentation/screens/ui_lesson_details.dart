@@ -19,6 +19,8 @@ class LessonDetailsScreen extends ConsumerStatefulWidget {
 class _LessonDetailsScreenState extends ConsumerState<LessonDetailsScreen> {
   int currentStep = 0;
 
+  bool showLoading = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -88,6 +90,7 @@ class _LessonDetailsScreenState extends ConsumerState<LessonDetailsScreen> {
             padding: const EdgeInsets.all(30),
             child: PrimaryButton(
               borderRadius: 12,
+              isLoading: showLoading,
               height: 48,
               text: _getButtonText(),
               onPressed: _handleButtonPress,
@@ -151,13 +154,19 @@ class _LessonDetailsScreenState extends ConsumerState<LessonDetailsScreen> {
     }
   }
 
-  void _handleButtonPress() {
+  Future<void> _handleButtonPress() async {
     if (currentStep < (widget.subjectTopic.pages?.length ?? 0) - 1) {
       setState(() {
         currentStep++;
       });
     } else {
-      widget.onCompletion();
+      setState(() {
+        showLoading = true;
+      });
+      await widget.onCompletion();
+      setState(() {
+        showLoading = false;
+      });
       Navigator.pop(context);
     }
   }

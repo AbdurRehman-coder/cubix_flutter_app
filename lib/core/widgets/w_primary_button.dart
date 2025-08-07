@@ -70,7 +70,7 @@ class PrimaryButton extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
         minimumSize: Size(fullWidth ? double.infinity : 0, height ?? 56),
         elevation: elevation,
-        disabledBackgroundColor: AppColors.textSecondaryColor,
+        disabledBackgroundColor: AppColors.primaryOrangeColor,
       ),
       child: _buildButtonContent(),
     );

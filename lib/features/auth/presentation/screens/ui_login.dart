@@ -1,5 +1,7 @@
 import 'package:cubix_app/core/utils/app_exports.dart';
 import 'package:cubix_app/features/bottom_navbar/presentation/screens/ui_main_screen.dart';
+import 'package:flutter/gestures.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class LoginScreen extends ConsumerWidget {
   const LoginScreen({super.key});
@@ -96,6 +98,65 @@ class LoginScreen extends ConsumerWidget {
               },
               textColor: AppColors.blackColor,
               backgroundColor: AppColors.whiteColor,
+            ),
+
+            SizedBox(height: getProportionateScreenHeight(30)),
+
+            RichText(
+              textAlign: TextAlign.center,
+              text: TextSpan(
+                style: AppTextStyles.bodyTextStyle.copyWith(
+                  color: const Color(0xff8E8E93),
+                  fontSize: 12,
+                  fontWeight: FontWeight.w400,
+                ),
+                children: [
+                  const TextSpan(text: 'By continuing, you agree to our'),
+                  TextSpan(
+                    text: ' Terms & Conditions',
+                    style: AppTextStyles.bodyTextStyle.copyWith(
+                      color: AppColors.blackColor,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w400,
+                      decoration: TextDecoration.underline,
+                    ),
+                    recognizer:
+                        TapGestureRecognizer()
+                          ..onTap = () async {
+                            final url = Uri.parse('https://yourapp.com/terms');
+                            if (await canLaunchUrl(url)) {
+                              await launchUrl(
+                                url,
+                                mode: LaunchMode.externalApplication,
+                              );
+                            }
+                          },
+                  ),
+                  const TextSpan(text: ' and\n'),
+                  TextSpan(
+                    text: ' Privacy Policy.',
+                    style: AppTextStyles.bodyTextStyle.copyWith(
+                      color: AppColors.blackColor,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w400,
+                      decoration: TextDecoration.underline,
+                    ),
+                    recognizer:
+                        TapGestureRecognizer()
+                          ..onTap = () async {
+                            final url = Uri.parse(
+                              'https://yourapp.com/privacy',
+                            ); // replace with real URL
+                            if (await canLaunchUrl(url)) {
+                              await launchUrl(
+                                url,
+                                mode: LaunchMode.externalApplication,
+                              );
+                            }
+                          },
+                  ),
+                ],
+              ),
             ),
           ],
         ),

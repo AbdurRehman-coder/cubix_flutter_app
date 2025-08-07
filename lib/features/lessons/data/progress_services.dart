@@ -10,7 +10,7 @@ class ProgressServices {
   ProgressServices({required this.apiClient});
 
   Future<List<ProgressModel>?> getAllProgress() async {
-    const String url = "/progress?device_id=abcd1234";
+    const String url = "/progress?device_id=test1234";
     try {
       Response response = await apiClient.dio.get(url);
 
@@ -31,7 +31,7 @@ class ProgressServices {
     }
   }
 
-  Future<bool> createProgress({
+  Future<ProgressModel?> createProgress({
     required String deviceId,
     required String subjectId,
   }) async {
@@ -43,15 +43,16 @@ class ProgressServices {
         data: {"device_id": deviceId, "subject_id": subjectId},
       );
       if (response.statusCode == 201) {
+        ProgressModel progress = ProgressModel.fromJson(response.data['data']);
         log('Progress created successfully');
-        return true;
+        return progress;
       } else {
         log('Failed to create progress: ${response.statusCode}');
-        return false;
+        return null;
       }
     } catch (e) {
       log('Error while creating progress: $e');
-      return false;
+      return null;
     }
   }
 
@@ -63,11 +64,11 @@ class ProgressServices {
     const String url = "/progress";
 
     try {
-      Response response = await apiClient.dio.post(
+      Response response = await apiClient.dio.patch(
         url,
         data: {"progress_id": progressId, "title": title, "type": type},
       );
-      if (response.statusCode == 201) {
+      if (response.statusCode == 200 || response.statusCode == 201) {
         log('Progress updated successfully');
         return true;
       } else {

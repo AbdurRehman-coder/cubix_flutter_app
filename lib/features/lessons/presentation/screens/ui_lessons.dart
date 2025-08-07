@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import 'package:cubix_app/features/explore/data/exposure_provider.dart';
+import 'package:cubix_app/features/explore/providers/exposure_provider.dart';
 import 'package:cubix_app/features/home/models/subject_details_model.dart';
 import 'package:cubix_app/features/lessons/models/progress_model.dart';
 import 'package:cubix_app/features/lessons/provider/progress_provider.dart';

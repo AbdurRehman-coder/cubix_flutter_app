@@ -1,9 +1,11 @@
 import 'package:cubix_app/core/services/app_services.dart';
 import 'package:cubix_app/core/utils/app_exports.dart';
-import 'package:cubix_app/features/explore/data/exposure_provider.dart';
+import 'package:cubix_app/features/explore/providers/exposure_provider.dart';
 import 'package:cubix_app/features/explore/presentation/widgets/w_course_details_shimmer.dart';
 import 'package:cubix_app/features/explore/presentation/widgets/w_topic_item.dart';
 import 'package:cubix_app/features/lessons/data/progress_services.dart';
+import 'package:cubix_app/features/lessons/provider/progress_provider.dart';
+import 'package:collection/collection.dart';
 
 class CourseDetailsScreen extends ConsumerWidget {
   final String subjectId;
@@ -186,7 +188,7 @@ class CourseDetailsScreen extends ConsumerWidget {
                                         child: CircularProgressIndicator(
                                           strokeWidth: 4.5,
                                           strokeCap: StrokeCap.round,
-                                          backgroundColor: Color(0xfffFFDBBF),
+                                          backgroundColor: Color(0xffFFDBBF),
                                           color: AppColors.primaryOrangeColor,
                                         ),
                                       ),
@@ -216,17 +218,108 @@ class CourseDetailsScreen extends ConsumerWidget {
                                 final topic = entry.value;
                                 final isLastTopic =
                                     topicIndex == chapter.topics.length - 1;
+
+                                final progressData = ref
+                                    .watch(progressProvider)
+                                    .maybeWhen(
+                                      data:
+                                          (data) => data?.firstWhereOrNull(
+                                            (p) => p.subject == subjectId,
+                                          ),
+                                      orElse: () => null,
+                                    );
+
+                                final completedTopics =
+                                    progressData?.topicProgress ?? [];
+
+                                final isCompleted = completedTopics.contains(
+                                  topic.topicTitle,
+                                );
+
+                                final lastCompletedIndex = chapter.topics
+                                    .indexWhere(
+                                      (t) =>
+                                          t.topicTitle ==
+                                          completedTopics.lastOrNull,
+                                    );
+
+                                final isReady =
+                                    topicIndex ==
+                                    (lastCompletedIndex +
+                                        1); //todo: Need to be handled
+                                final isLocked = !isCompleted && !isReady;
+
                                 return TopicItem(
                                   topic: topic,
                                   needToGenerate: needToGenerate,
                                   showConnector: !(isLastTopic),
+                                  isCompleted: isCompleted,
+                                  isLocked: isLocked,
+                                  isReady: false, //todo: Need to be handled
                                   onCompletion: () async {
-                                    final success = await locator
-                                        .get<ProgressServices>()
-                                        .createProgress(
-                                          deviceId: "abcd1234",
-                                          subjectId: "6890c1497e1f43eb1d09982c",
-                                        );
+                                    final progressService =
+                                        locator.get<ProgressServices>();
+
+                                    final progressList = await ref.read(
+                                      progressProvider.future,
+                                    );
+
+                                    // Find progress for this specific subject
+                                    final existingProgress = progressList
+                                        ?.firstWhereOrNull(
+                                          (p) => p.subject == subjectId,
+                                        ); // ✅ safe
+
+                                    String? progressId;
+
+                                    if (existingProgress == null) {
+                                      // No progress exists for this subject, so create it
+                                      final createdProgress =
+                                          await progressService.createProgress(
+                                            deviceId:
+                                                "test1234", // Replace with actual device ID
+                                            subjectId: subjectId,
+                                          );
+                                      if (createdProgress != null) {
+                                        progressId = createdProgress.id;
+                                      }
+                                    } else {
+                                      // Use the existing progress
+                                      progressId = existingProgress.id;
+                                    }
+
+                                    final isLastTopic =
+                                        topicIndex == chapter.topics.length - 1;
+
+                                    if (progressId != null) {
+                                      bool updated = false;
+
+                                      // Update topic
+                                      final topicSuccess = await progressService
+                                          .updateProgress(
+                                            progressId: progressId,
+                                            title: topic.topicTitle,
+                                            type: 'topic',
+                                          );
+
+                                      if (topicSuccess) updated = true;
+
+                                      // If it's the last topic, update section too
+                                      if (isLastTopic) {
+                                        final sectionSuccess =
+                                            await progressService
+                                                .updateProgress(
+                                                  progressId: progressId,
+                                                  title: chapter.sectionTitle,
+                                                  type: 'section',
+                                                );
+                                        if (sectionSuccess) updated = true;
+                                      }
+
+                                      if (updated) {
+                                        ref.invalidate(progressProvider);
+                                      }
+                                    }
                                   },
                                 );
                               }).toList(),

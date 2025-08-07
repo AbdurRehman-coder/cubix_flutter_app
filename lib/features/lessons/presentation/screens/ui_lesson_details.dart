@@ -158,7 +158,6 @@ class _LessonDetailsScreenState extends ConsumerState<LessonDetailsScreen> {
       });
     } else {
       widget.onCompletion();
-
       Navigator.pop(context);
     }
   }

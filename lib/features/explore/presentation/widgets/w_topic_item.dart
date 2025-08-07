@@ -6,6 +6,9 @@ class TopicItem extends StatelessWidget {
   final SubjectTopic topic;
   final bool needToGenerate;
   final bool showConnector;
+  final bool isCompleted;
+  final bool isLocked;
+  final bool isReady;
   final Function() onCompletion;
 
   const TopicItem({
@@ -13,27 +16,15 @@ class TopicItem extends StatelessWidget {
     required this.topic,
     required this.needToGenerate,
     required this.showConnector,
+    required this.isCompleted,
+    required this.isLocked,
+    required this.isReady,
     required this.onCompletion,
   });
 
   @override
   Widget build(BuildContext context) {
     Color backgroundColor = Color(0xffC7C7C9);
-
-    // switch (lesson.status) {
-    //   case LessonStatus.completed:
-    //     backgroundColor = const Color(0xFF199051);
-
-    //     break;
-    //   case LessonStatus.current:
-    //     backgroundColor = AppColors.primaryOrangeColor;
-
-    //     break;
-    //   case LessonStatus.locked:
-    //     backgroundColor = Color(0xffC7C7C9);
-
-    //     break;
-    // }
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -46,14 +37,27 @@ class TopicItem extends StatelessWidget {
               width: 20,
               height: 20,
               decoration: BoxDecoration(
-                color: backgroundColor,
-                border: Border.all(color: backgroundColor, width: 2),
+                color:
+                    isCompleted
+                        ? Color(0xFF199051)
+                        : isReady
+                        ? AppColors.primaryOrangeColor
+                        : backgroundColor,
+                border: Border.all(
+                  color:
+                      isCompleted
+                          ? Color(0xFF199051)
+                          : isReady
+                          ? AppColors.primaryOrangeColor
+                          : backgroundColor,
+                  width: 2,
+                ),
                 shape: BoxShape.circle,
               ),
               child: Center(
                 child:
                     // lesson.status == LessonStatus.completed
-                    false
+                    isCompleted
                         ? const Icon(
                           Icons.check_circle,
                           size: 15,
@@ -72,8 +76,7 @@ class TopicItem extends StatelessWidget {
                 size: Size(1.2, 50),
 
                 painter: DashedLineVerticalPainter(
-                  //  lesson.status == LessonStatus.completed
-                  false
+                  isCompleted
                       ? Color(0xFF199050).withValues(alpha: 0.4)
                       : Color(0xffC7C7C9),
                 ),
@@ -106,9 +109,11 @@ class TopicItem extends StatelessWidget {
                     needToGenerate ? Color(0xffE3E3E4) : AppColors.whiteColor,
                 border: Border.all(
                   color:
-                      // lesson.status == LessonStatus.current ||
-                      //         lesson.status == LessonStatus.completed
-                      false ? backgroundColor : Colors.transparent,
+                      isCompleted
+                          ? Color(0xFF199051)
+                          : isReady
+                          ? AppColors.primaryOrangeColor
+                          : backgroundColor,
                   width: 1,
                 ),
                 borderRadius: BorderRadius.circular(12),

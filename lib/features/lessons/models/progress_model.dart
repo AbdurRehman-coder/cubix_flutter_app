@@ -22,26 +22,13 @@ class ProgressModel {
   factory ProgressModel.fromJson(Map<String, dynamic> json) {
     return ProgressModel(
       id: json['_id'],
-      subject: json['subject'],
+      subject: json['subject'] ?? '',
       sectionProgress: List<String>.from(json['section_progress']),
       topicProgress: List<String>.from(json['topic_progress']),
-      totalSections: json['total_sections'],
-      deviceId: json['device_id'],
+      totalSections: json['total_sections'] ?? 0,
+      deviceId: json['device_id'] ?? '',
       createdAt: DateTime.parse(json['createdAt']),
       updatedAt: DateTime.parse(json['updatedAt']),
     );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      '_id': id,
-      'subject': subject,
-      'section_progress': sectionProgress,
-      'topic_progress': topicProgress,
-      'total_sections': totalSections,
-      'device_id': deviceId,
-      'createdAt': createdAt.toIso8601String(),
-      'updatedAt': updatedAt.toIso8601String(),
-    };
   }
 }

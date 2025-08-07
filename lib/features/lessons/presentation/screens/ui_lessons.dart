@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cubix_app/features/explore/providers/exposure_provider.dart';
 import 'package:cubix_app/features/home/models/subject_details_model.dart';
 import 'package:cubix_app/features/lessons/models/progress_model.dart';
@@ -63,73 +61,81 @@ class LessonsScreen extends ConsumerWidget {
                 ),
             data: (progressList) {
               if (progressList == null || progressList.isEmpty) {
-                return SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.6,
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          "You haven’t started any courses yet.",
-                          textAlign: TextAlign.center,
-                          style: AppTextStyles.bodyTextStyle.copyWith(
-                            fontSize: 22,
-                            color: AppColors.blackColor,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        SizedBox(height: 40),
-
-                        Text(
-                          "Let’s pick a course and get learning!",
-                          textAlign: TextAlign.center,
-                          style: AppTextStyles.bodyTextStyle.copyWith(
-                            fontSize: 14,
-                            color: AppColors.textSecondaryColor,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                return _buildMessageWidget(
+                  context: context,
+                  title: 'You haven’t started any courses yet.',
+                  subtitle: 'Let’s pick a course and get learning!',
                 );
               }
 
-              return Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 27),
-                  child: GridView.builder(
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      childAspectRatio: 0.7,
-                      crossAxisSpacing: getProportionateScreenWidth(36),
-                      mainAxisSpacing: getProportionateScreenHeight(24),
-                    ),
-                    itemCount: progressList.length,
-                    itemBuilder: (context, index) {
-                      final subjectDetailAsync = ref.watch(
-                        subjectDetailProvider(progressList[index].subject),
-                      );
+              final completedList =
+                  progressList
+                      .where(
+                        (element) =>
+                            element.sectionProgress.length ==
+                            element.totalSections,
+                      )
+                      .toList();
 
-                      return subjectDetailAsync.when(
-                        loading: () => CourseCardShimmer(),
-                        error: (err, _) => const Text("Failed to load"),
-                        data: (subjectDetail) {
-                          if (subjectDetail == null) {
-                            return const Text("No data");
-                          }
+              final ongoingList =
+                  progressList
+                      .where(
+                        (element) =>
+                            element.sectionProgress.length <
+                            element.totalSections,
+                      )
+                      .toList();
 
-                          return _buildSubjectCard(
-                            context,
-                            progressList[index],
-                            ref,
-                            subjectDetail,
+              final activeList = selectedTab == 0 ? ongoingList : completedList;
+
+              return activeList.isNotEmpty
+                  ? Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 27),
+                      child: GridView.builder(
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          childAspectRatio: 0.7,
+                          crossAxisSpacing: getProportionateScreenWidth(36),
+                          mainAxisSpacing: getProportionateScreenHeight(24),
+                        ),
+                        itemCount: activeList.length,
+                        itemBuilder: (context, index) {
+                          final subjectDetailAsync = ref.watch(
+                            subjectDetailProvider(activeList[index].subject),
+                          );
+
+                          return subjectDetailAsync.when(
+                            loading: () => CourseCardShimmer(),
+                            error: (err, _) => const Text("Failed to load"),
+                            data: (subjectDetail) {
+                              if (subjectDetail == null) {
+                                return const Text("No data");
+                              }
+
+                              return _buildSubjectCard(
+                                context,
+                                activeList[index],
+                                ref,
+                                subjectDetail,
+                              );
+                            },
                           );
                         },
-                      );
-                    },
-                  ),
-                ),
-              );
+                      ),
+                    ),
+                  )
+                  : _buildMessageWidget(
+                    context: context,
+                    title:
+                        selectedTab == 0
+                            ? 'You haven’t started any courses yet.'
+                            : 'No completed courses yet.',
+                    subtitle:
+                        selectedTab == 0
+                            ? 'Let’s pick a course and get learning!'
+                            : 'Finish a course and it’ll show up here!',
+                  );
             },
           ),
           SizedBox(height: 20),
@@ -294,6 +300,43 @@ class LessonsScreen extends ConsumerWidget {
                     const SizedBox(height: 16),
                   ],
                 ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildMessageWidget({
+    required BuildContext context,
+    required String title,
+    required String subtitle,
+  }) {
+    return SizedBox(
+      height: MediaQuery.of(context).size.height * 0.6,
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              title,
+              textAlign: TextAlign.center,
+              style: AppTextStyles.bodyTextStyle.copyWith(
+                fontSize: 22,
+                color: AppColors.blackColor,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(height: 40),
+
+            Text(
+              subtitle,
+
+              textAlign: TextAlign.center,
+              style: AppTextStyles.bodyTextStyle.copyWith(
+                fontSize: 14,
+                color: AppColors.textSecondaryColor,
               ),
             ),
           ],

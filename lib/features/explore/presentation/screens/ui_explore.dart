@@ -2,6 +2,8 @@ import 'package:cubix_app/core/utils/app_exports.dart';
 import 'package:cubix_app/features/explore/presentation/screens/ui_course_details.dart';
 import 'package:cubix_app/features/explore/presentation/widgets/w_explore_shimmer.dart';
 
+import '../../../../core/widgets/w_custom_message.dart' show MessageWidget;
+
 class ExploreScreen extends ConsumerWidget {
   const ExploreScreen({super.key});
 
@@ -51,14 +53,9 @@ class ExploreScreen extends ConsumerWidget {
           subjectsAsync.when(
             loading: () => ExploreShimmer(),
             error:
-                (error, _) => Center(
-                  child: Text(
-                    'Error loading the subjects',
-                    style: AppTextStyles.bodyTextStyle.copyWith(
-                      fontSize: 14,
-                      color: AppColors.textSecondaryColor,
-                    ),
-                  ),
+                (error, _) => MessageWidget(
+                  title: 'Something went wrong!',
+                  subtitle: 'There is something wrong with the server or your request is invalid.',
                 ),
             data: (subjects) {
               if (subjects == null) {

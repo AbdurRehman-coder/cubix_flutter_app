@@ -1,3 +1,4 @@
+import 'package:cubix_app/core/widgets/w_custom_message.dart';
 import 'package:cubix_app/features/explore/providers/exposure_provider.dart';
 import 'package:cubix_app/features/home/models/subject_details_model.dart';
 import 'package:cubix_app/features/lessons/models/progress_model.dart';
@@ -47,22 +48,16 @@ class LessonsScreen extends ConsumerWidget {
           lessonProvider.when(
             loading: () => ExploreShimmer(),
             error:
-                (error, _) => SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.7,
-                  child: Center(
-                    child: Text(
-                      'Error loading the subjects',
-                      style: AppTextStyles.bodyTextStyle.copyWith(
-                        fontSize: 14,
-                        color: AppColors.textSecondaryColor,
-                      ),
-                    ),
-                  ),
-                ),
+                (error, _) => MessageWidget(
+
+    title: 'Something went wrong!',
+    subtitle: 'There is something wrong with the server or your request is invalid.',
+    ),
+
             data: (progressList) {
               if (progressList == null || progressList.isEmpty) {
-                return _buildMessageWidget(
-                  context: context,
+                return MessageWidget(
+
                   title: 'You haven’t started any courses yet.',
                   subtitle: 'Let’s pick a course and get learning!',
                 );
@@ -125,8 +120,8 @@ class LessonsScreen extends ConsumerWidget {
                       ),
                     ),
                   )
-                  : _buildMessageWidget(
-                    context: context,
+                  : MessageWidget(
+
                     title:
                         selectedTab == 0
                             ? 'You haven’t started any courses yet.'
@@ -300,43 +295,6 @@ class LessonsScreen extends ConsumerWidget {
                     const SizedBox(height: 16),
                   ],
                 ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildMessageWidget({
-    required BuildContext context,
-    required String title,
-    required String subtitle,
-  }) {
-    return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.6,
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              title,
-              textAlign: TextAlign.center,
-              style: AppTextStyles.bodyTextStyle.copyWith(
-                fontSize: 22,
-                color: AppColors.blackColor,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            SizedBox(height: 40),
-
-            Text(
-              subtitle,
-
-              textAlign: TextAlign.center,
-              style: AppTextStyles.bodyTextStyle.copyWith(
-                fontSize: 14,
-                color: AppColors.textSecondaryColor,
               ),
             ),
           ],

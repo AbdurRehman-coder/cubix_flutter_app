@@ -1,4 +1,5 @@
 import 'package:cubix_app/core/utils/app_exports.dart';
+import 'package:cubix_app/core/widgets/w_custom_message.dart';
 import 'package:cubix_app/features/home/presentation/widgets/w_feedback_dialog.dart';
 
 class HomeScreen extends ConsumerWidget {
@@ -37,17 +38,9 @@ class HomeScreen extends ConsumerWidget {
           subjectsAsync.when(
             loading: () => HomeShimmer(),
             error:
-                (error, _) => SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.7,
-                  child: Center(
-                    child: Text(
-                      'Error loading the subjects',
-                      style: AppTextStyles.bodyTextStyle.copyWith(
-                        fontSize: 14,
-                        color: AppColors.textSecondaryColor,
-                      ),
-                    ),
-                  ),
+                (error, _) =>  MessageWidget(
+                  title: 'Something went wrong!',
+                  subtitle: 'There is something wrong with the server or your request is invalid.',
                 ),
             data: (subjects) {
               if (subjects == null) {

@@ -1,5 +1,6 @@
 import 'package:cubix_app/core/services/app_services.dart';
 import 'package:cubix_app/core/utils/app_exports.dart';
+import 'package:cubix_app/core/widgets/w_custom_message.dart';
 import 'package:cubix_app/features/explore/providers/exposure_provider.dart';
 import 'package:cubix_app/features/explore/presentation/widgets/w_course_details_shimmer.dart';
 import 'package:cubix_app/features/explore/presentation/widgets/w_topic_item.dart';
@@ -20,17 +21,10 @@ class CourseDetailsScreen extends ConsumerWidget {
       body: subjectDetailAsync.when(
         loading: () => CourseDetailsShimmer(),
         error:
-            (error, _) => SizedBox(
-              height: MediaQuery.of(context).size.height * 0.7,
-              child: Center(
-                child: Text(
-                  'Error loading the details',
-                  style: AppTextStyles.bodyTextStyle.copyWith(
-                    fontSize: 14,
-                    color: AppColors.textSecondaryColor,
-                  ),
-                ),
-              ),
+            (error, _) =>  MessageWidget(
+
+              title: 'Something went wrong!',
+              subtitle: 'There is something wrong with the server or your request is invalid.',
             ),
         data: (subject) {
           if (subject == null) {

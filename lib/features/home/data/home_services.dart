@@ -65,4 +65,44 @@ class HomeServices {
       throw Exception("Failed to add section: $e");
     }
   }
+
+  ///
+  ///  Create feedbacks
+  Future<bool> sendFeedback({required String description}) async {
+    const String url = "/feedbacks";
+    try {
+      final response = await apiClient.dio.post(
+        url,
+        data: {"device_id": 'abcd1234', "description": description},
+      );
+      if ((response.statusCode == 200 || response.statusCode == 201) &&
+          response.data['data'] != null) {
+        return true;
+      }
+      return false;
+    } catch (e) {
+      log("Failed to add section: $e");
+      throw Exception("Failed to add section: $e");
+    }
+  }
+
+  ///
+  ///  Create feedbacks
+  Future<bool> createFeedback({required String description}) async {
+    const String url = "/feedbacks";
+    try {
+      final response = await apiClient.dio.post(
+        url,
+        data: {"device_id": 'abcd1234', "description": description},
+      );
+      if ((response.statusCode == 200 || response.statusCode == 201) &&
+          response.data['data'] != null) {
+        return true;
+      }
+      return false;
+    } catch (e) {
+      log("Failed to add section: $e");
+      throw Exception("Failed to add section: $e");
+    }
+  }
 }

@@ -1,16 +1,21 @@
+import 'package:cubix_app/core/services/app_services.dart';
 import 'package:cubix_app/core/utils/app_exports.dart';
 import 'package:cubix_app/core/widgets/w_custom_form_field.dart';
+import 'package:cubix_app/features/home/data/home_services.dart';
 
-class FeedbackDialog extends StatefulWidget {
+class FeedbackDialog extends ConsumerStatefulWidget {
   const FeedbackDialog({super.key});
 
   @override
-  _FeedbackDialogState createState() => _FeedbackDialogState();
+  ConsumerState<FeedbackDialog> createState() => _FeedbackDialogState();
 }
 
-class _FeedbackDialogState extends State<FeedbackDialog>
+class _FeedbackDialogState extends ConsumerState<FeedbackDialog>
     with SingleTickerProviderStateMixin {
   bool _isFeedbackSent = false;
+
+  bool _showLoading = false;
+
   final TextEditingController _feedbackController = TextEditingController();
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
@@ -35,12 +40,28 @@ class _FeedbackDialogState extends State<FeedbackDialog>
     super.dispose();
   }
 
-  void _submitFeedback() {
+  void _submitFeedback() async {
     if (_formKey.currentState!.validate()) {
       setState(() {
-        _isFeedbackSent = true;
+        _showLoading = true;
       });
-      _animationController.forward();
+      final success = await locator.get<HomeServices>().createFeedback(
+        description: _feedbackController.text,
+      );
+      if (success) {
+        setState(() {
+          _isFeedbackSent = true;
+          _showLoading = false;
+        });
+        _animationController.forward();
+      } else {
+        setState(() {
+          _showLoading = false;
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Failed to send feedback")),
+        );
+      }
     }
   }
 
@@ -143,6 +164,7 @@ class _FeedbackDialogState extends State<FeedbackDialog>
             children: [
               PrimaryButton(
                 text: 'Submit',
+                isLoading: _showLoading,
                 onPressed: _submitFeedback,
                 height: 48,
               ),

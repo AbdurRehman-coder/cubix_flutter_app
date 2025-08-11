@@ -1,15 +1,10 @@
-import 'package:flutter/material.dart';
 import 'package:cubix_app/core/utils/app_exports.dart';
 
 class MessageWidget extends StatelessWidget {
   final String title;
   final String subtitle;
 
-  const MessageWidget({
-    super.key,
-    required this.title,
-    required this.subtitle,
-  });
+  const MessageWidget({super.key, required this.title, required this.subtitle});
 
   @override
   Widget build(BuildContext context) {

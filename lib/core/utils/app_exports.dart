@@ -33,3 +33,26 @@ export 'package:cubix_app/features/home/presentation/widgets/w_dot_indicator.dar
 
 export 'package:cubix_app/features/explore/presentation/screens/ui_course_details.dart';
 export 'package:cubix_app/features/explore/presentation/widgets/w_explore_shimmer.dart';
+
+export 'package:cubix_app/core/services/app_services.dart';
+export 'package:cubix_app/core/services/shared_prefs_services.dart';
+export 'package:cubix_app/features/bottom_navbar/presentation/widgets/w_custom_navbar.dart';
+
+export 'package:cubix_app/features/explore/presentation/screens/ui_explore.dart';
+export 'package:cubix_app/features/home/presentation/screens/ui_home.dart';
+export 'package:cubix_app/features/lessons/presentation/screens/ui_lessons.dart';
+export 'package:cubix_app/features/settings/presentation/screens/ui_settings.dart';
+
+export '../../../../core/widgets/w_custom_dialog.dart';
+
+export 'package:cubix_app/features/auth/services/auth_services.dart';
+export 'package:cubix_app/features/bottom_navbar/presentation/screens/ui_main_screen.dart';
+export 'package:flutter/gestures.dart';
+export 'package:url_launcher/url_launcher.dart';
+
+export 'package:cubix_app/core/widgets/w_custom_form_field.dart';
+export 'package:cubix_app/features/home/data/home_services.dart';
+
+export 'package:cubix_app/core/services/api_client.dart';
+export 'package:cubix_app/core/services/apple_auth_services.dart';
+export 'package:cubix_app/core/services/google_auth_services.dart';

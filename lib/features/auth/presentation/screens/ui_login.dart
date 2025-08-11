@@ -1,7 +1,4 @@
 import 'package:cubix_app/core/utils/app_exports.dart';
-import 'package:cubix_app/features/bottom_navbar/presentation/screens/ui_main_screen.dart';
-import 'package:flutter/gestures.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class LoginScreen extends ConsumerWidget {
   const LoginScreen({super.key});
@@ -91,10 +88,11 @@ class LoginScreen extends ConsumerWidget {
                 if (currentIndex != 0) {
                   notifier.state = 0;
                 }
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (_) => const MainScreen()),
-                );
+                locator.get<AuthServices>().handleGoogleAuth(context);
+                // Navigator.pushReplacement(
+                //   context,
+                //   MaterialPageRoute(builder: (_) => const MainScreen()),
+                // );
               },
               textColor: AppColors.blackColor,
               backgroundColor: AppColors.whiteColor,

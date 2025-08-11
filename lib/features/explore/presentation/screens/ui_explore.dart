@@ -1,7 +1,4 @@
 import 'package:cubix_app/core/utils/app_exports.dart';
-import 'package:cubix_app/features/explore/presentation/screens/ui_course_details.dart';
-import 'package:cubix_app/features/explore/presentation/widgets/w_explore_shimmer.dart';
-
 import '../../../../core/widgets/w_custom_message.dart' show MessageWidget;
 
 class ExploreScreen extends ConsumerWidget {
@@ -55,7 +52,8 @@ class ExploreScreen extends ConsumerWidget {
             error:
                 (error, _) => MessageWidget(
                   title: 'Something went wrong!',
-                  subtitle: 'There is something wrong with the server or your request is invalid.',
+                  subtitle:
+                      'There is something wrong with the server or your request is invalid.',
                 ),
             data: (subjects) {
               if (subjects == null) {

@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:cubix_app/core/services/api_config.dart';
+import 'package:cubix_app/core/utils/app_exports.dart';
 import 'package:dio/dio.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
@@ -12,6 +13,20 @@ class ApiClient {
     dio.options.connectTimeout = Duration(milliseconds: 60000);
     dio.options.receiveTimeout = Duration(milliseconds: 60000);
     dio.options.responseType = ResponseType.json;
+
+    // Add token interceptor
+    dio.interceptors.add(
+      QueuedInterceptorsWrapper(
+        onRequest: (options, handler) async {
+          final prefs = SharedPrefServices();
+          final token = await prefs.getAccessToken();
+          if (token != null && token.isNotEmpty) {
+            options.headers['Authorization'] = 'Bearer $token';
+          }
+          handler.next(options); // Continue with request
+        },
+      ),
+    );
 
     ///with token and logger
     dio.interceptors.add(

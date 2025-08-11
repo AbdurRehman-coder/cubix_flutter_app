@@ -1,14 +1,4 @@
-import 'package:cubix_app/core/services/shared_prefs.dart';
-import 'package:cubix_app/features/bottom_navbar/presentation/widgets/w_custom_navbar.dart';
-import 'package:cubix_app/features/bottom_navbar/provider/navbar_provider.dart';
-import 'package:cubix_app/features/explore/presentation/screens/ui_explore.dart';
-import 'package:cubix_app/features/home/presentation/screens/ui_home.dart';
-import 'package:cubix_app/features/lessons/presentation/screens/ui_lessons.dart';
-import 'package:cubix_app/features/settings/presentation/screens/ui_settings.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../../../../core/widgets/w_custom_dialog.dart';
+import 'package:cubix_app/core/utils/app_exports.dart';
 
 class MainScreen extends ConsumerStatefulWidget {
   const MainScreen({super.key});
@@ -46,7 +36,8 @@ class _MainScreenState extends ConsumerState<MainScreen> {
   }
 
   Future<void> showWelcomeDialog(BuildContext context) async {
-    final isFirstTime = await SharedPrefs.isFirstTimeUser();
+    final isFirstTime =
+        await locator.get<SharedPrefServices>().isFirstTimeUser();
     if (isFirstTime && context.mounted) {
       showDialog(
         context: context,

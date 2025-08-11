@@ -1,7 +1,4 @@
-import 'package:cubix_app/core/services/app_services.dart';
 import 'package:cubix_app/core/utils/app_exports.dart';
-import 'package:cubix_app/core/widgets/w_custom_form_field.dart';
-import 'package:cubix_app/features/home/data/home_services.dart';
 
 class FeedbackDialog extends ConsumerStatefulWidget {
   const FeedbackDialog({super.key});

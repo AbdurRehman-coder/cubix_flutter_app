@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:cubix_app/core/utils/app_exports.dart';
 
 class CourseCard extends StatelessWidget {

@@ -1,8 +1,6 @@
 import 'package:cubix_app/core/utils/app_exports.dart';
 import 'package:cubix_app/features/settings/providers/settings_provider.dart';
 
-import '../../../../core/widgets/w_custom_dialog.dart';
-
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
 

@@ -14,24 +14,6 @@ class _SplashScreenState extends State<SplashScreen> {
     _handleNavigation();
   }
 
-  Future<void> _handleNavigation() async {
-    final token = await locator.get<SharedPrefServices>().getAccessToken();
-    await Future.delayed(const Duration(seconds: 4));
-    if (!mounted) return;
-
-    if (token == null || token.isEmpty) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (_) => const LoginScreen()),
-      );
-    } else {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (_) => const CustomBottomNavBar()),
-      );
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,7 +22,7 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Column(
           children: [
             const Spacer(flex: 3),
-            Image.asset(AppAssets.appLogo, height: 90, width: 90),
+            Image.asset(AppAssets.appLogoAnimation, height: 90, width: 90),
             const SizedBox(height: 14),
             Text(
               'Cubix',
@@ -63,5 +45,23 @@ class _SplashScreenState extends State<SplashScreen> {
         ),
       ),
     );
+  }
+
+  Future<void> _handleNavigation() async {
+    final token = await locator.get<SharedPrefServices>().getAccessToken();
+    await Future.delayed(const Duration(seconds: 4));
+    if (!mounted) return;
+
+    if (token == null || token.isEmpty) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const LoginScreen()),
+      );
+    } else {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const MainScreen()),
+      );
+    }
   }
 }

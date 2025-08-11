@@ -229,7 +229,7 @@ class _FeedbackDialogState extends ConsumerState<FeedbackDialog>
             textAlign: TextAlign.center,
           ),
 
-          Image.asset('assets/images/send.gif', height: 150),
+          Image.asset(AppAssets.feedbackAnimation, height: 150),
 
           PrimaryButton(text: 'Done', onPressed: _closeThankYou, height: 48),
           const SizedBox(height: 35),

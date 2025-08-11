@@ -47,7 +47,7 @@ class AuthServices {
         if (!context.mounted) return;
         Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (context) => CustomBottomNavBar()),
+          MaterialPageRoute(builder: (context) => MainScreen()),
           (route) => false,
         );
       } else {

@@ -1,6 +1,9 @@
 import '../utils/app_exports.dart';
 
 class AppAssets {
+  static const String appLogoAnimation = 'assets/gifs/logo_animation.gif';
+  static const String feedbackAnimation = 'assets/gifs/feedback_animation.gif';
+
   // Images
   static const String onboardingImage = 'assets/images/onboarding_image.png';
   static const String appLogo = 'assets/images/app_logo.png';

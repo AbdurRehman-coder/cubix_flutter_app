@@ -8,12 +8,169 @@ import 'dart:async';
 import 'dart:convert' show json;
 
 import 'package:flutter/material.dart';
-import 'package:google_sign_in_platform_interface/google_sign_in_platform_interface.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 
-const List<String> _scopes = <String>[
-  'https://www.googleapis.com/auth/contacts.readonly',
-];
+// Import the new test screen
+class UserInfoScreen extends StatelessWidget {
+  final GoogleSignInAccount user;
+  final String? accessToken;
+  final String? idToken;
+
+  const UserInfoScreen({
+    super.key,
+    required this.user,
+    this.accessToken,
+    this.idToken,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('✅ Google Sign-In Success'),
+        backgroundColor: Colors.green,
+        foregroundColor: Colors.white,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // User Profile Section
+            Card(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      '👤 User Information',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    if (user.photoUrl != null)
+                      Center(
+                        child: CircleAvatar(
+                          radius: 40,
+                          backgroundImage: NetworkImage(user.photoUrl!),
+                        ),
+                      ),
+                    const SizedBox(height: 12),
+                    _buildInfoRow('📧 Email:', user.email),
+                    _buildInfoRow(
+                      '👤 Name:',
+                      user.displayName ?? 'Not provided',
+                    ),
+                    _buildInfoRow('🆔 ID:', user.id),
+                    if (user.photoUrl != null)
+                      _buildInfoRow('🖼️ Photo URL:', user.photoUrl!),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
+
+            // Tokens Section
+            Card(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      '🔑 Authentication Tokens',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    if (accessToken != null)
+                      _buildTokenRow('Access Token:', accessToken!),
+                    if (idToken != null) _buildTokenRow('ID Token:', idToken!),
+                  ],
+                ),
+              ),
+            ),
+
+            const Spacer(),
+
+            // Sign Out Button
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.red,
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                ),
+                child: const Text('🚪 Back to Sign-In Test'),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildInfoRow(String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            width: 100,
+            child: Text(
+              label,
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ),
+          Expanded(
+            child: Text(value, style: const TextStyle(color: Colors.blue)),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTokenRow(String label, String token) {
+    final truncated =
+        token.length > 50 ? '${token.substring(0, 50)}...' : token;
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(label, style: const TextStyle(fontWeight: FontWeight.bold)),
+          const SizedBox(height: 4),
+          Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: Colors.grey[100],
+              borderRadius: BorderRadius.circular(4),
+              border: Border.all(color: Colors.grey[300]!),
+            ),
+            child: Text(
+              truncated,
+              style: const TextStyle(fontFamily: 'monospace', fontSize: 12),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+const List<String> _scopes = <String>['email'];
 
 class SignInDemo extends StatefulWidget {
   const SignInDemo({super.key});
@@ -23,125 +180,75 @@ class SignInDemo extends StatefulWidget {
 }
 
 class SignInDemoState extends State<SignInDemo> {
-  GoogleSignInUserData? _currentUser;
+  GoogleSignInAccount? _currentUser;
   bool _isAuthorized = false;
   String _contactText = '';
   String _errorMessage = '';
-  // Future that completes when `init` has completed on the sign in instance.
-  Future<void>? _initialization;
+
+  final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: _scopes);
 
   @override
   void initState() {
     super.initState();
+    _googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount? account) {
+      setState(() {
+        _currentUser = account;
+      });
+      if (_currentUser != null) {
+        _handleGetContact(_currentUser!);
+      }
+    });
     _signIn();
   }
 
-  Future<void> _ensureInitialized() async {
-    try {
-      print("Initializing Google Sign-In...");
-      await (_initialization ??= GoogleSignInPlatform.instance.init(
-        const InitParameters(
-          clientId:
-              '767550193868-otsgsu1u4i5gro19j6e7m0hv0kr4adie.apps.googleusercontent.com', // Android Debug ID
-          serverClientId:
-              '767550193868-t941ljvusvvadata3qlu9fllmlnvhorb.apps.googleusercontent.com', // Web Client ID
-        ),
-      ));
-      print("Google Sign-In initialized successfully.");
-    } catch (e, st) {
-      print("Google Sign-In initialization failed: $e");
-      print(st);
-      _initialization = null;
-    }
-  }
-
-  void _setUser(GoogleSignInUserData? user) {
+  void _setUser(GoogleSignInAccount? user) {
     setState(() {
       _currentUser = user;
     });
     if (user != null) {
-      // Try getting contacts, in case authorization is already granted.
       _handleGetContact(user);
     }
   }
 
   Future<void> _signIn() async {
-    await _ensureInitialized();
     try {
-      final AuthenticationResults? result = await GoogleSignInPlatform.instance
-          .attemptLightweightAuthentication(
-            const AttemptLightweightAuthenticationParameters(),
-          );
-      _setUser(result?.user);
-    } on GoogleSignInException catch (e) {
+      print("🔍 DEBUG: Initializing Google Sign-In...");
+      print("🔍 DEBUG: Package Name: com.cubixaiapp.mobile");
+      print(
+        "🔍 DEBUG: Client ID: 461575555761-rq83mkuh591p25vkl2isusn8jovl1qh5.apps.googleusercontent.com",
+      );
+
+      final GoogleSignInAccount? result = await _googleSignIn.signInSilently();
+      _setUser(result);
+    } catch (e) {
+      print("❌ DEBUG: Silent sign-in failed: $e");
       setState(() {
-        _errorMessage =
-            e.code == GoogleSignInExceptionCode.canceled
-                ? ''
-                : 'GoogleSignInException ${e.code}: ${e.description}';
+        _errorMessage = 'Silent sign-in failed: $e';
       });
     }
   }
 
-  Future<void> _handleAuthorizeScopes(GoogleSignInUserData user) async {
-    try {
-      final ClientAuthorizationTokenData? tokens = await GoogleSignInPlatform
-          .instance
-          .clientAuthorizationTokensForScopes(
-            ClientAuthorizationTokensForScopesParameters(
-              request: AuthorizationRequestDetails(
-                scopes: _scopes,
-
-                userId: user.id,
-                email: user.email,
-                promptIfUnauthorized: true,
-              ),
-            ),
-          );
-
-      setState(() {
-        _isAuthorized = tokens != null;
-        _errorMessage = '';
-      });
-      if (_isAuthorized) {
-        unawaited(_handleGetContact(user));
-      }
-    } on GoogleSignInException catch (e) {
-      setState(() {
-        _errorMessage = 'GoogleSignInException ${e.code}: ${e.description}';
-      });
-    }
+  Future<void> _handleAuthorizeScopes(GoogleSignInAccount user) async {
+    setState(() {
+      _isAuthorized = true;
+      _errorMessage = '';
+    });
+    await _handleGetContact(user);
   }
 
-  Future<Map<String, String>?> _getAuthHeaders(
-    GoogleSignInUserData user,
-  ) async {
-    final ClientAuthorizationTokenData? tokens = await GoogleSignInPlatform
-        .instance
-        .clientAuthorizationTokensForScopes(
-          ClientAuthorizationTokensForScopesParameters(
-            request: AuthorizationRequestDetails(
-              scopes: _scopes,
-              userId: user.id,
-              email: user.email,
-
-              promptIfUnauthorized: false,
-            ),
-          ),
-        );
-    if (tokens == null) {
+  Future<Map<String, String>?> _getAuthHeaders(GoogleSignInAccount user) async {
+    final GoogleSignInAuthentication auth = await user.authentication;
+    if (auth.accessToken == null) {
       return null;
     }
 
     return <String, String>{
-      'Authorization': 'Bearer ${tokens.accessToken}',
-      // TODO(kevmoo): Use the correct value once it's available.
-      // See https://github.com/flutter/flutter/issues/80905
+      'Authorization': 'Bearer ${auth.accessToken}',
       'X-Goog-AuthUser': '0',
     };
   }
 
-  Future<void> _handleGetContact(GoogleSignInUserData user) async {
+  Future<void> _handleGetContact(GoogleSignInAccount user) async {
     setState(() {
       _contactText = 'Loading contact info...';
     });
@@ -179,35 +286,75 @@ class SignInDemoState extends State<SignInDemo> {
 
   Future<void> _handleSignIn() async {
     try {
-      await _ensureInitialized();
-      final AuthenticationResults result = await GoogleSignInPlatform.instance
-          .authenticate(const AuthenticateParameters());
+      print("🔍 DEBUG: Starting manual sign-in process...");
 
-      print(
-        "User signed in: ${result.user.displayName} (${result.user.email})",
-      );
+      final GoogleSignInAccount? account = await _googleSignIn.signIn();
 
-      print("ID Token: ${result.toString()}");
-      print("Access Token: ${result.authenticationTokens.toString()}");
-      _setUser(result.user);
-    } on GoogleSignInException catch (e) {
-      print("GoogleSignInException ${e.code}: ${e.description}");
+      if (account != null) {
+        print("✅ DEBUG: Sign-in successful!");
+        print("👤 DEBUG: User: ${account.displayName} (${account.email})");
+        print("🆔 DEBUG: User ID: ${account.id}");
+
+        if (account.photoUrl != null) {
+          print("🖼️ DEBUG: Photo URL: ${account.photoUrl}");
+        }
+
+        // Get authentication details
+        final GoogleSignInAuthentication auth = await account.authentication;
+
+        print("🔑 DEBUG: Access Token available: ${auth.accessToken}");
+        print("🔑 DEBUG: ID Token available: ${auth.idToken != null}");
+
+        if (auth.accessToken != null) {
+          print(
+            "🔑 DEBUG: Access Token preview: ${auth.accessToken!.substring(0, 20)}...",
+          );
+        }
+        if (auth.idToken != null) {
+          print(
+            "🔑 DEBUG: ID Token preview: ${auth.idToken!.substring(0, 20)}...",
+          );
+        }
+
+        _setUser(account);
+
+        // Navigate to success screen
+        if (mounted) {
+          print("🔍 DEBUG: Navigating to UserInfoScreen...");
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder:
+                  (context) => UserInfoScreen(
+                    user: account,
+                    accessToken: auth.accessToken,
+                    idToken: auth.idToken,
+                  ),
+            ),
+          );
+        }
+      } else {
+        print("❌ DEBUG: Sign-in was cancelled by user");
+        setState(() {
+          _errorMessage = 'Sign-in was cancelled';
+        });
+      }
+    } catch (e, stackTrace) {
+      print("❌ DEBUG: Unexpected error during sign-in: $e");
+      print("📍 DEBUG: Stack trace: $stackTrace");
       setState(() {
-        _errorMessage =
-            e.code == GoogleSignInExceptionCode.canceled
-                ? ''
-                : 'GoogleSignInException ${e.code}: ${e.description}';
+        _errorMessage = 'Sign-in failed: $e';
       });
     }
   }
 
   Future<void> _handleSignOut() async {
-    await _ensureInitialized();
-    await GoogleSignInPlatform.instance.disconnect(const DisconnectParams());
+    await _googleSignIn.signOut();
+    _setUser(null);
   }
 
   Widget _buildBody() {
-    final GoogleSignInUserData? user = _currentUser;
+    final GoogleSignInAccount? user = _currentUser;
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: <Widget>[

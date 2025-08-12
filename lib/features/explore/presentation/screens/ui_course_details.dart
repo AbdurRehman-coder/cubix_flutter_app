@@ -270,8 +270,6 @@ class CourseDetailsScreen extends ConsumerWidget {
                                       // No progress exists for this subject, so create it
                                       final createdProgress =
                                           await progressService.createProgress(
-                                            deviceId:
-                                                "test1234", // Replace with actual device ID
                                             subjectId: subjectId,
                                           );
                                       if (createdProgress != null) {

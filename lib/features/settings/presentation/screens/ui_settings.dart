@@ -52,7 +52,6 @@ class SettingsScreen extends ConsumerWidget {
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-
               children: [
                 // Profile Section
                 Padding(
@@ -63,54 +62,38 @@ class SettingsScreen extends ConsumerWidget {
                       borderRadius: BorderRadius.circular(20),
                     ),
                     padding: const EdgeInsets.all(16),
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 48,
-                          height: 48,
-                          decoration: const BoxDecoration(
-                            color: AppColors.primaryOrangeColor,
-                            shape: BoxShape.circle,
-                          ),
-                          child: Center(
-                            child: Text(
-                              'RK',
-                              style: AppTextStyles.bodyTextStyle.copyWith(
-                                color: AppColors.whiteColor,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
+                    child: ListTile(
+                      contentPadding: EdgeInsets.zero,
+                      minTileHeight: getProportionateScreenHeight(48),
+                      leading: CircleAvatar(
+                        radius: 24,
+                        backgroundColor: AppColors.primaryOrangeColor,
+                        child: Text(
+                          'RK',
+                          style: AppTextStyles.bodyTextStyle.copyWith(
+                            color: AppColors.whiteColor,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
                           ),
                         ),
-                        const SizedBox(width: 16),
-                        Expanded(
-                          child: Text(
-                            'Ronaldo Kwateh',
-                            style: AppTextStyles.bodyTextStyle.copyWith(
-                              color: Color(0xff282A37),
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
+                      ),
 
-                        TextButton(
-                          onPressed: () {},
-                          style: TextButton.styleFrom(
-                            backgroundColor: AppColors.primaryOrangeColor
-                                .withValues(alpha: 0.1),
-                          ),
-                          child: Text(
-                            'Edit Name',
-                            style: AppTextStyles.bodyTextStyle.copyWith(
-                              color: AppColors.primaryOrangeColor,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
+                      title: Text(
+                        'Ronaldo Kwateh',
+                        style: AppTextStyles.bodyTextStyle.copyWith(
+                          color: Color(0xff282A37),
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
                         ),
-                      ],
+                      ),
+                      subtitle: Text(
+                        'pktr0203@gmail.Com',
+                        style: AppTextStyles.bodyTextStyle.copyWith(
+                          color: Color(0xff8E8E93),
+                          fontSize: 11,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
                     ),
                   ),
                 ),
@@ -142,8 +125,8 @@ class SettingsScreen extends ConsumerWidget {
                           title: 'Notifications',
                           value: notifications,
                           onChanged: (value) {
-                            ref.read(notificationsProvider.notifier).state =
-                                value;
+                            // ref.read(notificationsProvider.notifier).state =
+                            //     value;
                           },
                         ),
 

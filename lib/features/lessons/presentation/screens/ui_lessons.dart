@@ -49,15 +49,14 @@ class LessonsScreen extends ConsumerWidget {
             loading: () => ExploreShimmer(),
             error:
                 (error, _) => MessageWidget(
-
-    title: 'Something went wrong!',
-    subtitle: 'There is something wrong with the server or your request is invalid.',
-    ),
+                  title: 'Something went wrong!',
+                  subtitle:
+                      'There is something wrong with the server or your request is invalid.',
+                ),
 
             data: (progressList) {
               if (progressList == null || progressList.isEmpty) {
                 return MessageWidget(
-
                   title: 'You haven’t started any courses yet.',
                   subtitle: 'Let’s pick a course and get learning!',
                 );
@@ -96,6 +95,7 @@ class LessonsScreen extends ConsumerWidget {
                         ),
                         itemCount: activeList.length,
                         itemBuilder: (context, index) {
+                          bool isLastRow = index >= (15 - 2);
                           final subjectDetailAsync = ref.watch(
                             subjectDetailProvider(activeList[index].subject),
                           );
@@ -108,11 +108,19 @@ class LessonsScreen extends ConsumerWidget {
                                 return const Text("No data");
                               }
 
-                              return _buildSubjectCard(
-                                context,
-                                activeList[index],
-                                ref,
-                                subjectDetail,
+                              return Padding(
+                                padding: EdgeInsets.only(
+                                  bottom:
+                                      isLastRow
+                                          ? getProportionateScreenHeight(10)
+                                          : 0,
+                                ),
+                                child: _buildSubjectCard(
+                                  context,
+                                  activeList[index],
+                                  ref,
+                                  subjectDetail,
+                                ),
                               );
                             },
                           );
@@ -121,7 +129,6 @@ class LessonsScreen extends ConsumerWidget {
                     ),
                   )
                   : MessageWidget(
-
                     title:
                         selectedTab == 0
                             ? 'You haven’t started any courses yet.'
@@ -133,7 +140,6 @@ class LessonsScreen extends ConsumerWidget {
                   );
             },
           ),
-          SizedBox(height: 20),
         ],
       ),
     );

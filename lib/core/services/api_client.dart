@@ -10,8 +10,8 @@ class ApiClient {
   ApiClient() : dio = Dio() {
     dio.options.baseUrl = ApiConfig.baseUrl;
 
-    dio.options.connectTimeout = Duration(milliseconds: 60000);
-    dio.options.receiveTimeout = Duration(milliseconds: 60000);
+    dio.options.connectTimeout = Duration(milliseconds: 300000);
+    dio.options.receiveTimeout = Duration(milliseconds: 300000);
     dio.options.responseType = ResponseType.json;
 
     // Add token interceptor

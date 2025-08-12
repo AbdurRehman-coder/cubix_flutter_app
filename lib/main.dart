@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: AppTheme.lightTheme,
         title: 'Cubix App',
-        home: SplashScreen(),
+        home: MainScreen(),
       ),
     );
   }

@@ -21,6 +21,14 @@ class _LessonDetailsScreenState extends ConsumerState<LessonDetailsScreen> {
 
   bool showLoading = false;
 
+  final ScrollController _scrollController = ScrollController(); // 👈 Add this
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -85,17 +93,6 @@ class _LessonDetailsScreenState extends ConsumerState<LessonDetailsScreen> {
           ),
 
           Expanded(child: _buildContent()),
-
-          Padding(
-            padding: const EdgeInsets.all(30),
-            child: PrimaryButton(
-              borderRadius: 12,
-              isLoading: showLoading,
-              height: 48,
-              text: _getButtonText(),
-              onPressed: _handleButtonPress,
-            ),
-          ),
         ],
       ),
     );
@@ -117,32 +114,54 @@ class _LessonDetailsScreenState extends ConsumerState<LessonDetailsScreen> {
 
     final currentPage = pages[currentStep];
 
-    return SingleChildScrollView(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 40),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            currentPage.pageTitle,
-            style: AppTextStyles.bodyTextStyle.copyWith(
-              fontSize: 22,
-              fontWeight: FontWeight.w700,
-              color: AppColors.blackColor,
-              height: 1.2,
+    return LayoutBuilder(
+      builder:
+          (context, constraints) => SingleChildScrollView(
+            controller: _scrollController,
+            child: ConstrainedBox(
+              constraints: BoxConstraints(minHeight: constraints.maxHeight),
+              child: IntrinsicHeight(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 40, 16, 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        currentPage.pageTitle,
+                        style: AppTextStyles.bodyTextStyle.copyWith(
+                          fontSize: 22,
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.blackColor,
+                          height: 1.2,
+                        ),
+                      ),
+                      const SizedBox(height: 24),
+                      Text(
+                        currentPage.pageData,
+                        style: AppTextStyles.bodyTextStyle.copyWith(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                          color: const Color(0xff242425),
+                          height: 1.2,
+                        ),
+                      ),
+                      Spacer(),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
+                        child: PrimaryButton(
+                          borderRadius: 12,
+                          isLoading: showLoading,
+                          height: 48,
+                          text: _getButtonText(),
+                          onPressed: _handleButtonPress,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ),
           ),
-          const SizedBox(height: 24),
-          Text(
-            currentPage.pageData,
-            style: AppTextStyles.bodyTextStyle.copyWith(
-              fontSize: 14,
-              fontWeight: FontWeight.w400,
-              color: const Color(0xff242425),
-              height: 1.2,
-            ),
-          ),
-        ],
-      ),
     );
   }
 
@@ -158,6 +177,11 @@ class _LessonDetailsScreenState extends ConsumerState<LessonDetailsScreen> {
     if (currentStep < (widget.subjectTopic.pages?.length ?? 0) - 1) {
       setState(() {
         currentStep++;
+      });
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (_scrollController.hasClients) {
+          _scrollController.jumpTo(0);
+        }
       });
     } else {
       setState(() {

@@ -6,9 +6,9 @@ class ApiConfig {
   static String get baseUrl {
     switch (environment) {
       case Environment.prod:
-        return 'https://f7fed5bb0efb.ngrok-free.app';
+        return 'https://api.cubixaiapp.com';
       case Environment.test:
-        return 'https://f7fed5bb0efb.ngrok-free.app';
+        return 'https://api.cubixaiapp.com';
     }
   }
 }

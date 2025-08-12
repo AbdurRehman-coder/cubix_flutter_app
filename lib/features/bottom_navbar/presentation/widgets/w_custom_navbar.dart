@@ -18,7 +18,7 @@ class CustomBottomNavBar extends ConsumerWidget {
     return Container(
       decoration: const BoxDecoration(
         color: AppColors.whiteColor,
-        border: Border(top: BorderSide(color: AppColors.whiteColor, width: 1)),
+        border: Border(top: BorderSide(color: Color(0xffE3E3E4), width: 1)),
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(30),
           topRight: Radius.circular(30),

@@ -75,10 +75,7 @@ class ExploreScreen extends ConsumerWidget {
 
               return Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                    vertical: 10,
-                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: GridView.builder(
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
@@ -88,19 +85,27 @@ class ExploreScreen extends ConsumerWidget {
                     ),
                     itemCount: tempList.length,
                     itemBuilder: (context, index) {
-                      return GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder:
-                                  (context) => CourseDetailsScreen(
-                                    subjectId: tempList[index].id,
-                                  ),
-                            ),
-                          );
-                        },
-                        child: CourseCard(subject: tempList[index]),
+                      bool isLastRow = index >= (15 - 2);
+
+                      return Padding(
+                        padding: EdgeInsets.only(
+                          bottom:
+                              isLastRow ? getProportionateScreenHeight(10) : 0,
+                        ),
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder:
+                                    (context) => CourseDetailsScreen(
+                                      subjectId: tempList[index].id,
+                                    ),
+                              ),
+                            );
+                          },
+                          child: CourseCard(subject: tempList[index]),
+                        ),
                       );
                     },
                   ),

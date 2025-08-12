@@ -56,7 +56,6 @@ class TopicItem extends StatelessWidget {
               ),
               child: Center(
                 child:
-                    // lesson.status == LessonStatus.completed
                     isCompleted
                         ? const Icon(
                           Icons.check_circle,

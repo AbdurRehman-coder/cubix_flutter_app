@@ -8,32 +8,29 @@ class MessageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.6,
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              title,
-              textAlign: TextAlign.center,
-              style: AppTextStyles.bodyTextStyle.copyWith(
-                fontSize: 22,
-                color: AppColors.blackColor,
-                fontWeight: FontWeight.bold,
-              ),
+    return Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            title,
+            textAlign: TextAlign.center,
+            style: AppTextStyles.bodyTextStyle.copyWith(
+              fontSize: 22,
+              color: AppColors.blackColor,
+              fontWeight: FontWeight.bold,
             ),
-            SizedBox(height: getProportionateScreenHeight(20)),
-            Text(
-              subtitle,
-              textAlign: TextAlign.center,
-              style: AppTextStyles.bodyTextStyle.copyWith(
-                fontSize: 14,
-                color: AppColors.textSecondaryColor,
-              ),
+          ),
+          SizedBox(height: getProportionateScreenHeight(20)),
+          Text(
+            subtitle,
+            textAlign: TextAlign.center,
+            style: AppTextStyles.bodyTextStyle.copyWith(
+              fontSize: 14,
+              color: AppColors.textSecondaryColor,
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

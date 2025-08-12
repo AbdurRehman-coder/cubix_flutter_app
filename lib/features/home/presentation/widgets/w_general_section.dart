@@ -16,9 +16,18 @@ class GeneralEducationSection extends StatelessWidget {
           children:
               subjects.map((item) {
                 return Padding(
-                  padding: const EdgeInsets.only(right: 5),
-                  child: SizedBox(
-                    width: getProportionateScreenWidth(60),
+                  padding: const EdgeInsets.only(right: 20),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder:
+                              (context) =>
+                                  CourseDetailsScreen(subjectId: item.id),
+                        ),
+                      );
+                    },
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -31,6 +40,7 @@ class GeneralEducationSection extends StatelessWidget {
                         const SizedBox(height: 8),
                         Text(
                           item.abbreviation,
+
                           style: AppTextStyles.bodyTextStyle.copyWith(
                             fontSize: 12,
                             fontWeight: FontWeight.w400,
@@ -38,7 +48,7 @@ class GeneralEducationSection extends StatelessWidget {
                           ),
                           textAlign: TextAlign.center,
                           softWrap: true,
-                          maxLines: 2,
+                          maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
                       ],

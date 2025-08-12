@@ -1,6 +1,10 @@
 import 'package:cubix_app/features/home/models/subject_details_model.dart';
 import 'package:cubix_app/core/utils/app_exports.dart';
 
+final selectedCategoryProvider = StateProvider<CourseCategory>((ref) {
+  return CourseCategory.core;
+});
+
 final subjectDetailProvider = FutureProvider.family<SubjectDetail?, String>((
   ref,
   subjectId,

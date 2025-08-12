@@ -18,58 +18,73 @@ class PsychologySection extends StatelessWidget {
           separatorBuilder: (_, __) => const SizedBox(width: 10),
           itemBuilder: (context, index) {
             final item = subjects[index];
-            return Container(
-              padding: const EdgeInsets.fromLTRB(16, 16, 7, 16),
-              width: 180,
-              decoration: BoxDecoration(
-                color: const Color(0xFFE6F0FE),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        item.title,
-                        style: AppTextStyles.bodyTextStyle.copyWith(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w700,
-                          color: AppColors.blackColor,
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        item.abbreviation,
-                        style: AppTextStyles.bodyTextStyle.copyWith(
-                          fontSize: 11,
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.textSecondaryColor,
-                        ),
-                      ),
-                    ],
+            return GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder:
+                        (context) => CourseDetailsScreen(subjectId: item.id),
                   ),
-
-                  SizedBox(
-                    width: 20,
-                    height: 20,
-                    child: IconButton(
-                      onPressed: () {},
-                      style: IconButton.styleFrom(
-                        padding: EdgeInsets.zero,
-                        iconSize: 12,
-                        backgroundColor: AppColors.whiteColor,
-                      ),
-                      icon: Icon(
-                        Icons.arrow_forward_ios,
-                        size: 12,
-                        color: AppColors.greyColor,
+                );
+              },
+              child: Container(
+                padding: const EdgeInsets.fromLTRB(16, 16, 7, 16),
+                width: 180,
+                decoration: BoxDecoration(
+                  color: const Color(0xFFE6F0FE),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            item.title,
+                            maxLines: 2,
+                            style: AppTextStyles.bodyTextStyle.copyWith(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w700,
+                              color: AppColors.blackColor,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            item.abbreviation,
+                            style: AppTextStyles.bodyTextStyle.copyWith(
+                              fontSize: 11,
+                              fontWeight: FontWeight.w400,
+                              color: AppColors.textSecondaryColor,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ),
-                ],
+
+                    SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: IconButton(
+                        onPressed: () {},
+                        style: IconButton.styleFrom(
+                          padding: EdgeInsets.zero,
+                          iconSize: 12,
+                          backgroundColor: AppColors.whiteColor,
+                        ),
+                        icon: Icon(
+                          Icons.arrow_forward_ios,
+                          size: 12,
+                          color: AppColors.greyColor,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             );
           },

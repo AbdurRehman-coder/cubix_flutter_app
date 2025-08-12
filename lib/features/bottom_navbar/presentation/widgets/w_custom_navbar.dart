@@ -1,4 +1,5 @@
 import 'package:cubix_app/core/utils/app_exports.dart';
+import 'package:cubix_app/features/explore/providers/explore_provider.dart';
 
 class CustomBottomNavBar extends ConsumerWidget {
   const CustomBottomNavBar({super.key});
@@ -32,7 +33,13 @@ class CustomBottomNavBar extends ConsumerWidget {
           final isSelected = index == currentIndex;
           return Expanded(
             child: InkWell(
-              onTap: () => notifier.state = index,
+              onTap: () {
+                notifier.state = index;
+                if (index == 2) {
+                  ref.read(selectedCategoryProvider.notifier).state =
+                      CourseCategory.core;
+                }
+              },
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [

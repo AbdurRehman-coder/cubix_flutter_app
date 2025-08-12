@@ -22,7 +22,6 @@ export 'package:cubix_app/features/home/presentation/widgets/w_arts_humanties_se
 export 'package:cubix_app/features/explore/models/course_model.dart';
 export 'package:cubix_app/features/explore/presentation/widgets/w_course_card.dart';
 export 'package:cubix_app/features/explore/presentation/widgets/w_course_tab.dart';
-export 'package:cubix_app/features/explore/providers/course_provider.dart';
 export 'package:cubix_app/features/home/models/subject_model.dart';
 export 'package:cubix_app/features/home/presentation/widgets/w_home_shimmer.dart';
 export 'package:cubix_app/features/home/providers/home_provider.dart';

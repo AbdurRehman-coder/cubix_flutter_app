@@ -24,10 +24,10 @@ class BusinessSection extends StatelessWidget {
                 width: 237,
                 child: Column(
                   children: [
-                    _buildItem(firstItem),
+                    _buildItem(firstItem, context),
                     if (secondItem != null)
                       SizedBox(height: getProportionateScreenHeight(15)),
-                    if (secondItem != null) _buildItem(secondItem),
+                    if (secondItem != null) _buildItem(secondItem, context),
                   ],
                 ),
               );
@@ -38,46 +38,56 @@ class BusinessSection extends StatelessWidget {
     );
   }
 
-  Widget _buildItem(Subject item) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Image.asset(
-          AppAssets.getIconPath(item.abbreviation),
-          height: 55,
-          width: 55,
-        ),
-        SizedBox(width: getProportionateScreenWidth(18)),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                item.abbreviation,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: AppTextStyles.bodyTextStyle.copyWith(
-                  fontSize: 11,
-                  fontWeight: FontWeight.w400,
-                  color: AppColors.textSecondaryColor,
-                  height: 18 / 11,
-                ),
-              ),
-              Text(
-                item.title,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: AppTextStyles.bodyTextStyle.copyWith(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.blackColor,
-                  height: 18 / 12,
-                ),
-              ),
-            ],
+  Widget _buildItem(Subject item, BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => CourseDetailsScreen(subjectId: item.id),
           ),
-        ),
-      ],
+        );
+      },
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Image.asset(
+            AppAssets.getIconPath(item.abbreviation),
+            height: 55,
+            width: 55,
+          ),
+          SizedBox(width: getProportionateScreenWidth(18)),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  item.abbreviation,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: AppTextStyles.bodyTextStyle.copyWith(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w400,
+                    color: AppColors.textSecondaryColor,
+                    height: 18 / 11,
+                  ),
+                ),
+                Text(
+                  item.title,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: AppTextStyles.bodyTextStyle.copyWith(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.blackColor,
+                    height: 18 / 12,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

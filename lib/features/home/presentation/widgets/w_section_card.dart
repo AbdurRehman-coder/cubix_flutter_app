@@ -1,4 +1,5 @@
 import 'package:cubix_app/core/utils/app_exports.dart';
+import 'package:cubix_app/features/explore/providers/explore_provider.dart';
 
 class SectionCard extends ConsumerWidget {
   final String title;
@@ -49,7 +50,12 @@ class SectionCard extends ConsumerWidget {
                   ),
                   iconAlignment: IconAlignment.end,
                   onPressed: () {
+                    final category = getCategoryFromTitle(title);
+
                     notifier.state = 2;
+
+                    ref.read(selectedCategoryProvider.notifier).state =
+                        category;
                   },
                   label: Text(
                     "View all",

@@ -1,11 +1,37 @@
 import 'package:cubix_app/core/utils/app_exports.dart';
+import 'package:cubix_app/features/explore/providers/explore_provider.dart';
 import '../../../../core/widgets/w_custom_message.dart' show MessageWidget;
 
-class ExploreScreen extends ConsumerWidget {
+class ExploreScreen extends ConsumerStatefulWidget {
   const ExploreScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ExploreScreen> createState() => _ExploreScreenState();
+}
+
+class _ExploreScreenState extends ConsumerState<ExploreScreen> {
+  final ScrollController _categoryScrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final selectedCategory = ref.read(selectedCategoryProvider);
+      final index = CourseCategory.values.indexOf(selectedCategory);
+
+      if (index != -1) {
+        _categoryScrollController.animateTo(
+          index * getProportionateScreenWidth(60),
+          duration: const Duration(milliseconds: 400),
+          curve: Curves.easeInOut,
+        );
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final selectedCategory = ref.watch(selectedCategoryProvider);
     final subjectsAsync = ref.watch(subjectsProvider);
     return SafeArea(
@@ -30,6 +56,7 @@ class ExploreScreen extends ConsumerWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 27),
             child: SingleChildScrollView(
+              controller: _categoryScrollController,
               scrollDirection: Axis.horizontal,
               child: Row(
                 children:

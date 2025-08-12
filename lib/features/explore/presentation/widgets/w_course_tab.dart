@@ -1,7 +1,7 @@
 import 'package:cubix_app/core/theming/app_colors.dart';
 import 'package:cubix_app/core/utils/text_styles.dart';
 import 'package:cubix_app/features/explore/models/course_model.dart';
-import 'package:cubix_app/features/explore/providers/course_provider.dart';
+import 'package:cubix_app/features/explore/providers/explore_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

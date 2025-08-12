@@ -45,6 +45,7 @@ class AuthServices {
         log('Access Token: ${userData.accessToken}');
         log('ID Token: ${userData.idToken}');
         if (!context.mounted) return;
+
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => MainScreen()),
@@ -59,6 +60,34 @@ class AuthServices {
       _showError(context, e.toString());
       log('Sign-in error: $e');
     }
+  }
+
+  ///
+  /// Sign out
+  ///
+
+  Future<void> handleSignOut(BuildContext context) async {
+    googleAuthService.handleSignOut();
+    locator.get<SharedPrefServices>().clearAccessToken();
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => LoginScreen()),
+      (route) => false,
+    );
+  }
+
+  ///
+  /// Delete account
+  ///
+
+  Future<void> handleDelete(BuildContext context) async {
+    googleAuthService.handleSignOut();
+    locator.get<SharedPrefServices>().clearAccessToken();
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => LoginScreen()),
+      (route) => false,
+    );
   }
 
   void _showError(BuildContext context, String message) {

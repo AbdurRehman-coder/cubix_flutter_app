@@ -64,9 +64,8 @@ class LoginScreen extends ConsumerWidget {
                 if (currentIndex != 0) {
                   notifier.state = 0;
                 }
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (_) => const MainScreen()),
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('This feature is coming soon')),
                 );
               },
               textColor: AppColors.blackColor,
@@ -89,10 +88,6 @@ class LoginScreen extends ConsumerWidget {
                   notifier.state = 0;
                 }
                 locator.get<AuthServices>().handleGoogleAuth(context);
-                // Navigator.pushReplacement(
-                //   context,
-                //   MaterialPageRoute(builder: (_) => const MainScreen()),
-                // );
               },
               textColor: AppColors.blackColor,
               backgroundColor: AppColors.whiteColor,

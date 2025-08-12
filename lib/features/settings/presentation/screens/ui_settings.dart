@@ -1,11 +1,33 @@
 import 'package:cubix_app/core/utils/app_exports.dart';
+import 'package:cubix_app/core/utils/app_utils.dart';
 import 'package:cubix_app/features/settings/providers/settings_provider.dart';
 
-class SettingsScreen extends ConsumerWidget {
+class SettingsScreen extends ConsumerStatefulWidget {
   const SettingsScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<SettingsScreen> createState() => _SettingsScreenState();
+}
+
+class _SettingsScreenState extends ConsumerState<SettingsScreen> {
+  GoogleUserData? _googleUser;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUser();
+  }
+
+  Future<void> _loadUser() async {
+    final googleService = GoogleAuthService();
+    final user = await googleService.signInSilently();
+    setState(() {
+      _googleUser = user;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final notifications = ref.watch(notificationsProvider);
     final sounds = ref.watch(soundsProvider);
     final haptics = ref.watch(hapticsProvider);
@@ -65,31 +87,43 @@ class SettingsScreen extends ConsumerWidget {
                     child: ListTile(
                       contentPadding: EdgeInsets.zero,
                       minTileHeight: getProportionateScreenHeight(48),
-                      leading: CircleAvatar(
-                        radius: 24,
-                        backgroundColor: AppColors.primaryOrangeColor,
-                        child: Text(
-                          'RK',
-                          style: AppTextStyles.bodyTextStyle.copyWith(
-                            color: AppColors.whiteColor,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
+
+                      leading:
+                          _googleUser?.account.photoUrl != null
+                              ? CircleAvatar(
+                                radius: 24,
+                                backgroundImage: NetworkImage(
+                                  _googleUser!.account.photoUrl!,
+                                ),
+                              )
+                              : CircleAvatar(
+                                radius: 24,
+                                backgroundColor: AppColors.primaryOrangeColor,
+                                child: Text(
+                                  AppUtils().getInitials(
+                                    _googleUser?.account.displayName,
+                                  ),
+                                  style: AppTextStyles.bodyTextStyle.copyWith(
+                                    color: AppColors.whiteColor,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
 
                       title: Text(
-                        'Ronaldo Kwateh',
+                        _googleUser?.account.displayName ?? 'Guest User',
                         style: AppTextStyles.bodyTextStyle.copyWith(
-                          color: Color(0xff282A37),
+                          color: const Color(0xff282A37),
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
+
                       subtitle: Text(
-                        'pktr0203@gmail.Com',
+                        _googleUser?.account.email ?? '',
                         style: AppTextStyles.bodyTextStyle.copyWith(
-                          color: Color(0xff8E8E93),
+                          color: const Color(0xff8E8E93),
                           fontSize: 11,
                           fontWeight: FontWeight.w400,
                         ),
@@ -383,11 +417,7 @@ class SettingsScreen extends ConsumerWidget {
                 'Are you sure you want to delete your account? This action cannot be undone.',
             buttonText: 'Delete',
             onPressed: () {
-              Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (context) => LoginScreen()),
-                (route) => false,
-              );
+              locator.get<AuthServices>().handleDelete(context);
             },
           ),
     );
@@ -408,11 +438,7 @@ class SettingsScreen extends ConsumerWidget {
             description: 'Are you sure you want to logout?',
             buttonText: 'Yes',
             onPressed: () {
-              Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (context) => LoginScreen()),
-                (route) => false,
-              );
+              locator.get<AuthServices>().handleSignOut(context);
             },
           ),
     );

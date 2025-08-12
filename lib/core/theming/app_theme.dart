@@ -5,6 +5,7 @@ class AppTheme {
     return ThemeData(
       scaffoldBackgroundColor: AppColors.backgroundColor,
       primaryColor: AppColors.primaryOrangeColor,
+      canvasColor: Colors.transparent,
       colorScheme: ColorScheme.fromSeed(
         seedColor: AppColors.primaryOrangeColor,
       ),

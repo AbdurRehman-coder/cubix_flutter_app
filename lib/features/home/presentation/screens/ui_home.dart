@@ -38,9 +38,10 @@ class HomeScreen extends ConsumerWidget {
           subjectsAsync.when(
             loading: () => HomeShimmer(),
             error:
-                (error, _) =>  MessageWidget(
+                (error, _) => MessageWidget(
                   title: 'Something went wrong!',
-                  subtitle: 'There is something wrong with the server or your request is invalid.',
+                  subtitle:
+                      'There is something wrong with the server or your request is invalid.',
                 ),
             data: (subjects) {
               if (subjects == null) {

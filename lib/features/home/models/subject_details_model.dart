@@ -75,13 +75,19 @@ class SubjectTopic {
 class SubjectPage {
   final String pageTitle;
   final String pageData;
+  final String? pageDiagram;
 
-  SubjectPage({required this.pageTitle, required this.pageData});
+  SubjectPage({
+    required this.pageTitle,
+    required this.pageData,
+    this.pageDiagram,
+  });
 
   factory SubjectPage.fromJson(Map<String, dynamic> json) {
     return SubjectPage(
       pageTitle: json['page_title'],
       pageData: json['page_data'],
+      pageDiagram: json['page_diagram'],
     );
   }
 }

@@ -126,6 +126,15 @@ class _LessonDetailsScreenState extends ConsumerState<LessonDetailsScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      if (currentPage.pageDiagram != null) ...[
+                        Center(
+                          child: Image.network(
+                            currentPage.pageDiagram ?? '',
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        SizedBox(height: 20),
+                      ],
                       Text(
                         currentPage.pageTitle,
                         style: AppTextStyles.bodyTextStyle.copyWith(

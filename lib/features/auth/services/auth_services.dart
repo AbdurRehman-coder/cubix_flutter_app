@@ -52,8 +52,13 @@ class AuthServices {
           (route) => false,
         );
       } else {
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => MainScreen()),
+          (route) => false,
+        );
         if (!context.mounted) return;
-        _showError(context, 'Sign-in cancelled by user');
+        _showError(context, 'Error signing in with google');
       }
     } catch (e) {
       if (!context.mounted) return;

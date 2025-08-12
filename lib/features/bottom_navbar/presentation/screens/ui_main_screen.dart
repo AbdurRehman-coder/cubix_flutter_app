@@ -31,7 +31,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
 
     return Scaffold(
       body: _pages[currentIndex],
-      extendBody: true,
+
       bottomNavigationBar: const CustomBottomNavBar(),
     );
   }

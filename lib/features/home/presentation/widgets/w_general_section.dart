@@ -40,7 +40,6 @@ class GeneralEducationSection extends StatelessWidget {
                         const SizedBox(height: 8),
                         Text(
                           item.abbreviation,
-
                           style: AppTextStyles.bodyTextStyle.copyWith(
                             fontSize: 12,
                             fontWeight: FontWeight.w400,

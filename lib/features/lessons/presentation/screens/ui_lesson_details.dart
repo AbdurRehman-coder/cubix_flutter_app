@@ -1,5 +1,7 @@
 import 'package:cubix_app/features/home/models/subject_details_model.dart';
 import 'package:cubix_app/core/utils/app_exports.dart';
+import '../../../../core/utils/text_formatter.dart';
+
 
 class LessonDetailsScreen extends ConsumerStatefulWidget {
   final SubjectTopic subjectTopic;
@@ -113,7 +115,6 @@ class _LessonDetailsScreenState extends ConsumerState<LessonDetailsScreen> {
     }
 
     final currentPage = pages[currentStep];
-
     return LayoutBuilder(
       builder:
           (context, constraints) => SingleChildScrollView(
@@ -145,13 +146,16 @@ class _LessonDetailsScreenState extends ConsumerState<LessonDetailsScreen> {
                         ),
                       ),
                       const SizedBox(height: 24),
-                      Text(
-                        currentPage.pageData,
-                        style: AppTextStyles.bodyTextStyle.copyWith(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
-                          color: const Color(0xff242425),
-                          height: 1.2,
+
+                      RichText(
+                        text: TextFormatter.formatText(
+                          currentPage.pageData,
+                          AppTextStyles.bodyTextStyle.copyWith(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                            color: const Color(0xff242425),
+                            height: 1.2,
+                          ),
                         ),
                       ),
                       Spacer(),

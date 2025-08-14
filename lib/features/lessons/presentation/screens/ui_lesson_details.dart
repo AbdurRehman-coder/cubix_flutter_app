@@ -203,7 +203,6 @@ class _LessonDetailsScreenState extends ConsumerState<LessonDetailsScreen> {
       setState(() {
         showLoading = false;
       });
-      Navigator.pop(context);
     }
   }
 }

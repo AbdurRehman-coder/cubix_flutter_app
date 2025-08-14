@@ -332,6 +332,40 @@ class CourseDetailsScreen extends ConsumerWidget {
 
                                       if (updated) {
                                         ref.invalidate(progressProvider);
+                                        Navigator.pop(context);
+                                      }
+
+                                      // 🚀 Auto-download logic for the next section
+                                      final isSecondLastTopic =
+                                          topicIndex ==
+                                          chapter.topics.length -
+                                              2; // second last
+
+                                      final isNotLastSection =
+                                          chapterIndex <
+                                          subject.sections.length - 1;
+
+                                      if (isSecondLastTopic &&
+                                          isNotLastSection) {
+                                        final nextSection =
+                                            subject.sections[chapterIndex + 1];
+                                        final needToGenerateNext =
+                                            nextSection
+                                                .topics
+                                                .first
+                                                .pages
+                                                ?.isEmpty ??
+                                            true;
+
+                                        if (needToGenerateNext) {
+                                          await createSectionSilently(
+                                            ref: ref,
+                                            context: context,
+                                            subjectId: subjectId,
+                                            sectionTitle:
+                                                nextSection.sectionTitle,
+                                          );
+                                        }
                                       }
                                     }
                                   },

@@ -174,7 +174,7 @@ class _LessonDetailsScreenState extends ConsumerState<LessonDetailsScreen> {
                       ),
                       Spacer(),
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
+                        padding: const EdgeInsets.fromLTRB(15, 24, 15, 0),
                         child: PrimaryButton(
                           borderRadius: 12,
                           isLoading: showLoading,

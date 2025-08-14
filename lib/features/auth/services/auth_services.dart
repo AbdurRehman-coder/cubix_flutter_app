@@ -39,18 +39,43 @@ class AuthServices {
     try {
       final userData = await googleAuthService.signIn();
       if (userData != null) {
-        localDBServices.saveAccessToken(userData.accessToken ?? '');
-        log('Name: ${userData.account.displayName}');
-        log('Email: ${userData.account.email}');
-        log('Access Token: ${userData.accessToken}');
-        log('ID Token: ${userData.idToken}');
-        if (!context.mounted) return;
+        // Call backend API
+        const String url = "/auth/google";
+        final requestBody = {
+          "idToken": userData.idToken,
+          "accessToken": userData.accessToken,
+          if (userData.serverAuthCode != null)
+            "serverAuthCode": userData.serverAuthCode,
+        };
 
-        Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (context) => MainScreen()),
-          (route) => false,
-        );
+        Response response = await apiClient.dio.post(url, data: requestBody);
+
+        if (response.statusCode == 200 && response.data['ok'] == true) {
+          final dataJson = response.data;
+          log('Google sign-in success: ${dataJson.toString()}');
+
+          // Save session data from backend response
+          if (dataJson['session'] != null &&
+              dataJson['session']['access_token'] != null) {
+            localDBServices.saveAccessToken(
+              dataJson['session']['access_token'],
+            );
+          }
+
+          if (dataJson['user'] != null) {
+            log('User: ${dataJson['user'].toString()}');
+          }
+
+          if (!context.mounted) return;
+
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => MainScreen()),
+            (route) => false,
+          );
+        } else {
+          throw Exception('Backend authentication failed');
+        }
       } else {
         if (!context.mounted) return;
         _showError(context, 'Error signing in with google');

@@ -33,8 +33,7 @@
 			<string>GoogleSignIn</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.googleusercontent.apps.461575555761-cgs73navc4hlpc3d6o7h879e9p2q1t09
-</string>
+				<string>com.googleusercontent.apps.461575555761-cgs73navc4hlpc3d6o7h879e9p2q1t09</string>
 			</array>
 		</dict>
 	</array>

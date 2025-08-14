@@ -9,6 +9,9 @@ class TextFormatter {
     final RegExp pattern = RegExp(r'\*\*(.*?)\*\*|\*(.*?)\*');
     int lastIndex = 0;
 
+    // Ensure baseStyle has line spacing
+    baseStyle = baseStyle.copyWith(height: 1.6); // 1.6 = 60% extra line height
+
     for (final Match match in pattern.allMatches(text)) {
       // Add text before the match
       if (match.start > lastIndex) {
@@ -52,6 +55,9 @@ class TextFormatter {
 
   /// Creates a RichText widget with formatted content
   static Widget createFormattedText(String text, TextStyle baseStyle) {
-    return RichText(text: formatText(text, baseStyle));
+    return RichText(
+      text: formatText(text, baseStyle),
+      textAlign: TextAlign.start,
+    );
   }
 }

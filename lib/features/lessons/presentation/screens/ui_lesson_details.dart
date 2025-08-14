@@ -2,7 +2,6 @@ import 'package:cubix_app/features/home/models/subject_details_model.dart';
 import 'package:cubix_app/core/utils/app_exports.dart';
 import '../../../../core/utils/text_formatter.dart';
 
-
 class LessonDetailsScreen extends ConsumerStatefulWidget {
   final SubjectTopic subjectTopic;
   final Function() onCompletion;
@@ -151,7 +150,7 @@ class _LessonDetailsScreenState extends ConsumerState<LessonDetailsScreen> {
                         text: TextFormatter.formatText(
                           currentPage.pageData,
                           AppTextStyles.bodyTextStyle.copyWith(
-                            fontSize: 14,
+                            fontSize: 17,
                             fontWeight: FontWeight.w400,
                             color: const Color(0xff242425),
                             height: 1.2,

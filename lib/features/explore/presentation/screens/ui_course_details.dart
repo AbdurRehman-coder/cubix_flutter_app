@@ -176,15 +176,33 @@ class CourseDetailsScreen extends ConsumerWidget {
                                       padding: const EdgeInsets.only(
                                         right: 8.0,
                                       ),
-                                      child: SizedBox(
-                                        width: 27,
-                                        height: 27,
-                                        child: CircularProgressIndicator(
-                                          strokeWidth: 4.5,
-                                          strokeCap: StrokeCap.round,
-                                          backgroundColor: Color(0xffFFDBBF),
-                                          color: AppColors.primaryOrangeColor,
-                                        ),
+                                      child: Column(
+                                        children: [
+                                          SizedBox(
+                                            width: 27,
+                                            height: 27,
+                                            child: CircularProgressIndicator(
+                                              strokeWidth: 4.5,
+                                              strokeCap: StrokeCap.round,
+                                              backgroundColor: Color(
+                                                0xffFFDBBF,
+                                              ),
+                                              color:
+                                                  AppColors.primaryOrangeColor,
+                                            ),
+                                          ),
+                                          SizedBox(height: 10),
+                                          Text(
+                                            'This may take 3-5 mins',
+                                            style: AppTextStyles.bodyTextStyle
+                                                .copyWith(
+                                                  fontSize: 10,
+                                                  color:
+                                                      AppColors
+                                                          .textSecondaryColor,
+                                                ),
+                                          ),
+                                        ],
                                       ),
                                     )
                                     : IconButton(
@@ -237,10 +255,14 @@ class CourseDetailsScreen extends ConsumerWidget {
                                           completedTopics.lastOrNull,
                                     );
 
+                                // ✅ Ready if the topic is exactly next after the last completed one
+                                // AND that completed one wasn't the last topic in this chapter
                                 final isReady =
-                                    topicIndex ==
-                                    (lastCompletedIndex +
-                                        1); //todo: Need to be handled
+                                    lastCompletedIndex != -1 &&
+                                    topicIndex == lastCompletedIndex + 1 &&
+                                    lastCompletedIndex <
+                                        chapter.topics.length - 1;
+
                                 final isLocked = !isCompleted && !isReady;
 
                                 return TopicItem(
@@ -249,7 +271,7 @@ class CourseDetailsScreen extends ConsumerWidget {
                                   showConnector: !(isLastTopic),
                                   isCompleted: isCompleted,
                                   isLocked: isLocked,
-                                  isReady: false, //todo: Need to be handled
+                                  isReady: isReady,
                                   onCompletion: () async {
                                     final progressService =
                                         locator.get<ProgressServices>();

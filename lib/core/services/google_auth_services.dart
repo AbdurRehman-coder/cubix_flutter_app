@@ -3,7 +3,11 @@ import 'dart:developer';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class GoogleAuthService {
-  final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
+  final GoogleSignIn _googleSignIn = GoogleSignIn(
+    scopes: ['email'],
+    serverClientId:
+        '461575555761-vv76t6q5rn7lsabl46v8i0n6su27rmpa.apps.googleusercontent.com',
+  );
 
   Future<GoogleUserData?> signIn() async {
     try {

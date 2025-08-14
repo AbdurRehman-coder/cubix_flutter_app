@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cubix_app/core/utils/app_exports.dart';
 import 'package:cubix_app/core/utils/app_utils.dart';
 import 'package:cubix_app/features/settings/providers/settings_provider.dart';
@@ -21,6 +23,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   Future<void> _loadUser() async {
     final googleService = GoogleAuthService();
     final user = await googleService.signInSilently();
+    log('Logged in user: ${user?.idToken}');
     setState(() {
       _googleUser = user;
     });

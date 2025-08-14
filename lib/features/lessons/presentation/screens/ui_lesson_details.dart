@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cubix_app/features/home/models/subject_details_model.dart';
 import 'package:cubix_app/core/utils/app_exports.dart';
 import '../../../../core/utils/text_formatter.dart';
@@ -128,11 +129,25 @@ class _LessonDetailsScreenState extends ConsumerState<LessonDetailsScreen> {
                     children: [
                       if (currentPage.pageDiagram != null) ...[
                         Center(
-                          child: Image.network(
-                            currentPage.pageDiagram ?? '',
-                            fit: BoxFit.cover,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(8),
+                            child: CachedNetworkImage(
+                              imageUrl: currentPage.pageDiagram ?? '',
+                              fit: BoxFit.cover,
+                              placeholder:
+                                  (context, url) => Image.network(
+                                    'https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png',
+                                    fit: BoxFit.cover,
+                                  ),
+                              errorWidget:
+                                  (context, url, error) => Image.network(
+                                    'https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png',
+                                    fit: BoxFit.cover,
+                                  ),
+                            ),
                           ),
                         ),
+
                         SizedBox(height: 20),
                       ],
                       Text(

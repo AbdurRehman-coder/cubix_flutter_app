@@ -165,9 +165,13 @@ class CourseDetailsScreen extends ConsumerWidget {
                                   ),
                                 ),
                               ),
+                              SizedBox(width: 12),
                               if (needToGenerate)
                                 isLoading
-                                    ? DownloadingWidget()
+                                    ? Padding(
+                                      padding: const EdgeInsets.only(bottom: 8),
+                                      child: DownloadingWidget(),
+                                    )
                                     : IconButton(
                                       onPressed: () {
                                         createSectionAndRefresh(

@@ -24,9 +24,10 @@ class ApiClient {
     dio.interceptors.add(
       QueuedInterceptorsWrapper(
         onRequest: (options, handler) async {
-          final token = await prefs.getAccessToken();
-          if (token != null && token.isNotEmpty) {
-            options.headers['Authorization'] = 'Bearer $token';
+          final loggedUser = await prefs.getLoggedUser();
+          if (loggedUser?.accessToken != null) {
+            options.headers['Authorization'] =
+                'Bearer ${loggedUser?.accessToken}';
           }
           handler.next(options);
         },

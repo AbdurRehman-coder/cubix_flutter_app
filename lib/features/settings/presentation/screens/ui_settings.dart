@@ -1,7 +1,7 @@
 import 'dart:developer';
-
 import 'package:cubix_app/core/utils/app_exports.dart';
 import 'package:cubix_app/core/utils/app_utils.dart';
+import 'package:cubix_app/features/auth/models/user_model.dart';
 import 'package:cubix_app/features/settings/providers/settings_provider.dart';
 
 class SettingsScreen extends ConsumerStatefulWidget {
@@ -12,7 +12,7 @@ class SettingsScreen extends ConsumerStatefulWidget {
 }
 
 class _SettingsScreenState extends ConsumerState<SettingsScreen> {
-  GoogleUserData? _googleUser;
+  User? user;
 
   @override
   void initState() {
@@ -21,11 +21,10 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   }
 
   Future<void> _loadUser() async {
-    final googleService = GoogleAuthService();
-    final user = await googleService.signInSilently();
-    log('Logged in user: ${user?.idToken}');
+    final loggedUser = await locator.get<SharedPrefServices>().getLoggedUser();
+    log('Logged in user: ${loggedUser?.user.email}');
     setState(() {
-      _googleUser = user;
+      user = loggedUser?.user;
     });
   }
 
@@ -91,31 +90,23 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                       contentPadding: EdgeInsets.zero,
                       minTileHeight: getProportionateScreenHeight(48),
 
-                      leading:
-                          _googleUser?.account.photoUrl != null
-                              ? CircleAvatar(
-                                radius: 24,
-                                backgroundImage: NetworkImage(
-                                  _googleUser!.account.photoUrl!,
-                                ),
-                              )
-                              : CircleAvatar(
-                                radius: 24,
-                                backgroundColor: AppColors.primaryOrangeColor,
-                                child: Text(
-                                  AppUtils().getInitials(
-                                    _googleUser?.account.displayName,
-                                  ),
-                                  style: AppTextStyles.bodyTextStyle.copyWith(
-                                    color: AppColors.whiteColor,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ),
+                      leading: CircleAvatar(
+                        radius: 24,
+                        backgroundColor: AppColors.primaryOrangeColor,
+                        child: Text(
+                          AppUtils().getInitials(
+                            '${user?.firstName} ${user?.lastName}',
+                          ),
+                          style: AppTextStyles.bodyTextStyle.copyWith(
+                            color: AppColors.whiteColor,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
 
                       title: Text(
-                        _googleUser?.account.displayName ?? 'Guest User',
+                        '${user?.firstName} ${user?.lastName}',
                         style: AppTextStyles.bodyTextStyle.copyWith(
                           color: const Color(0xff282A37),
                           fontSize: 16,
@@ -124,7 +115,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                       ),
 
                       subtitle: Text(
-                        _googleUser?.account.email ?? '',
+                        user?.email ?? '',
                         style: AppTextStyles.bodyTextStyle.copyWith(
                           color: const Color(0xff8E8E93),
                           fontSize: 11,

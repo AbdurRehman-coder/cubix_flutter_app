@@ -48,11 +48,11 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> _handleNavigation() async {
-    final token = await locator.get<SharedPrefServices>().getAccessToken();
-    await Future.delayed(const Duration(seconds: 4));
+    final loggedUser = await locator.get<SharedPrefServices>().getLoggedUser();
+    await Future.delayed(const Duration(seconds: 3));
     if (!mounted) return;
 
-    if (token == null || token.isEmpty) {
+    if (loggedUser == null || loggedUser.accessToken.isNotEmpty) {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (_) => const LoginScreen()),

@@ -60,8 +60,7 @@ class AuthServices {
       );
 
       if (authResponse != null && context.mounted) {
-        localDBServices.saveAccessToken(authResponse.accessToken);
-        localDBServices.saveRefreshToken(authResponse.refreshToken);
+        localDBServices.saveLoggedUser(authResponse);
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (_) => MainScreen()),
@@ -90,14 +89,14 @@ class AuthServices {
 
   Future<AuthResponse?> handleRefreshToken() async {
     try {
-      final refreshToken = await localDBServices.getRefreshToken();
-      if (refreshToken == null || refreshToken.isEmpty) return null;
+      final authResponse = await localDBServices.getLoggedUser();
+      if (authResponse == null) return null;
 
       final response = await apiClient.dio.post(
         "/auth/refresh",
         options: Options(
           headers: {
-            "Authorization": "Bearer $refreshToken",
+            "Authorization": "Bearer ${authResponse.refreshToken}",
             "Content-Type": "application/json",
           },
         ),
@@ -106,8 +105,7 @@ class AuthServices {
       final data = response.data['data'];
       if (response.statusCode == 200 && data != null) {
         final authResponse = AuthResponse.fromJson(data);
-        await localDBServices.saveAccessToken(authResponse.accessToken);
-        await localDBServices.saveRefreshToken(authResponse.refreshToken);
+        await localDBServices.saveLoggedUser(authResponse);
         log('🔄 Token refreshed: ${authResponse.toJson()}');
         return authResponse;
       }

@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:cubix_app/core/utils/app_exports.dart';
+import 'package:cubix_app/core/utils/app_extensions.dart';
 import 'package:cubix_app/features/auth/models/auth_request_model.dart';
 import 'package:cubix_app/features/auth/models/auth_response_model.dart';
 import 'package:dio/dio.dart';
@@ -42,9 +43,11 @@ class AuthServices {
 
   Future<void> handleGoogleAuth(BuildContext context) async {
     try {
+      context.showLoading();
       final userData = await googleAuthService.signIn();
       if (userData == null) {
         if (context.mounted) {
+          context.hideLoading();
           _showError(context, 'Error signing in with Google');
         }
         return;
@@ -61,6 +64,7 @@ class AuthServices {
 
       if (authResponse != null && context.mounted) {
         localDBServices.saveLoggedUser(authResponse);
+        context.hideLoading();
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (_) => MainScreen()),
@@ -68,6 +72,7 @@ class AuthServices {
         );
       }
     } catch (e) {
+      context.hideLoading();
       if (context.mounted) _showError(context, e.toString());
       log('Error signing in with Google');
     }

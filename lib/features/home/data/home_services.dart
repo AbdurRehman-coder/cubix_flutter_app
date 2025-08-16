@@ -1,7 +1,5 @@
 import 'dart:developer';
 import 'package:cubix_app/core/services/api_client.dart';
-import 'package:cubix_app/core/services/app_services.dart';
-import 'package:cubix_app/core/services/shared_prefs_services.dart';
 import 'package:cubix_app/features/home/models/subject_details_model.dart';
 import 'package:dio/dio.dart';
 
@@ -72,13 +70,11 @@ class HomeServices {
   ///  Create feedbacks
   Future<bool> createFeedback({required String description}) async {
     const String url = "/feedbacks";
-    String accessToken =
-        await locator.get<SharedPrefServices>().getAccessToken() ??
-        '12345'; // access token used as deviceId for now, need to be replaced
+
     try {
       final response = await apiClient.dio.post(
         url,
-        data: {"device_id": accessToken, "description": description},
+        data: {"description": description},
       );
       if ((response.statusCode == 200 || response.statusCode == 201) &&
           response.data['data'] != null) {

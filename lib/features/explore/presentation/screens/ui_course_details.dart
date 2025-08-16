@@ -1,11 +1,4 @@
-import 'package:cubix_app/core/services/app_services.dart';
 import 'package:cubix_app/core/utils/app_exports.dart';
-import 'package:cubix_app/core/widgets/w_custom_message.dart';
-import 'package:cubix_app/features/explore/providers/explore_provider.dart';
-import 'package:cubix_app/features/explore/presentation/widgets/w_course_details_shimmer.dart';
-import 'package:cubix_app/features/explore/presentation/widgets/w_topic_item.dart';
-import 'package:cubix_app/features/lessons/data/progress_services.dart';
-import 'package:cubix_app/features/lessons/provider/progress_provider.dart';
 import 'package:collection/collection.dart';
 
 class CourseDetailsScreen extends ConsumerWidget {

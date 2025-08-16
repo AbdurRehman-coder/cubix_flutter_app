@@ -1,8 +1,5 @@
 import 'dart:developer';
-
 import 'package:cubix_app/core/services/api_client.dart';
-import 'package:cubix_app/core/services/app_services.dart';
-import 'package:cubix_app/core/services/shared_prefs_services.dart';
 import 'package:cubix_app/features/lessons/models/progress_model.dart';
 import 'package:dio/dio.dart';
 
@@ -12,11 +9,7 @@ class ProgressServices {
   ProgressServices({required this.apiClient});
 
   Future<List<ProgressModel>?> getAllProgress() async {
-    String accessToken =
-        await locator.get<SharedPrefServices>().getAccessToken() ??
-        '12345'; // access token used as deviceId for now, need to be replaced
-
-    String url = "/progress?device_id=$accessToken";
+    String url = "/progress";
     try {
       Response response = await apiClient.dio.get(url);
 
@@ -39,14 +32,10 @@ class ProgressServices {
 
   Future<ProgressModel?> createProgress({required String subjectId}) async {
     const String url = "/progress";
-    String accessToken =
-        await locator.get<SharedPrefServices>().getAccessToken() ??
-        '12345'; // access token used as deviceId for now, need to be replaced
-
     try {
       Response response = await apiClient.dio.post(
         url,
-        data: {"device_id": accessToken, "subject_id": subjectId},
+        data: {"subject_id": subjectId},
       );
       if (response.statusCode == 201) {
         ProgressModel progress = ProgressModel.fromJson(response.data['data']);

@@ -1,8 +1,3 @@
-import 'package:cubix_app/core/widgets/w_custom_message.dart';
-import 'package:cubix_app/features/explore/providers/explore_provider.dart';
-import 'package:cubix_app/features/home/models/subject_details_model.dart';
-import 'package:cubix_app/features/lessons/models/progress_model.dart';
-import 'package:cubix_app/features/lessons/provider/progress_provider.dart';
 import 'package:cubix_app/core/utils/app_exports.dart';
 
 class LessonsScreen extends ConsumerWidget {

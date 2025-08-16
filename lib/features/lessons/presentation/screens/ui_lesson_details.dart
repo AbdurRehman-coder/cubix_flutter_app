@@ -1,5 +1,4 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cubix_app/features/home/models/subject_details_model.dart';
 import 'package:cubix_app/core/utils/app_exports.dart';
 import '../../../../core/utils/text_formatter.dart';
 

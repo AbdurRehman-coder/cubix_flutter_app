@@ -1,6 +1,4 @@
 import 'package:cubix_app/core/utils/app_exports.dart';
-import 'package:cubix_app/features/explore/providers/explore_provider.dart';
-import '../../../../core/widgets/w_custom_message.dart' show MessageWidget;
 
 class ExploreScreen extends ConsumerStatefulWidget {
   const ExploreScreen({super.key});

@@ -9,26 +9,38 @@ class ApiClient {
 
   ApiClient() : dio = Dio() {
     dio.options.baseUrl = ApiConfig.baseUrl;
-
-    dio.options.connectTimeout = Duration(milliseconds: 1200000);
-    dio.options.receiveTimeout = Duration(milliseconds: 1200000);
+    dio.options.connectTimeout = const Duration(milliseconds: 1200000);
+    dio.options.receiveTimeout = const Duration(milliseconds: 1200000);
     dio.options.responseType = ResponseType.json;
 
-    // Add token interceptor
+    final prefs = SharedPrefServices();
+    final authServices = AuthServices(
+      apiClient: this,
+      googleAuthService: GoogleAuthService(),
+      appleAuthServices: AppleAuthServices(),
+      localDBServices: prefs,
+    );
+
     dio.interceptors.add(
       QueuedInterceptorsWrapper(
         onRequest: (options, handler) async {
-          final prefs = SharedPrefServices();
           final token = await prefs.getAccessToken();
           if (token != null && token.isNotEmpty) {
             options.headers['Authorization'] = 'Bearer $token';
           }
-          handler.next(options); // Continue with request
+          handler.next(options);
         },
       ),
     );
 
-    ///with token and logger
+    dio.interceptors.add(
+      TokenInterceptor(
+        dio: dio,
+        authServices: authServices,
+        localDBServices: prefs,
+      ),
+    );
+
     dio.interceptors.add(
       PrettyDioLogger(
         requestHeader: true,
@@ -45,20 +57,32 @@ class ApiClient {
 
 class TokenInterceptor extends Interceptor {
   final Dio dio;
+  final AuthServices authServices;
+  final SharedPrefServices localDBServices;
 
-  TokenInterceptor({required this.dio});
+  TokenInterceptor({
+    required this.dio,
+    required this.authServices,
+    required this.localDBServices,
+  });
 
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) async {
     if (err.response?.statusCode == 401) {
-      log('⚠️ Token expired. Attempting to refresh...');
+      log('⚠️ Access token expired. Refreshing...');
 
       try {
-        ///
-        /// handle refresh token
+        final newAuth = await authServices.handleRefreshToken();
+        if (newAuth != null) {
+          final newToken = newAuth.accessToken;
+          final clonedRequest = await _retryRequest(
+            err.requestOptions,
+            newToken,
+          );
+          return handler.resolve(clonedRequest);
+        }
       } catch (e) {
-        log('❌ Failed to refresh token: $e');
-        return super.onError(err, handler);
+        log('❌ Token refresh failed: $e');
       }
     }
 

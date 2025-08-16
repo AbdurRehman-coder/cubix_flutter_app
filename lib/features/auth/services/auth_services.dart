@@ -1,5 +1,7 @@
 import 'dart:developer';
 import 'package:cubix_app/core/utils/app_exports.dart';
+import 'package:cubix_app/features/auth/models/auth_request_model.dart';
+import 'package:cubix_app/features/auth/models/auth_response_model.dart';
 import 'package:dio/dio.dart';
 
 class AuthServices {
@@ -15,79 +17,106 @@ class AuthServices {
     required this.localDBServices,
   });
 
-  ///
-  /// Handle Auth Token
-
-  Future<void> handleLogin() async {
-    const String url = "/login";
+  Future<AuthResponse?> handleSignup({
+    required AuthRequestModel authRequestModel,
+  }) async {
     try {
-      Response response = await apiClient.dio.get(url);
-      if (response.statusCode == 200 && response.data['data'] != null) {
-        final dataJson = response.data['data'];
-        log('Login success: ${dataJson.toString()}');
-        localDBServices.saveAccessToken(dataJson['access_token']);
+      final response = await apiClient.dio.post(
+        "/auth/sign-in/google",
+        data: authRequestModel.toJson(),
+        options: Options(headers: {"Content-Type": "application/json"}),
+      );
+      final data = response.data['data'];
+      if (response.statusCode == 200 && data != null) {
+        final authResponse = AuthResponse.fromJson(data);
+        log('Signup success: ${authResponse.toJson()}');
+        return authResponse;
       }
+
+      return null;
     } catch (e) {
-      log('Failed to fetch subjects: $e');
-      throw Exception("Failed to fetch subjects: $e");
+      log('Signup request error: $e');
+      throw Exception("Signup request failed: $e");
     }
   }
 
-  ///
-  /// Handle Google Auth
   Future<void> handleGoogleAuth(BuildContext context) async {
     try {
       final userData = await googleAuthService.signIn();
-      if (userData != null) {
-        localDBServices.saveAccessToken(userData.accessToken ?? '');
-        log('Name: ${userData.account.displayName}');
-        log('Email: ${userData.account.email}');
-        log('Access Token: ${userData.accessToken}');
-        log('ID Token: ${userData.idToken}');
-        if (!context.mounted) return;
+      if (userData == null) {
+        if (context.mounted) {
+          _showError(context, 'Error signing in with Google');
+        }
+        return;
+      }
 
+      final names = (userData.account.displayName ?? '').split(' ');
+      final authResponse = await handleSignup(
+        authRequestModel: AuthRequestModel(
+          firstName: names.first,
+          lastName: names.length > 1 ? names.sublist(1).join(' ') : '',
+          idToken: userData.idToken!,
+        ),
+      );
+
+      if (authResponse != null && context.mounted) {
+        localDBServices.saveAccessToken(authResponse.accessToken);
+        localDBServices.saveRefreshToken(authResponse.refreshToken);
         Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (context) => MainScreen()),
-          (route) => false,
+          MaterialPageRoute(builder: (_) => MainScreen()),
+          (_) => false,
         );
-      } else {
-        if (!context.mounted) return;
-        _showError(context, 'Error signing in with google');
       }
     } catch (e) {
-      if (!context.mounted) return;
-      _showError(context, e.toString());
-      log('Sign-in error: $e');
+      if (context.mounted) _showError(context, e.toString());
+      log('Error signing in with Google');
     }
   }
 
-  ///
-  /// Sign out
-  ///
-
   Future<void> handleSignOut(BuildContext context) async {
     googleAuthService.handleSignOut();
-    locator.get<SharedPrefServices>().clearAccessToken();
+    localDBServices.clearTokens();
     Navigator.pushAndRemoveUntil(
       context,
-      MaterialPageRoute(builder: (context) => LoginScreen()),
-      (route) => false,
+      MaterialPageRoute(builder: (_) => LoginScreen()),
+      (_) => false,
     );
   }
 
-  ///
-  /// Delete account
-  ///
-
   Future<void> handleDelete(BuildContext context) async {
-    googleAuthService.handleSignOut();
-    locator.get<SharedPrefServices>().clearAccessToken();
-    Navigator.pushAndRemoveUntil(
-      context,
-      MaterialPageRoute(builder: (context) => LoginScreen()),
-      (route) => false,
-    );
+    await handleSignOut(context);
+  }
+
+  Future<AuthResponse?> handleRefreshToken() async {
+    try {
+      final refreshToken = await localDBServices.getRefreshToken();
+      if (refreshToken == null || refreshToken.isEmpty) return null;
+
+      final response = await apiClient.dio.post(
+        "/auth/refresh",
+        options: Options(
+          headers: {
+            "Authorization": "Bearer $refreshToken",
+            "Content-Type": "application/json",
+          },
+        ),
+      );
+
+      final data = response.data['data'];
+      if (response.statusCode == 200 && data != null) {
+        final authResponse = AuthResponse.fromJson(data);
+        await localDBServices.saveAccessToken(authResponse.accessToken);
+        await localDBServices.saveRefreshToken(authResponse.refreshToken);
+        log('🔄 Token refreshed: ${authResponse.toJson()}');
+        return authResponse;
+      }
+
+      return null;
+    } catch (e) {
+      log('❌ Refresh token request failed: $e');
+      return null;
+    }
   }
 
   void _showError(BuildContext context, String message) {

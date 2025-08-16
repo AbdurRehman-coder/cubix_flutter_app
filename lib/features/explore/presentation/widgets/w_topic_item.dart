@@ -1,5 +1,4 @@
 import 'package:cubix_app/core/utils/app_exports.dart';
-import 'package:cubix_app/features/home/models/subject_details_model.dart';
 import 'package:cubix_app/features/lessons/presentation/screens/ui_lesson_details.dart';
 
 class TopicItem extends StatelessWidget {
@@ -9,6 +8,7 @@ class TopicItem extends StatelessWidget {
   final bool isCompleted;
   final bool isLocked;
   final bool isReady;
+  final bool isLoading;
   final Function() onCompletion;
 
   const TopicItem({
@@ -20,6 +20,7 @@ class TopicItem extends StatelessWidget {
     required this.isLocked,
     required this.isReady,
     required this.onCompletion,
+    required this.isLoading,
   });
 
   @override
@@ -33,42 +34,55 @@ class TopicItem extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             SizedBox(height: getProportionateScreenHeight(16)),
-            Container(
-              width: 20,
-              height: 20,
-              decoration: BoxDecoration(
-                color:
-                    isCompleted
-                        ? Color(0xFF199051)
-                        : isReady
-                        ? AppColors.primaryOrangeColor
-                        : backgroundColor,
-                border: Border.all(
-                  color:
-                      isCompleted
-                          ? Color(0xFF199051)
-                          : isReady
-                          ? AppColors.primaryOrangeColor
-                          : backgroundColor,
-                  width: 2,
+
+            isLoading
+                ? SizedBox(
+                  width: 20,
+                  height: 20,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 4.5,
+                    strokeCap: StrokeCap.round,
+                    backgroundColor: const Color(0xffFFDBBF),
+                    color: AppColors.primaryOrangeColor,
+                  ),
+                )
+                : Container(
+                  width: 20,
+                  height: 20,
+                  decoration: BoxDecoration(
+                    color:
+                        isCompleted
+                            ? Color(0xFF199051)
+                            : isReady
+                            ? AppColors.primaryOrangeColor
+                            : backgroundColor,
+                    border: Border.all(
+                      color:
+                          isCompleted
+                              ? Color(0xFF199051)
+                              : isReady
+                              ? AppColors.primaryOrangeColor
+                              : backgroundColor,
+                      width: 2,
+                    ),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Center(
+                    child:
+                        isCompleted
+                            ? const Icon(
+                              Icons.check_circle,
+                              size: 15,
+                              color: AppColors.whiteColor,
+                            )
+                            : Icon(
+                              Icons.circle,
+                              color: AppColors.whiteColor,
+                              size: 13,
+                            ),
+                  ),
                 ),
-                shape: BoxShape.circle,
-              ),
-              child: Center(
-                child:
-                    isCompleted
-                        ? const Icon(
-                          Icons.check_circle,
-                          size: 15,
-                          color: AppColors.whiteColor,
-                        )
-                        : Icon(
-                          Icons.circle,
-                          color: AppColors.whiteColor,
-                          size: 13,
-                        ),
-              ),
-            ),
+
             SizedBox(height: 10),
             if (showConnector)
               CustomPaint(
@@ -102,7 +116,7 @@ class TopicItem extends StatelessWidget {
               }
             },
             child: Container(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(15),
               decoration: BoxDecoration(
                 color:
                     needToGenerate ? Color(0xffE3E3E4) : AppColors.whiteColor,

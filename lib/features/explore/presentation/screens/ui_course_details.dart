@@ -1,5 +1,6 @@
 import 'package:cubix_app/core/utils/app_exports.dart';
 import 'package:collection/collection.dart';
+import 'package:cubix_app/features/explore/presentation/widgets/w_downloading_widget.dart';
 
 class CourseDetailsScreen extends ConsumerWidget {
   final String subjectId;
@@ -152,6 +153,7 @@ class CourseDetailsScreen extends ConsumerWidget {
                           padding: const EdgeInsets.only(bottom: 20),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Expanded(
                                 child: Text(
@@ -165,39 +167,7 @@ class CourseDetailsScreen extends ConsumerWidget {
                               ),
                               if (needToGenerate)
                                 isLoading
-                                    ? Padding(
-                                      padding: const EdgeInsets.only(
-                                        right: 8.0,
-                                      ),
-                                      child: Column(
-                                        children: [
-                                          SizedBox(
-                                            width: 27,
-                                            height: 27,
-                                            child: CircularProgressIndicator(
-                                              strokeWidth: 4.5,
-                                              strokeCap: StrokeCap.round,
-                                              backgroundColor: Color(
-                                                0xffFFDBBF,
-                                              ),
-                                              color:
-                                                  AppColors.primaryOrangeColor,
-                                            ),
-                                          ),
-                                          SizedBox(height: 10),
-                                          Text(
-                                            'This may take 3-5 mins',
-                                            style: AppTextStyles.bodyTextStyle
-                                                .copyWith(
-                                                  fontSize: 10,
-                                                  color:
-                                                      AppColors
-                                                          .textSecondaryColor,
-                                                ),
-                                          ),
-                                        ],
-                                      ),
-                                    )
+                                    ? DownloadingWidget()
                                     : IconButton(
                                       onPressed: () {
                                         createSectionAndRefresh(
@@ -265,6 +235,7 @@ class CourseDetailsScreen extends ConsumerWidget {
                                   isCompleted: isCompleted,
                                   isLocked: isLocked,
                                   isReady: isReady,
+                                  isLoading: isLoading,
                                   onCompletion: () async {
                                     final progressService =
                                         locator.get<ProgressServices>();

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cubix_app/core/utils/app_exports.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -49,10 +51,11 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Future<void> _handleNavigation() async {
     final loggedUser = await locator.get<SharedPrefServices>().getLoggedUser();
+    log('Logged user: ${loggedUser?.toJson()}');
     await Future.delayed(const Duration(seconds: 3));
     if (!mounted) return;
 
-    if (loggedUser == null || loggedUser.accessToken.isNotEmpty) {
+    if (loggedUser == null || loggedUser.accessToken.isEmpty) {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (_) => const LoginScreen()),

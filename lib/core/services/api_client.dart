@@ -6,15 +6,17 @@ import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 class ApiClient {
   late final Dio dio;
+  final SharedPrefServices prefs = SharedPrefServices();
+  late final AuthServices authServices;
 
   ApiClient() : dio = Dio() {
-    dio.options.baseUrl = ApiConfig.baseUrl;
-    dio.options.connectTimeout = const Duration(milliseconds: 1200000);
-    dio.options.receiveTimeout = const Duration(milliseconds: 1200000);
-    dio.options.responseType = ResponseType.json;
+    dio.options
+      ..baseUrl = ApiConfig.baseUrl
+      ..connectTimeout = const Duration(milliseconds: 1200000)
+      ..receiveTimeout = const Duration(milliseconds: 1200000)
+      ..responseType = ResponseType.json;
 
-    final prefs = SharedPrefServices();
-    final authServices = AuthServices(
+    authServices = AuthServices(
       apiClient: this,
       googleAuthService: GoogleAuthService(),
       appleAuthServices: AppleAuthServices(),
@@ -24,10 +26,11 @@ class ApiClient {
     dio.interceptors.add(
       QueuedInterceptorsWrapper(
         onRequest: (options, handler) async {
+          // ✅ Attach access token normally
           final loggedUser = await prefs.getLoggedUser();
           if (loggedUser?.accessToken != null) {
             options.headers['Authorization'] =
-                'Bearer ${loggedUser?.accessToken}';
+                'Bearer ${loggedUser!.accessToken}';
           }
           handler.next(options);
         },
@@ -47,7 +50,6 @@ class ApiClient {
         requestHeader: true,
         requestBody: true,
         responseBody: true,
-        responseHeader: false,
         error: true,
         compact: true,
         maxWidth: 90,
@@ -67,35 +69,63 @@ class TokenInterceptor extends Interceptor {
     required this.localDBServices,
   });
 
+  bool _isRefreshing = false;
+  final List<Function(Response)> _retryQueue = [];
+
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) async {
-    if (err.response?.statusCode == 401) {
+    if (err.response?.statusCode == 401 && !_isRefreshing) {
+      _isRefreshing = true;
       log('⚠️ Access token expired. Refreshing...');
 
       try {
+        final loggedUser = await localDBServices.getLoggedUser();
+        if (loggedUser?.refreshToken == null) {
+          return super.onError(err, handler);
+        }
+
+        // ✅ Use refresh token explicitly for refresh call
+        final refreshDio = Dio(BaseOptions(baseUrl: dio.options.baseUrl));
+        refreshDio.options.headers['Authorization'] =
+            'Bearer ${loggedUser!.refreshToken}';
+
         final newAuth = await authServices.handleRefreshToken();
         if (newAuth != null) {
-          final newToken = newAuth.accessToken;
-          final clonedRequest = await _retryRequest(
+          await localDBServices.saveLoggedUser(newAuth);
+          dio.options.headers['Authorization'] =
+              'Bearer ${newAuth.accessToken}';
+
+          // retry queued requests
+          for (var callback in _retryQueue) {
+            callback(
+              await _retryRequest(err.requestOptions, newAuth.accessToken),
+            );
+          }
+          _retryQueue.clear();
+          _isRefreshing = false;
+
+          // retry the failed request itself
+          final retryResponse = await _retryRequest(
             err.requestOptions,
-            newToken,
+            newAuth.accessToken,
           );
-          return handler.resolve(clonedRequest);
+          return handler.resolve(retryResponse);
         }
       } catch (e) {
         log('❌ Token refresh failed: $e');
+      } finally {
+        _isRefreshing = false;
       }
     }
 
     return super.onError(err, handler);
   }
 
-  Future<Response> _retryRequest(RequestOptions requestOptions, String? token) {
+  Future<Response> _retryRequest(RequestOptions requestOptions, String token) {
     final options = Options(
       method: requestOptions.method,
       headers: {...requestOptions.headers, 'Authorization': 'Bearer $token'},
     );
-
     return dio.request(
       requestOptions.path,
       data: requestOptions.data,

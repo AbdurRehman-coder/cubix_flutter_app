@@ -104,10 +104,10 @@ class AuthServices {
 
       final data = response.data['data'];
       if (response.statusCode == 200 && data != null) {
-        final authResponse = AuthResponse.fromJson(data);
-        await localDBServices.saveLoggedUser(authResponse);
-        log('🔄 Token refreshed: ${authResponse.toJson()}');
-        return authResponse;
+        return authResponse.copyWith(
+          accessToken: data['accessToken'],
+          refreshToken: data['refreshToken'],
+        );
       }
 
       return null;

@@ -26,4 +26,17 @@ class AuthResponse {
       "refreshToken": refreshToken,
     };
   }
+
+  /// ✅ copyWith method
+  AuthResponse copyWith({
+    User? user,
+    String? accessToken,
+    String? refreshToken,
+  }) {
+    return AuthResponse(
+      user: user ?? this.user,
+      accessToken: accessToken ?? this.accessToken,
+      refreshToken: refreshToken ?? this.refreshToken,
+    );
+  }
 }

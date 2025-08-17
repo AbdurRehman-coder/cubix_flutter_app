@@ -45,31 +45,22 @@ class AuthServices {
     try {
       context.showLoading();
       final userData = await googleAuthService.signIn();
-      if (userData == null) {
-        if (context.mounted) {
-          context.hideLoading();
-          _showError(context, 'Error signing in with Google');
-        }
-        return;
-      }
+      if (userData != null) {
+        localDBServices.saveAccessToken(userData.accessToken ?? '');
+        log('Name: ${userData.account.displayName}');
+        log('Email: ${userData.account.email}');
+        log('Access Token: ${userData.accessToken}');
+        log('ID Token: ${userData.idToken}');
+        if (!context.mounted) return;
 
-      final names = (userData.account.displayName ?? '').split(' ');
-      final authResponse = await handleSignup(
-        authRequestModel: AuthRequestModel(
-          firstName: names.first,
-          lastName: names.length > 1 ? names.sublist(1).join(' ') : '',
-          idToken: userData.idToken!,
-        ),
-      );
-
-      if (authResponse != null && context.mounted) {
-        localDBServices.saveLoggedUser(authResponse);
-        context.hideLoading();
         Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (_) => MainScreen()),
-          (_) => false,
+          MaterialPageRoute(builder: (context) => MainScreen()),
+          (route) => false,
         );
+      } else {
+        if (!context.mounted) return;
+        _showError(context, 'Error signing in with google');
       }
     } catch (e) {
       context.hideLoading();
@@ -78,9 +69,13 @@ class AuthServices {
     }
   }
 
+  ///
+  /// Sign out
+  ///
+
   Future<void> handleSignOut(BuildContext context) async {
     googleAuthService.handleSignOut();
-    localDBServices.clearTokens();
+    locator.get<SharedPrefServices>().clearAccessToken();
     Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(builder: (_) => LoginScreen()),
@@ -89,37 +84,13 @@ class AuthServices {
   }
 
   Future<void> handleDelete(BuildContext context) async {
-    await handleSignOut(context);
-  }
-
-  Future<AuthResponse?> handleRefreshToken() async {
-    try {
-      final authResponse = await localDBServices.getLoggedUser();
-      if (authResponse == null) return null;
-
-      final response = await apiClient.dio.post(
-        "/auth/refresh",
-        options: Options(
-          headers: {
-            "Authorization": "Bearer ${authResponse.refreshToken}",
-            "Content-Type": "application/json",
-          },
-        ),
-      );
-
-      final data = response.data['data'];
-      if (response.statusCode == 200 && data != null) {
-        return authResponse.copyWith(
-          accessToken: data['accessToken'],
-          refreshToken: data['refreshToken'],
-        );
-      }
-
-      return null;
-    } catch (e) {
-      log('❌ Refresh token request failed: $e');
-      return null;
-    }
+    googleAuthService.handleSignOut();
+    locator.get<SharedPrefServices>().clearAccessToken();
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => LoginScreen()),
+      (route) => false,
+    );
   }
 
   void _showError(BuildContext context, String message) {

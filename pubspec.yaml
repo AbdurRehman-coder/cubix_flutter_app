@@ -45,6 +45,8 @@ dependencies:
   shared_preferences: ^2.5.3
   url_launcher: ^6.3.2
   google_sign_in: ^6.1.5
+  sign_in_with_apple: ^6.1.2
+  crypto: ^3.0.5
   gpt_markdown: ^1.1.2
   markdown_widget: ^2.3.2+8
   flutter_markdown: ^0.7.7+1

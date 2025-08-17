@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:cubix_app/core/utils/app_exports.dart';
 
 class LoginScreen extends ConsumerWidget {
@@ -53,25 +54,25 @@ class LoginScreen extends ConsumerWidget {
               ),
             ),
             SizedBox(height: getProportionateScreenHeight(24)),
-            PrimaryButton(
-              text: 'Apple',
-              icon: SvgPicture.asset(
-                AppAssets.appleIcon,
-                fit: BoxFit.scaleDown,
+            if (Platform.isIOS) ...[
+              PrimaryButton(
+                text: 'Apple',
+                icon: SvgPicture.asset(
+                  AppAssets.appleIcon,
+                  fit: BoxFit.scaleDown,
+                ),
+                height: getProportionateScreenHeight(56),
+                onPressed: () async {
+                  if (currentIndex != 0) {
+                    notifier.state = 0;
+                  }
+                  await locator.get<AuthServices>().signInWithApple(context);
+                },
+                textColor: AppColors.blackColor,
+                backgroundColor: AppColors.whiteColor,
               ),
-              height: getProportionateScreenHeight(56),
-              onPressed: () {
-                if (currentIndex != 0) {
-                  notifier.state = 0;
-                }
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('This feature is coming soon')),
-                );
-              },
-              textColor: AppColors.blackColor,
-              backgroundColor: AppColors.whiteColor,
-            ),
-            SizedBox(height: getProportionateScreenHeight(12)),
+              SizedBox(height: getProportionateScreenHeight(12)),
+            ],
             PrimaryButton(
               text: 'Google',
               height: getProportionateScreenHeight(56),

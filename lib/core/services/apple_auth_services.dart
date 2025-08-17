@@ -8,6 +8,7 @@ import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 class AppleAuthPayload {
   final String identityToken;
   final String? authorizationCode;
+  final String userIdentifier;
   final String rawNonce;
   final String? givenName;
   final String? familyName;
@@ -15,6 +16,7 @@ class AppleAuthPayload {
   const AppleAuthPayload({
     required this.identityToken,
     this.authorizationCode,
+    required this.userIdentifier,
     required this.rawNonce,
     this.givenName,
     this.familyName,
@@ -69,6 +71,7 @@ class AppleAuthServices {
       return AppleAuthPayload(
         identityToken: credential.identityToken!,
         authorizationCode: credential.authorizationCode,
+        userIdentifier: credential.userIdentifier ?? '',
         rawNonce: rawNonce,
         givenName: credential.givenName,
         familyName: credential.familyName,

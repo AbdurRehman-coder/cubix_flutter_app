@@ -66,7 +66,7 @@ class LoginScreen extends ConsumerWidget {
                   if (currentIndex != 0) {
                     notifier.state = 0;
                   }
-                  await locator.get<AuthServices>().signInWithApple(context);
+                  await locator.get<AuthServices>().handleAppleAuth(context);
                 },
                 textColor: AppColors.blackColor,
                 backgroundColor: AppColors.whiteColor,

@@ -213,7 +213,6 @@ class LessonsScreen extends ConsumerWidget {
               ),
               child: Center(
                 child: Image.asset(
-                  //'assets/images/brain_image.png',
                   AppAssets.getIconPath(subject.abbreviation),
                   fit: BoxFit.cover,
                   height: getProportionateScreenHeight(85),

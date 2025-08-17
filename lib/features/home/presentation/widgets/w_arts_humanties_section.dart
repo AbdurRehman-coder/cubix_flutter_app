@@ -53,17 +53,14 @@ class ArtsHumanitiesSection extends StatelessWidget {
                   Positioned(
                     top: 0,
                     right: 0,
-                    child: SvgPicture.asset(
-                      'assets/icons/mask_curve.svg',
-                      height: 93,
-                    ),
+                    child: SvgPicture.asset(AppAssets.maskCurve, height: 93),
                   ),
                   Positioned(
                     top: 8,
                     right: 14,
                     child: Image.asset(
                       AppAssets.getIconPath(item.abbreviation),
-                      // 'assets/images/award_image.png',
+
                       height: 40,
                       width: 40,
                     ),

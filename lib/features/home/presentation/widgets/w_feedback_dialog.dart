@@ -193,7 +193,6 @@ class _FeedbackDialogState extends ConsumerState<FeedbackDialog>
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          // Icon
           Center(
             child: SvgPicture.asset(
               AppAssets.feedbackIcon,
@@ -205,8 +204,6 @@ class _FeedbackDialogState extends ConsumerState<FeedbackDialog>
             ),
           ),
           const SizedBox(height: 24),
-
-          // Title
           Text(
             'Thanks for the feedback!',
             style: AppTextStyles.bodyTextStyle.copyWith(

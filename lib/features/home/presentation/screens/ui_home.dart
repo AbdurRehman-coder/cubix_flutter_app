@@ -19,10 +19,7 @@ class HomeScreen extends ConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SvgPicture.asset(
-                'assets/icons/app_logo_2.svg',
-                fit: BoxFit.scaleDown,
-              ),
+              SvgPicture.asset(AppAssets.appIcon2, fit: BoxFit.scaleDown),
               GestureDetector(
                 child: SvgPicture.asset(
                   AppAssets.feedbackIcon,

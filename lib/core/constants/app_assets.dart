@@ -19,6 +19,12 @@ class AppAssets {
   static const String feedbackIcon = 'assets/icons/feedback_icon.svg';
   static const String bookIcon = 'assets/icons/book_icon.svg';
 
+  static const String downloadIcon = 'assets/icons/download_icon.svg';
+  static const String maskCurve = 'assets/icons/mask_curve.svg';
+  static const String appIcon2 = 'assets/icons/app_logo_2.svg';
+  static const String crossIcon = 'assets/icons/cross_icon.svg';
+  static const String deleteIcon = 'assets/icons/delete_icon.svg';
+
   static String getIconPath(String courseCode) {
     final formattedCode = courseCode.replaceAll(' ', '').toLowerCase();
     return 'assets/images/$formattedCode.png';

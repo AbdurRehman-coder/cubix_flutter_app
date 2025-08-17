@@ -58,10 +58,7 @@ class _LessonDetailsScreenState extends ConsumerState<LessonDetailsScreen> {
                 children: [
                   GestureDetector(
                     onTap: () => Navigator.pop(context),
-                    child: SvgPicture.asset(
-                      'assets/icons/cross_icon.svg',
-                      height: 25,
-                    ),
+                    child: SvgPicture.asset(AppAssets.crossIcon, height: 25),
                   ),
                   const SizedBox(width: 20),
                   Expanded(

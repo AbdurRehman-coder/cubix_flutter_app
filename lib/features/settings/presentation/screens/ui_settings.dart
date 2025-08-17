@@ -398,7 +398,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             showBackIcon: true,
             icon: Center(
               child: SvgPicture.asset(
-                'assets/icons/delete_icon.svg',
+                AppAssets.deleteIcon,
                 height: getProportionateScreenHeight(88),
                 width: getProportionateScreenWidth(92),
                 colorFilter: ColorFilter.mode(

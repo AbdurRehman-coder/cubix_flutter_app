@@ -183,7 +183,7 @@ class CourseDetailsScreen extends ConsumerWidget {
                                       },
 
                                       icon: SvgPicture.asset(
-                                        'assets/icons/download_icon.svg',
+                                        AppAssets.downloadIcon,
                                       ),
                                     ),
                             ],

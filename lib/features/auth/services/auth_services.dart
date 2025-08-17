@@ -130,34 +130,6 @@ class AuthServices {
     }
   }
 
-  Future<AuthResponse?> handleRefreshToken() async {
-    try {
-      final user = await localDBServices.getLoggedUser();
-      if (user == null) return null;
-
-      final res = await apiClient.dio.post(
-        "/auth/refresh",
-        options: Options(
-          headers: {
-            "Authorization": "Bearer ${user.refreshToken}",
-            "Content-Type": "application/json",
-          },
-        ),
-      );
-
-      final data = res.data['data'];
-      if (res.statusCode == 200 && data != null) {
-        final auth = AuthResponse.fromJson(data);
-        await localDBServices.saveLoggedUser(auth);
-        log('🔄 Token refreshed: ${auth.toJson()}');
-        return auth;
-      }
-    } catch (e) {
-      log('❌ Refresh token failed: $e');
-    }
-    return null;
-  }
-
   void _navigateToMain(BuildContext context) {
     Navigator.pushAndRemoveUntil(
       context,

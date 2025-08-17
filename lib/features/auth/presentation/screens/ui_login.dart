@@ -63,7 +63,7 @@ class LoginScreen extends ConsumerWidget {
                           ),
                         ),
                         SizedBox(height: getProportionateScreenHeight(24)),
-                        if (Platform.isAndroid) ...[
+                        if (Platform.isIOS) ...[
                           PrimaryButton(
                             text: 'Apple',
                             icon: SvgPicture.asset(

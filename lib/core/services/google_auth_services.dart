@@ -1,18 +1,12 @@
 import 'dart:developer';
 import 'dart:io';
-
+import 'package:cubix_app/core/services/api_config.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-
-// TODO: Move these to api_config.dart when we refactor config structure
-const String _iosClientId =
-    '461575555761-cgs73navc4hlpc3d6o7h879e9p2q1t09.apps.googleusercontent.com';
-const String _webClientId =
-    '461575555761-vv76t6q5rn7lsabl46v8i0n6su27rmpa.apps.googleusercontent.com';
 
 class GoogleAuthService {
   final GoogleSignIn _googleSignIn = GoogleSignIn(
-    clientId: Platform.isIOS ? _iosClientId : null,
-    serverClientId: _webClientId,
+    clientId: Platform.isIOS ? ApiConfig.iosClientId : null,
+    serverClientId: ApiConfig.webClientId,
     scopes: const ['email', 'profile'],
   );
 

@@ -43,6 +43,7 @@ class AuthServices {
       context.showLoading();
       final user = await googleAuthService.signIn();
       if (user == null) {
+        if (!context.mounted) return;
         context.hideLoading();
         if (context.mounted) _showError(context, 'Google sign-in failed');
         return;
@@ -61,6 +62,7 @@ class AuthServices {
         _navigateToMain(context);
       }
     } catch (e) {
+      if (!context.mounted) return;
       context.hideLoading();
       if (context.mounted) _showError(context, e.toString());
     }
@@ -83,6 +85,7 @@ class AuthServices {
         _navigateToMain(context);
       }
     } on AppleAuthCancelledException {
+      if (!context.mounted) return;
       context.hideLoading();
       log('🚫 Apple sign-in cancelled');
     } on AppleAuthUnsupportedException {
@@ -91,6 +94,7 @@ class AuthServices {
         _showError(context, 'Apple Sign-In is only available on iOS');
       }
     } catch (e) {
+      if (!context.mounted) return;
       context.hideLoading();
       if (context.mounted) _showError(context, 'Apple sign-in failed: $e');
     }

@@ -55,6 +55,7 @@ class _FeedbackDialogState extends ConsumerState<FeedbackDialog>
         setState(() {
           _showLoading = false;
         });
+        if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text("Failed to send feedback")),
         );

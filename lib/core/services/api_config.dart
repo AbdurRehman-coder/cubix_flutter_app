@@ -1,14 +1,20 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 enum Environment { test, prod }
 
 class ApiConfig {
-  static const Environment environment = Environment.prod;
+  static final Environment environment =
+      dotenv.env['ENVIRONMENT'] == 'test' ? Environment.test : Environment.prod;
 
   static String get baseUrl {
     switch (environment) {
       case Environment.prod:
-        return 'https://api.cubixaiapp.com';
+        return dotenv.env['API_URL_PROD'] ?? '';
       case Environment.test:
-        return 'https://api.cubixaiapp.com';
+        return dotenv.env['API_URL_TEST'] ?? '';
     }
   }
+
+  static String get iosClientId => dotenv.env['IOS_CLIENT_ID'] ?? '';
+  static String get webClientId => dotenv.env['WEB_CLIENT_ID'] ?? '';
 }

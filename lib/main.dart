@@ -1,5 +1,6 @@
 import 'package:flutter/services.dart';
 import 'core/utils/app_exports.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -10,7 +11,7 @@ Future<void> main() async {
       statusBarBrightness: Brightness.light,
     ),
   );
-
+  await dotenv.load(fileName: "assets/.env");
   await initServices();
 
   runApp(const ProviderScope(child: MyApp()));

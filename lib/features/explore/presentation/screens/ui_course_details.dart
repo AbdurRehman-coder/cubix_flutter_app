@@ -299,6 +299,7 @@ class CourseDetailsScreen extends ConsumerWidget {
                                       }
 
                                       if (updated) {
+                                        if (!context.mounted) return;
                                         ref.invalidate(progressProvider);
                                         Navigator.pop(context);
                                       }
@@ -326,6 +327,7 @@ class CourseDetailsScreen extends ConsumerWidget {
                                             true;
 
                                         if (needToGenerateNext) {
+                                          if (!context.mounted) return;
                                           await createSectionSilently(
                                             ref: ref,
                                             context: context,

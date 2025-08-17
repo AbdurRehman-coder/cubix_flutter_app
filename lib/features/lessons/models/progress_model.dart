@@ -4,7 +4,6 @@ class ProgressModel {
   final List<String> sectionProgress;
   final List<String> topicProgress;
   final int totalSections;
-  final String deviceId;
   final DateTime createdAt;
   final DateTime updatedAt;
 
@@ -14,7 +13,6 @@ class ProgressModel {
     required this.sectionProgress,
     required this.topicProgress,
     required this.totalSections,
-    required this.deviceId,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -26,7 +24,6 @@ class ProgressModel {
       sectionProgress: List<String>.from(json['section_progress']),
       topicProgress: List<String>.from(json['topic_progress']),
       totalSections: json['total_sections'] ?? 0,
-      deviceId: json['device_id'] ?? '',
       createdAt: DateTime.parse(json['createdAt']),
       updatedAt: DateTime.parse(json['updatedAt']),
     );

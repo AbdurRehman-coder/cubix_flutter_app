@@ -126,7 +126,8 @@ class _LessonDetailsScreenState extends ConsumerState<LessonDetailsScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      if (currentPage.pageDiagram != null) ...[
+                      if (currentPage.pageDiagram != null &&
+                          currentPage.pageDiagram!.isNotEmpty) ...[
                         Center(
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(8),

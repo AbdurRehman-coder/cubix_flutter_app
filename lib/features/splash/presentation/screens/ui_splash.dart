@@ -34,7 +34,7 @@ class _SplashScreenState extends State<SplashScreen> {
             ),
             const Spacer(flex: 3),
             Padding(
-              padding: const EdgeInsets.only(bottom: 90),
+              padding: const EdgeInsets.only(bottom: 20),
               child: Text(
                 'Where learning clicks into place',
                 style: AppTextStyles.bodyTextStyleInter.copyWith(

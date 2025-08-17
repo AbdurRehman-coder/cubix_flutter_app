@@ -111,6 +111,25 @@ class AuthServices {
     );
   }
 
+  Future<void> handleDeleteAccount(BuildContext context) async {
+    String url = '/auth/delete-account';
+    try {
+      final res = await apiClient.dio.post(
+        url,
+        options: Options(headers: {"Content-Type": "application/json"}),
+      );
+      final data = res.data['data'];
+      if (res.statusCode == 200 && data != null) {
+        if (!context.mounted) return;
+        handleSignOut(context);
+      }
+    } catch (e) {
+      if (!context.mounted) return;
+      _showError(context, e.toString());
+      log('❌ delete account error: $e');
+    }
+  }
+
   Future<AuthResponse?> handleRefreshToken() async {
     try {
       final user = await localDBServices.getLoggedUser();

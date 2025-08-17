@@ -411,7 +411,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 'Are you sure you want to delete your account? This action cannot be undone.',
             buttonText: 'Delete',
             onPressed: () {
-              locator.get<AuthServices>().handleSignOut(context);
+              locator.get<AuthServices>().handleDeleteAccount(context);
             },
           ),
     );

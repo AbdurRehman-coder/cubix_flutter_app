@@ -1,8 +1,5 @@
 import 'dart:developer';
 import 'package:cubix_app/core/utils/app_exports.dart';
-import 'package:cubix_app/core/utils/app_utils.dart';
-import 'package:cubix_app/features/auth/models/user_model.dart';
-import 'package:cubix_app/features/settings/providers/settings_provider.dart';
 
 class SettingsScreen extends ConsumerStatefulWidget {
   const SettingsScreen({super.key});

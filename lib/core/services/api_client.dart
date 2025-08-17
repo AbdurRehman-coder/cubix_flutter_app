@@ -6,8 +6,7 @@ import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 class ApiClient {
   late final Dio dio;
-  final SharedPrefServices prefs = SharedPrefServices();
-  late final AuthServices authServices;
+  final prefs = SharedPrefServices();
 
   ApiClient() : dio = Dio() {
     dio.options
@@ -16,35 +15,22 @@ class ApiClient {
       ..receiveTimeout = const Duration(milliseconds: 1200000)
       ..responseType = ResponseType.json;
 
-    authServices = AuthServices(
-      apiClient: this,
-      googleAuthService: GoogleAuthService(),
-      appleAuthServices: AppleAuthServices(),
-      localDBServices: prefs,
-    );
-
+    // Attach access token
     dio.interceptors.add(
       QueuedInterceptorsWrapper(
         onRequest: (options, handler) async {
-          // ✅ Attach access token normally
-          final loggedUser = await prefs.getLoggedUser();
-          if (loggedUser?.accessToken != null) {
-            options.headers['Authorization'] =
-                'Bearer ${loggedUser!.accessToken}';
+          final user = await prefs.getLoggedUser();
+          if (user?.accessToken != null) {
+            options.headers['Authorization'] = 'Bearer ${user!.accessToken}';
           }
           handler.next(options);
         },
       ),
     );
 
-    dio.interceptors.add(
-      TokenInterceptor(
-        dio: dio,
-        authServices: authServices,
-        localDBServices: prefs,
-      ),
-    );
+    dio.interceptors.add(TokenInterceptor(dio, prefs));
 
+    // Logging
     dio.interceptors.add(
       PrettyDioLogger(
         requestHeader: true,
@@ -60,77 +46,61 @@ class ApiClient {
 
 class TokenInterceptor extends Interceptor {
   final Dio dio;
-  final AuthServices authServices;
-  final SharedPrefServices localDBServices;
-
-  TokenInterceptor({
-    required this.dio,
-    required this.authServices,
-    required this.localDBServices,
-  });
-
+  final SharedPrefServices prefs;
   bool _isRefreshing = false;
-  final List<Function(Response)> _retryQueue = [];
+
+  TokenInterceptor(this.dio, this.prefs);
 
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) async {
-    if (err.response?.statusCode == 401 && !_isRefreshing) {
-      _isRefreshing = true;
-      log('⚠️ Access token expired. Refreshing...');
-
-      try {
-        final loggedUser = await localDBServices.getLoggedUser();
-        if (loggedUser?.refreshToken == null) {
-          return super.onError(err, handler);
-        }
-
-        // ✅ Use refresh token explicitly for refresh call
-        final refreshDio = Dio(BaseOptions(baseUrl: dio.options.baseUrl));
-        refreshDio.options.headers['Authorization'] =
-            'Bearer ${loggedUser!.refreshToken}';
-
-        final newAuth = await authServices.handleRefreshToken();
-        if (newAuth != null) {
-          await localDBServices.saveLoggedUser(newAuth);
-          dio.options.headers['Authorization'] =
-              'Bearer ${newAuth.accessToken}';
-
-          // retry queued requests
-          for (var callback in _retryQueue) {
-            callback(
-              await _retryRequest(err.requestOptions, newAuth.accessToken),
-            );
-          }
-          _retryQueue.clear();
-          _isRefreshing = false;
-
-          // retry the failed request itself
-          final retryResponse = await _retryRequest(
-            err.requestOptions,
-            newAuth.accessToken,
-          );
-          return handler.resolve(retryResponse);
-        }
-      } catch (e) {
-        log('❌ Token refresh failed: $e');
-      } finally {
-        _isRefreshing = false;
-      }
+    if (err.response?.statusCode != 401 || _isRefreshing) {
+      return super.onError(err, handler);
     }
 
-    return super.onError(err, handler);
+    _isRefreshing = true;
+    log('⚠️ Access token expired. Refreshing...');
+
+    try {
+      final user = await prefs.getLoggedUser();
+      if (user?.refreshToken == null) return super.onError(err, handler);
+
+      final refreshDio = Dio(BaseOptions(baseUrl: dio.options.baseUrl))
+        ..options.headers['Authorization'] = 'Bearer ${user!.refreshToken}';
+
+      final response = await refreshDio.post('/auth/refresh');
+      log('🔄 Refresh response: ${response.data}');
+
+      final updatedUser = user.copyWith(
+        accessToken: response.data['body']['accessToken'] as String,
+        refreshToken: response.data['body']['refreshToken'] as String,
+      );
+
+      await prefs.saveLoggedUser(updatedUser);
+      dio.options.headers['Authorization'] =
+          'Bearer ${updatedUser.accessToken}';
+
+      final retryResponse = await _retryRequest(
+        err.requestOptions,
+        updatedUser.accessToken,
+      );
+      return handler.resolve(retryResponse);
+    } catch (e) {
+      log('❌ Refresh token failed: $e');
+      return super.onError(err, handler);
+    } finally {
+      _isRefreshing = false;
+    }
   }
 
-  Future<Response> _retryRequest(RequestOptions requestOptions, String token) {
-    final options = Options(
-      method: requestOptions.method,
-      headers: {...requestOptions.headers, 'Authorization': 'Bearer $token'},
-    );
+  Future<Response> _retryRequest(RequestOptions req, String token) {
     return dio.request(
-      requestOptions.path,
-      data: requestOptions.data,
-      queryParameters: requestOptions.queryParameters,
-      options: options,
+      req.path,
+      data: req.data,
+      queryParameters: req.queryParameters,
+      options: Options(
+        method: req.method,
+        headers: {...req.headers, 'Authorization': 'Bearer $token'},
+      ),
     );
   }
 }

@@ -4,6 +4,9 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  //Todo: Need to enable when firebase is connected
+  //   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  // AppUtils.initFirebaseCrashlytics(true);
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,

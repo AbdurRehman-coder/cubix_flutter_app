@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:cubix_app/core/utils/app_exports.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/foundation.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 class AppUtils {
@@ -71,5 +73,18 @@ class AppUtils {
             onPressed: onPressed,
           ),
     );
+  }
+
+  /// Responsible for firebase crash analytics
+  static initFirebaseCrashlytics(bool overrideDebug) async {
+    if (kReleaseMode || overrideDebug) {
+      FlutterError.onError =
+          FirebaseCrashlytics.instance.recordFlutterFatalError;
+      await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
+      PlatformDispatcher.instance.onError = (error, stack) {
+        FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+        return true;
+      };
+    }
   }
 }

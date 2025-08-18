@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:cubix_app/core/utils/app_exports.dart';
 import 'package:cubix_app/core/utils/app_extensions.dart';
+import 'package:cubix_app/core/utils/app_utils.dart';
 import 'package:cubix_app/features/auth/models/auth_request_model.dart';
 import 'package:cubix_app/features/auth/models/auth_response_model.dart';
 import 'package:dio/dio.dart';
@@ -50,10 +51,13 @@ class AuthServices {
       }
 
       final names = (user.account.displayName ?? '').split(' ');
+      final appVersion = await AppUtils.getAppVersion();
       final req = AuthRequestModel(
         idToken: user.idToken ?? '',
         firstName: names.first,
         lastName: names.length > 1 ? names.sublist(1).join(' ') : '',
+        fcmToken: '',
+        appVersion: appVersion,
       );
 
       final auth = await _signup("/auth/sign-in/google", req);
@@ -72,11 +76,14 @@ class AuthServices {
     try {
       context.showLoading();
       final payload = await appleAuthServices.signIn();
+      final appVersion = await AppUtils.getAppVersion();
       final req = AuthRequestModel(
         identityToken: payload.identityToken,
         userIdentifier: payload.userIdentifier,
         firstName: payload.givenName ?? '',
         lastName: payload.familyName ?? '',
+        fcmToken: '',
+        appVersion: appVersion,
       );
 
       final auth = await _signup("/auth/sign-in/apple", req);

@@ -4,6 +4,8 @@ class AuthRequestModel {
   final String userIdentifier;
   final String firstName;
   final String lastName;
+  final String fcmToken;
+  final String appVersion;
 
   AuthRequestModel({
     this.idToken = '',
@@ -11,6 +13,8 @@ class AuthRequestModel {
     this.userIdentifier = '',
     this.firstName = '',
     this.lastName = '',
+    this.fcmToken = '',
+    this.appVersion = '',
   });
 
   Map<String, dynamic> toJson() {
@@ -20,6 +24,8 @@ class AuthRequestModel {
       "userIdentifier": userIdentifier,
       "firstName": firstName,
       "lastName": lastName,
+      "fcmToken": fcmToken,
+      "appVersion": appVersion,
     };
   }
 }

@@ -131,6 +131,60 @@ class AuthServices {
     }
   }
 
+  Future<AuthResponse?> handleRefreshToken(BuildContext context) async {
+    final user = await localDBServices.getLoggedUser();
+    if (user?.refreshToken == null) return null;
+
+    try {
+      final appVersion = await AppUtils.getAppVersion();
+
+      final refreshDio = Dio(
+        BaseOptions(baseUrl: apiClient.dio.options.baseUrl),
+      )..options.headers['Authorization'] = 'Bearer ${user!.refreshToken}';
+
+      final res = await refreshDio.post(
+        '/auth/refresh',
+        data: {"appVersion": appVersion},
+        options: Options(headers: {"Content-Type": "application/json"}),
+      );
+      log('🔄 Refresh token response: ${res.data}');
+      final data = res.data['body'];
+      final message = res.data['message'] ?? 'Unexpected error';
+
+      if (res.statusCode == 200 && data != null) {
+        final updatedUser = user.copyWith(
+          accessToken: data['accessToken'] as String,
+          refreshToken: data['refreshToken'] as String,
+        );
+
+        await localDBServices.saveLoggedUser(updatedUser);
+
+        // ✅ update Dio global headers
+        apiClient.dio.options.headers['Authorization'] =
+            'Bearer ${updatedUser.accessToken}';
+
+        return updatedUser;
+      }
+
+      if (context.mounted) {
+        _handleError(context, res.statusCode, message, '');
+      }
+    } on DioException catch (e) {
+      final status = e.response?.statusCode;
+      final msg = e.response?.data['message'] ?? e.message ?? 'Network error';
+
+      log('❌ Dio refresh error: $msg (status: $status)');
+
+      if (context.mounted) {
+        _handleError(context, status, msg, '');
+      }
+    } catch (e, s) {
+      log('❌ Unexpected refresh error: $e\n$s');
+    }
+
+    return null;
+  }
+
   Future<void> handleSignOut(BuildContext context) async {
     googleAuthService.handleSignOut();
     appleAuthServices.signOut();

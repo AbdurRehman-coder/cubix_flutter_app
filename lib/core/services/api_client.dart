@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:cubix_app/core/services/api_config.dart';
 import 'package:cubix_app/core/utils/app_exports.dart';
+import 'package:cubix_app/main.dart';
 import 'package:dio/dio.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
@@ -61,27 +62,13 @@ class TokenInterceptor extends Interceptor {
     log('⚠️ Access token expired. Refreshing...');
 
     try {
-      final user = await prefs.getLoggedUser();
-      if (user?.refreshToken == null) return super.onError(err, handler);
-
-      final refreshDio = Dio(BaseOptions(baseUrl: dio.options.baseUrl))
-        ..options.headers['Authorization'] = 'Bearer ${user!.refreshToken}';
-
-      final response = await refreshDio.post(
-        '/auth/refresh',
-        data: {"appVersion": AppUtils.getAppVersion()},
+      final updatedUser = await locator.get<AuthServices>().handleRefreshToken(
+        navigatorKey.currentContext!,
       );
-      log('🔄 Refresh response: ${response.data}');
+      log('Updated user after refresh: $updatedUser');
+      if (updatedUser == null) return super.onError(err, handler);
 
-      final updatedUser = user.copyWith(
-        accessToken: response.data['body']['accessToken'] as String,
-        refreshToken: response.data['body']['refreshToken'] as String,
-      );
-
-      await prefs.saveLoggedUser(updatedUser);
-      dio.options.headers['Authorization'] =
-          'Bearer ${updatedUser.accessToken}';
-
+      // retry original request with new token
       final retryResponse = await _retryRequest(
         err.requestOptions,
         updatedUser.accessToken,

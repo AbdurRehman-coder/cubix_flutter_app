@@ -1,29 +1,21 @@
 {
   "project_info": {
-    "project_number": "461575555761",
-    "project_id": "cubixaiapp"
+    "project_number": "834887061084",
+    "project_id": "gtegergrtg",
+    "storage_bucket": "gtegergrtg.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:461575555761:android:debug",
+        "mobilesdk_app_id": "1:834887061084:android:fff5f81e26b4c0b6876099",
         "android_client_info": {
           "package_name": "com.cubixaiapp.mobile"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "461575555761-rq83mkuh591p25vkl2isusn8jovl1qh5.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.cubixaiapp.mobile",
-            "certificate_hash": "d499415f9c5937e4adf909e7ba784927ad6e9b81"
-          }
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDummy-Key-For-Debug-Only"
+          "current_key": "AIzaSyDbx62snrWQuWDvk2g3Z6nLIt3x8Pv8jwA"
         }
       ],
       "services": {

@@ -79,7 +79,7 @@ class AuthServices {
         userIdentifier: user.account.id,
         lastName: names.length > 1 ? names.sublist(1).join(' ') : '',
         fcmToken: '',
-        appVersion: '1.0.2',
+        appVersion: appVersion,
       );
 
       final auth = await _signup("/auth/sign-in/google", req, context);

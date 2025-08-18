@@ -79,7 +79,7 @@ class AuthServices {
         userIdentifier: user.account.id,
         lastName: names.length > 1 ? names.sublist(1).join(' ') : '',
         fcmToken: '',
-        appVersion: appVersion,
+        appVersion: '1.0.2',
       );
 
       final auth = await _signup("/auth/sign-in/google", req, context);
@@ -233,12 +233,22 @@ class AuthServices {
         _showMessage(context, res.data['message']);
       } else {
         final msg = res.data['message'] ?? 'Failed to reactivate user';
+        Navigator.pop(context);
         if (context.mounted) _showMessage(context, msg);
       }
     } catch (e) {
       if (!context.mounted) return;
-      _showMessage(context, e.toString());
-      log('❌ Reactivate user error: $e');
+      Navigator.pop(context);
+
+      if (e is DioException) {
+        final errorMessage =
+            e.response?.data['message'] ?? 'Something went wrong';
+        _showMessage(context, errorMessage);
+        log('❌ Reactivate user error: $errorMessage');
+      } else {
+        _showMessage(context, e.toString());
+        log('❌ Reactivate user error: $e');
+      }
     }
   }
 

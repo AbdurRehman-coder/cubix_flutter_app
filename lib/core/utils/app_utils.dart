@@ -53,4 +53,23 @@ class AppUtils {
           ),
     );
   }
+
+  static void showReactivateDialog({
+    required BuildContext context,
+    required Function() onPressed,
+  }) {
+    if (!context.mounted) return;
+
+    showDialog(
+      context: context,
+      builder:
+          (ctx) => CustomDialog(
+            title: 'Reactivate Account',
+            description:
+                'Looks like your account was deleted. Want it back? Tap here to reactivate.',
+            buttonText: 'Reactivate Now',
+            onPressed: onPressed,
+          ),
+    );
+  }
 }

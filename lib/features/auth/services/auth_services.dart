@@ -41,7 +41,7 @@ class AuthServices {
       }
       if (!context.mounted) return null;
       context.hideLoading();
-      _handleError(context, res.statusCode, message);
+      _handleError(context, res.statusCode, message, request.userIdentifier);
     } on DioException catch (e) {
       final status = e.response?.statusCode;
       final msg = e.response?.data['message'] ?? e.message ?? 'Network error';
@@ -50,12 +50,12 @@ class AuthServices {
 
       if (!context.mounted) return null;
       context.hideLoading();
-      _handleError(context, status, msg);
+      _handleError(context, status, msg, request.userIdentifier);
     } catch (e, s) {
       log('❌ Unexpected signup error: $e\n$s');
       if (context.mounted) {
         context.hideLoading();
-        _showError(context, 'Something went wrong');
+        _showMessage(context, 'Something went wrong');
       }
     }
     return null;
@@ -66,7 +66,7 @@ class AuthServices {
       context.showLoading();
       final user = await googleAuthService.signIn();
       if (user == null) {
-        if (context.mounted) _showError(context, 'Google sign-in failed');
+        if (context.mounted) _showMessage(context, 'Google sign-in failed');
         return;
       }
 
@@ -76,6 +76,7 @@ class AuthServices {
       final req = AuthRequestModel(
         idToken: user.idToken ?? '',
         firstName: names.first,
+        userIdentifier: user.account.id,
         lastName: names.length > 1 ? names.sublist(1).join(' ') : '',
         fcmToken: '',
         appVersion: appVersion,
@@ -87,7 +88,7 @@ class AuthServices {
       }
     } catch (e) {
       log('❌ Google auth error: $e');
-      if (context.mounted) _showError(context, e.toString());
+      if (context.mounted) _showMessage(context, e.toString());
     } finally {
       if (context.mounted) context.hideLoading();
     }
@@ -118,12 +119,12 @@ class AuthServices {
       // No error dialog here because cancellation is intentional
     } on AppleAuthUnsupportedException {
       if (context.mounted) {
-        _showError(context, 'Apple Sign-In is only available on iOS devices');
+        _showMessage(context, 'Apple Sign-In is only available on iOS devices');
       }
     } catch (e, s) {
       log('❌ Apple sign-in error: $e\n$s');
       if (context.mounted) {
-        _showError(context, 'Something went wrong during Apple sign-in');
+        _showMessage(context, 'Something went wrong during Apple sign-in');
       }
     } finally {
       if (context.mounted) context.hideLoading();
@@ -148,15 +149,42 @@ class AuthServices {
         url,
         options: Options(headers: {"Content-Type": "application/json"}),
       );
-      final data = res.data['data'];
-      if (res.statusCode == 200 && data != null) {
+
+      if (res.statusCode == 200) {
         if (!context.mounted) return;
+        _showMessage(context, 'User deleted successfully.');
         handleSignOut(context);
       }
     } catch (e) {
       if (!context.mounted) return;
-      _showError(context, e.toString());
+      _showMessage(context, e.toString());
       log('❌ delete account error: $e');
+    }
+  }
+
+  Future<void> handleReactivateUser(
+    BuildContext context,
+    String authUserId,
+  ) async {
+    const url = '/users/re-activate';
+    try {
+      final res = await apiClient.dio.patch(
+        url,
+        data: {"authUserID": authUserId},
+        options: Options(headers: {"Content-Type": "application/json"}),
+      );
+      if (res.statusCode == 200) {
+        if (!context.mounted) return;
+        Navigator.pop(context);
+        _showMessage(context, res.data['message']);
+      } else {
+        final msg = res.data['message'] ?? 'Failed to reactivate user';
+        if (context.mounted) _showMessage(context, msg);
+      }
+    } catch (e) {
+      if (!context.mounted) return;
+      _showMessage(context, e.toString());
+      log('❌ Reactivate user error: $e');
     }
   }
 
@@ -169,15 +197,26 @@ class AuthServices {
     );
   }
 
-  void _handleError(BuildContext context, int? status, String msg) {
+  void _handleError(
+    BuildContext context,
+    int? status,
+    String msg,
+    String? authUserId,
+  ) {
     if (status == 426) {
       AppUtils.showUpdateDialog(context: context, message: msg);
+    }
+    if (status == 410) {
+      AppUtils.showReactivateDialog(
+        context: context,
+        onPressed: () => handleReactivateUser(context, authUserId!),
+      );
     } else {
-      _showError(context, msg);
+      _showMessage(context, msg);
     }
   }
 
-  void _showError(BuildContext context, String msg) {
+  void _showMessage(BuildContext context, String msg) {
     context.hideLoading();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
   }

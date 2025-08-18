@@ -17,6 +17,8 @@ Future<void> main() async {
   runApp(const ProviderScope(child: MyApp()));
 }
 
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -30,6 +32,7 @@ class MyApp extends StatelessWidget {
       bottom: true,
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
+        navigatorKey: navigatorKey,
         theme: AppTheme.lightTheme,
         title: 'Cubix App',
         home: SplashScreen(),

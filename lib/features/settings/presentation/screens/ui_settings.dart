@@ -91,7 +91,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                         radius: 24,
                         backgroundColor: AppColors.primaryOrangeColor,
                         child: Text(
-                          AppUtils().getInitials(
+                          AppUtils.getInitials(
                             '${user?.firstName} ${user?.lastName}',
                           ),
                           style: AppTextStyles.bodyTextStyle.copyWith(

@@ -1,31 +1,31 @@
-import 'package:cubix_app/core/theming/app_colors.dart';
-import 'package:flutter/material.dart';
+import 'package:cubix_app/core/utils/app_exports.dart';
+
+bool _isLoadingDialogOpen = false;
 
 extension LoadingDialogExt on BuildContext {
   void showLoading() {
+    if (_isLoadingDialogOpen) return;
+    _isLoadingDialogOpen = true;
+
     showDialog(
       context: this,
       barrierDismissible: false,
       builder:
-          (_) => PopScope(
-            canPop: false,
-            child: Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const CircularProgressIndicator(
-                    color: AppColors.primaryOrangeColor,
-                  ),
-                ],
-              ),
+          (_) => const Center(
+            child: CircularProgressIndicator(
+              color: AppColors.primaryOrangeColor,
             ),
           ),
-    );
+    ).then((_) {
+      _isLoadingDialogOpen = false; // reset when closed
+    });
   }
 
   void hideLoading() {
-    if (Navigator.of(this, rootNavigator: true).canPop()) {
+    if (_isLoadingDialogOpen &&
+        Navigator.of(this, rootNavigator: true).canPop()) {
       Navigator.of(this, rootNavigator: true).pop();
+      _isLoadingDialogOpen = false;
     }
   }
 }

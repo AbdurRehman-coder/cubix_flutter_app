@@ -1,7 +1,6 @@
 import 'dart:developer';
 import 'package:cubix_app/core/utils/app_exports.dart';
 import 'package:cubix_app/core/utils/app_extensions.dart';
-import 'package:cubix_app/core/utils/app_utils.dart';
 import 'package:cubix_app/features/auth/models/auth_request_model.dart';
 import 'package:cubix_app/features/auth/models/auth_response_model.dart';
 import 'package:dio/dio.dart';
@@ -19,22 +18,45 @@ class AuthServices {
     required this.localDBServices,
   });
 
-  Future<AuthResponse?> _signup(String path, AuthRequestModel request) async {
+  Future<AuthResponse?> _signup(
+    String path,
+    AuthRequestModel request,
+    BuildContext context,
+  ) async {
     try {
       final res = await apiClient.dio.post(
         path,
         data: request.toJson(),
         options: Options(headers: {"Content-Type": "application/json"}),
       );
+
       final data = res.data['data'];
+      final message = res.data['message'] ?? 'Unexpected error';
+
       if (res.statusCode == 200 && data != null) {
         final auth = AuthResponse.fromJson(data);
         await localDBServices.saveLoggedUser(auth);
         log('✅ Signup success: ${auth.toJson()}');
         return auth;
       }
-    } catch (e) {
-      log('❌ Signup error: $e');
+      if (!context.mounted) return null;
+      context.hideLoading();
+      _handleError(context, res.statusCode, message);
+    } on DioException catch (e) {
+      final status = e.response?.statusCode;
+      final msg = e.response?.data['message'] ?? e.message ?? 'Network error';
+
+      log('❌ Dio signup error: $msg (status: $status)');
+
+      if (!context.mounted) return null;
+      context.hideLoading();
+      _handleError(context, status, msg);
+    } catch (e, s) {
+      log('❌ Unexpected signup error: $e\n$s');
+      if (context.mounted) {
+        context.hideLoading();
+        _showError(context, 'Something went wrong');
+      }
     }
     return null;
   }
@@ -44,14 +66,13 @@ class AuthServices {
       context.showLoading();
       final user = await googleAuthService.signIn();
       if (user == null) {
-        if (!context.mounted) return;
-        context.hideLoading();
         if (context.mounted) _showError(context, 'Google sign-in failed');
         return;
       }
 
       final names = (user.account.displayName ?? '').split(' ');
       final appVersion = await AppUtils.getAppVersion();
+
       final req = AuthRequestModel(
         idToken: user.idToken ?? '',
         firstName: names.first,
@@ -60,22 +81,24 @@ class AuthServices {
         appVersion: appVersion,
       );
 
-      final auth = await _signup("/auth/sign-in/google", req);
+      final auth = await _signup("/auth/sign-in/google", req, context);
       if (auth != null && context.mounted) {
-        context.hideLoading();
         _navigateToMain(context);
       }
     } catch (e) {
-      if (!context.mounted) return;
-      context.hideLoading();
+      log('❌ Google auth error: $e');
       if (context.mounted) _showError(context, e.toString());
+    } finally {
+      if (context.mounted) context.hideLoading();
     }
   }
 
   Future<void> handleAppleAuth(BuildContext context) async {
     try {
       context.showLoading();
+
       final payload = await appleAuthServices.signIn();
+
       final appVersion = await AppUtils.getAppVersion();
       final req = AuthRequestModel(
         identityToken: payload.identityToken,
@@ -86,24 +109,24 @@ class AuthServices {
         appVersion: appVersion,
       );
 
-      final auth = await _signup("/auth/sign-in/apple", req);
+      final auth = await _signup("/auth/sign-in/apple", req, context);
       if (auth != null && context.mounted) {
-        context.hideLoading();
         _navigateToMain(context);
       }
     } on AppleAuthCancelledException {
-      if (!context.mounted) return;
-      context.hideLoading();
-      log('🚫 Apple sign-in cancelled');
+      log('🚫 Apple sign-in cancelled by user');
+      // No error dialog here because cancellation is intentional
     } on AppleAuthUnsupportedException {
       if (context.mounted) {
-        context.hideLoading();
-        _showError(context, 'Apple Sign-In is only available on iOS');
+        _showError(context, 'Apple Sign-In is only available on iOS devices');
       }
-    } catch (e) {
-      if (!context.mounted) return;
-      context.hideLoading();
-      if (context.mounted) _showError(context, 'Apple sign-in failed: $e');
+    } catch (e, s) {
+      log('❌ Apple sign-in error: $e\n$s');
+      if (context.mounted) {
+        _showError(context, 'Something went wrong during Apple sign-in');
+      }
+    } finally {
+      if (context.mounted) context.hideLoading();
     }
   }
 
@@ -119,9 +142,9 @@ class AuthServices {
   }
 
   Future<void> handleDeleteAccount(BuildContext context) async {
-    String url = '/auth/delete-account';
+    String url = '/users';
     try {
-      final res = await apiClient.dio.post(
+      final res = await apiClient.dio.delete(
         url,
         options: Options(headers: {"Content-Type": "application/json"}),
       );
@@ -138,6 +161,7 @@ class AuthServices {
   }
 
   void _navigateToMain(BuildContext context) {
+    context.hideLoading();
     Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(builder: (_) => MainScreen()),
@@ -145,7 +169,16 @@ class AuthServices {
     );
   }
 
+  void _handleError(BuildContext context, int? status, String msg) {
+    if (status == 426) {
+      AppUtils.showUpdateDialog(context: context, message: msg);
+    } else {
+      _showError(context, msg);
+    }
+  }
+
   void _showError(BuildContext context, String msg) {
+    context.hideLoading();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
   }
 }

@@ -67,7 +67,10 @@ class TokenInterceptor extends Interceptor {
       final refreshDio = Dio(BaseOptions(baseUrl: dio.options.baseUrl))
         ..options.headers['Authorization'] = 'Bearer ${user!.refreshToken}';
 
-      final response = await refreshDio.post('/auth/refresh');
+      final response = await refreshDio.post(
+        '/auth/refresh',
+        data: {"appVersion": AppUtils.getAppVersion()},
+      );
       log('🔄 Refresh response: ${response.data}');
 
       final updatedUser = user.copyWith(

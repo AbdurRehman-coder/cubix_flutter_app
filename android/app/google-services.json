@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "834887061084",
-    "project_id": "gtegergrtg",
-    "storage_bucket": "gtegergrtg.firebasestorage.app"
+    "project_number": "549509585818",
+    "project_id": "cubix-ai",
+    "storage_bucket": "cubix-ai.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:834887061084:android:fff5f81e26b4c0b6876099",
+        "mobilesdk_app_id": "1:549509585818:android:ad4b462f11c43e9bf9f823",
         "android_client_info": {
           "package_name": "com.cubixaiapp.mobile"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDbx62snrWQuWDvk2g3Z6nLIt3x8Pv8jwA"
+          "current_key": "AIzaSyDsTaCtHVdRunYqi19WQn8k4oLo5KCBrzc"
         }
       ],
       "services": {

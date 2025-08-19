@@ -50,19 +50,20 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDbx62snrWQuWDvk2g3Z6nLIt3x8Pv8jwA',
-    appId: '1:834887061084:android:fff5f81e26b4c0b6876099',
-    messagingSenderId: '834887061084',
-    projectId: 'gtegergrtg',
-    storageBucket: 'gtegergrtg.firebasestorage.app',
+    apiKey: 'AIzaSyDsTaCtHVdRunYqi19WQn8k4oLo5KCBrzc',
+    appId: '1:549509585818:android:ad4b462f11c43e9bf9f823',
+    messagingSenderId: '549509585818',
+    projectId: 'cubix-ai',
+    storageBucket: 'cubix-ai.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyCZKxmdLSHEMQWqR953-AInkt0RCHQ2N8s',
-    appId: '1:834887061084:ios:6f27efe991351c51876099',
-    messagingSenderId: '834887061084',
-    projectId: 'gtegergrtg',
-    storageBucket: 'gtegergrtg.firebasestorage.app',
+    apiKey: 'AIzaSyDCneYUE8vvVJ7t-EoE-bAVlD8Gf4YuM44',
+    appId: '1:549509585818:ios:0ac0e97822919838f9f823',
+    messagingSenderId: '549509585818',
+    projectId: 'cubix-ai',
+    storageBucket: 'cubix-ai.firebasestorage.app',
     iosBundleId: 'com.cubixaiapp.mobile',
   );
+
 }

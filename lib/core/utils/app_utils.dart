@@ -43,14 +43,12 @@ class AppUtils {
               Navigator.of(ctx, rootNavigator: true).pop();
 
               final url =
-                  Platform.isAndroid
-                      ? "https://play.google.com/store/apps/"
-                      : "https://apps.apple.com/";
+                  Platform.isIOS
+                      ? "https://apps.apple.com/app/idXXXXXXXXX"
+                      : "https://play.google.com/store/apps/details?id=com.cubixaiapp.mobile";
 
               final uri = Uri.parse(url);
-              if (await canLaunchUrl(uri)) {
-                await launchUrl(uri, mode: LaunchMode.externalApplication);
-              }
+              await launchUrl(uri, mode: LaunchMode.externalApplication);
             },
           ),
     );

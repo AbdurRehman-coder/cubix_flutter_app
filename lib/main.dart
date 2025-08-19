@@ -16,7 +16,7 @@ Future<void> main() async {
       statusBarBrightness: Brightness.light,
     ),
   );
-  await dotenv.load(fileName: "assets/.env");
+  await dotenv.load(fileName: ".env");
   await initServices();
 
   runApp(const ProviderScope(child: MyApp()));

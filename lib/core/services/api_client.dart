@@ -3,6 +3,7 @@ import 'package:cubix_app/core/services/api_config.dart';
 import 'package:cubix_app/core/utils/app_exports.dart';
 import 'package:cubix_app/main.dart';
 import 'package:dio/dio.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 class ApiClient {
@@ -54,6 +55,21 @@ class TokenInterceptor extends Interceptor {
 
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) async {
+    FirebaseCrashlytics.instance.recordError(
+      err,
+      err.stackTrace,
+      reason: 'Dio request failed',
+      information: [
+        'URL: ${err.requestOptions.uri}',
+        'Method: ${err.requestOptions.method}',
+        'Headers: ${err.requestOptions.headers}',
+        'Data: ${err.requestOptions.data}',
+        'StatusCode: ${err.response?.statusCode}',
+        'Response: ${err.response?.data}',
+      ],
+      printDetails: true,
+    );
+
     if (err.response?.statusCode != 401 || _isRefreshing) {
       return super.onError(err, handler);
     }

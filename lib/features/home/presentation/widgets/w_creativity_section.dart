@@ -20,6 +20,7 @@ class CreativitySection extends StatelessWidget {
                   padding: const EdgeInsets.only(right: 15),
                   child: GestureDetector(
                     onTap: () {
+                      locator.get<AnalyticServices>().logSubjectView(subjectTitle: item.title, subjectCategory: item.category);
                       Navigator.push(
                         context,
                         MaterialPageRoute(

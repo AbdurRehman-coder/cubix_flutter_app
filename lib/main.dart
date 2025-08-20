@@ -1,6 +1,8 @@
 import 'package:cubix_app/firebase_options.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
+import 'core/services/analytics_services.dart';
 import 'core/utils/app_exports.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
@@ -8,7 +10,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-
+  FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(true);
   AppUtils.initFirebaseCrashlytics(true);
 
   SystemChrome.setSystemUIOverlayStyle(
@@ -40,6 +42,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         navigatorKey: navigatorKey,
+        navigatorObservers: [locator<AnalyticServices>().getAnalyticsObserver()],
         theme: AppTheme.lightTheme,
         title: 'Cubix App',
         home: SplashScreen(),

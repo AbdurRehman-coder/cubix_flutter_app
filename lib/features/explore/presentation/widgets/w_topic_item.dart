@@ -1,6 +1,8 @@
 import 'package:cubix_app/core/utils/app_exports.dart';
 import 'package:cubix_app/features/lessons/presentation/screens/ui_lesson_details.dart';
 
+import '../../../../core/services/analytics_services.dart';
+
 class TopicItem extends StatelessWidget {
   final SubjectTopic topic;
   final bool needToGenerate;
@@ -9,9 +11,10 @@ class TopicItem extends StatelessWidget {
   final bool isLocked;
   final bool isReady;
   final bool isLoading;
+  final String sectionTitle;
   final Function() onCompletion;
 
-  const TopicItem({
+   TopicItem({
     super.key,
     required this.topic,
     required this.needToGenerate,
@@ -21,8 +24,10 @@ class TopicItem extends StatelessWidget {
     required this.isReady,
     required this.onCompletion,
     required this.isLoading,
+    required this.sectionTitle
   });
 
+  final analytics = locator<AnalyticServices>();
   @override
   Widget build(BuildContext context) {
     Color backgroundColor = Color(0xffC7C7C9);
@@ -103,6 +108,7 @@ class TopicItem extends StatelessWidget {
           child: GestureDetector(
             onTap: () {
               if (!needToGenerate) {
+                analytics.logLessonStarted(lessonTitle: topic.topicTitle, sectionTitle:sectionTitle);
                 Navigator.push(
                   context,
                   MaterialPageRoute(

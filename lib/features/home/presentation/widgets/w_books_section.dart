@@ -20,6 +20,7 @@ class BooksSection extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 11, vertical: 0),
               child: GestureDetector(
                 onTap: () {
+                  locator.get<AnalyticServices>().logSubjectView(subjectTitle: subjects[index].title, subjectCategory: subjects[index].category);
                   Navigator.push(
                     context,
                     MaterialPageRoute(

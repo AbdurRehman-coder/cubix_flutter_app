@@ -7,9 +7,12 @@ import 'package:cubix_app/features/home/data/home_services.dart';
 import 'package:cubix_app/features/lessons/data/progress_services.dart';
 import 'package:get_it/get_it.dart';
 
+import 'analytics_services.dart';
+
 final GetIt locator = GetIt.instance;
 
 Future<void> initServices() async {
+  locator.registerSingleton<AnalyticServices>(AnalyticServices());
   final sharedPrefService = await SharedPrefServices.getInstance();
   locator.registerSingleton<SharedPrefServices>(sharedPrefService);
   locator.registerSingleton<ApiClient>(ApiClient());

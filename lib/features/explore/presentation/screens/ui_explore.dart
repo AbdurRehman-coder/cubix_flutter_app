@@ -1,5 +1,7 @@
 import 'package:cubix_app/core/utils/app_exports.dart';
 
+import '../../../../core/services/analytics_services.dart';
+
 class ExploreScreen extends ConsumerStatefulWidget {
   const ExploreScreen({super.key});
 
@@ -27,6 +29,8 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
       }
     });
   }
+
+  final analytics = locator<AnalyticServices>();
 
   @override
   Widget build(BuildContext context) {
@@ -119,6 +123,7 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
                         ),
                         child: GestureDetector(
                           onTap: () {
+                            analytics.logSubjectView(subjectTitle: tempList[index].title, subjectCategory: tempList[index].category);
                             Navigator.push(
                               context,
                               MaterialPageRoute(

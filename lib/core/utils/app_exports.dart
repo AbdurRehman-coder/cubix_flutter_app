@@ -69,3 +69,4 @@ export 'package:cubix_app/features/lessons/models/progress_model.dart';
 export 'package:cubix_app/core/utils/app_utils.dart';
 export 'package:cubix_app/features/auth/models/user_model.dart';
 export 'package:cubix_app/features/settings/providers/settings_provider.dart';
+export 'package:cubix_app/core/services/analytics_services.dart';

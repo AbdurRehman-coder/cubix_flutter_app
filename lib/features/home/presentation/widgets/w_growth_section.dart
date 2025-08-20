@@ -39,8 +39,10 @@ class GrowthSection extends StatelessWidget {
   }
 
   Widget _buildItem(Subject item, BuildContext context) {
+
     return GestureDetector(
       onTap: () {
+        locator.get<AnalyticServices>().logSubjectView(subjectTitle: item.title, subjectCategory: item.category);
         Navigator.push(
           context,
           MaterialPageRoute(

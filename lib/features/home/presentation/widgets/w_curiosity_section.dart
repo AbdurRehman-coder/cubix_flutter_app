@@ -20,6 +20,7 @@ class CuriositySection extends StatelessWidget {
             final item = subjects[index];
             return GestureDetector(
               onTap: () {
+                locator.get<AnalyticServices>().logSubjectView(subjectTitle: item.title, subjectCategory: item.category);
                 Navigator.push(
                   context,
                   MaterialPageRoute(

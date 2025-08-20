@@ -5,11 +5,14 @@ import 'package:collection/collection.dart';
 import 'package:cubix_app/core/utils/text_formatter.dart';
 import 'package:cubix_app/features/explore/presentation/widgets/w_downloading_widget.dart';
 
+import '../../../../core/services/analytics_services.dart';
+
 class CourseDetailsScreen extends ConsumerWidget {
   final String subjectId;
 
-  const CourseDetailsScreen({super.key, required this.subjectId});
+   CourseDetailsScreen({super.key, required this.subjectId});
 
+  final analytics = locator<AnalyticServices>();
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final subjectDetailAsync = ref.watch(subjectDetailProvider(subjectId));
@@ -38,7 +41,7 @@ class CourseDetailsScreen extends ConsumerWidget {
               ),
             );
           }
-          log('Subject category: ${subject.category}');
+
           return SingleChildScrollView(
             child: Column(
               children: [
@@ -180,6 +183,8 @@ class CourseDetailsScreen extends ConsumerWidget {
                                     )
                                     : IconButton(
                                       onPressed: () {
+
+                                        analytics.logSubjectDownloaded(sectionTitle: chapter.sectionTitle, subjectId: subjectId);
                                         createSectionAndRefresh(
                                           ref: ref,
                                           context: context,
@@ -246,7 +251,9 @@ class CourseDetailsScreen extends ConsumerWidget {
                                   isLocked: isLocked,
                                   isReady: isReady,
                                   isLoading: isLoading,
+                                  sectionTitle: chapter.sectionTitle,
                                   onCompletion: () async {
+
                                     final progressService =
                                         locator.get<ProgressServices>();
 
@@ -302,6 +309,9 @@ class CourseDetailsScreen extends ConsumerWidget {
                                                   type: 'section',
                                                 );
                                         if (sectionSuccess) updated = true;
+
+                                        analytics.logLessonCompleted(lessonTitle: topic.topicTitle, sectionTitle: chapter.sectionTitle);
+
                                       }
 
                                       if (updated) {

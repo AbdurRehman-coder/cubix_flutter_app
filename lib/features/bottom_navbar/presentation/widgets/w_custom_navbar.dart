@@ -36,7 +36,7 @@ class CustomBottomNavBar extends ConsumerWidget {
                 notifier.state = index;
                 if (index == 2) {
                   ref.read(selectedCategoryProvider.notifier).state =
-                      CourseCategory.core;
+                      CourseCategory.creativity;
                 }
               },
               child: Column(

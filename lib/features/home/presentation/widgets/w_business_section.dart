@@ -8,7 +8,7 @@ class BusinessSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SectionCard(
-      title: 'Business & Econ',
+      title: 'Growth',
       child: SizedBox(
         height: getProportionateScreenHeight(130),
         child: SingleChildScrollView(

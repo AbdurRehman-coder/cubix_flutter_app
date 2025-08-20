@@ -148,18 +148,16 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
     SubjectsData subjects,
   ) {
     switch (category) {
-      case CourseCategory.core:
-        return subjects.gen;
-      case CourseCategory.business:
-        return subjects.busiEcon;
-      case CourseCategory.mind:
-        return subjects.psyHuman;
-      case CourseCategory.humanities:
-        return subjects.artsHuman;
-      case CourseCategory.health:
-        return subjects.innovation;
-      case CourseCategory.gen:
-        return subjects.healLife;
+      case CourseCategory.creativity:
+        return subjects.creativity;
+      case CourseCategory.curiosity:
+        return subjects.curiosity;
+      case CourseCategory.book:
+        return subjects.books;
+      case CourseCategory.career:
+        return subjects.career;
+      case CourseCategory.growth:
+        return subjects.growth;
     }
   }
 }

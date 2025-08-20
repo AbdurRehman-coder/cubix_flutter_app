@@ -2,7 +2,7 @@ import 'dart:developer';
 import 'package:cubix_app/core/utils/app_exports.dart';
 
 final selectedCategoryProvider = StateProvider<CourseCategory>((ref) {
-  return CourseCategory.core;
+  return CourseCategory.creativity;
 });
 
 final subjectDetailProvider = FutureProvider.family<SubjectDetail?, String>((

@@ -1,14 +1,14 @@
 import 'package:cubix_app/core/utils/app_exports.dart';
 import 'package:cubix_app/features/home/presentation/widgets/w_section_card.dart';
 
-class PsychologySection extends StatelessWidget {
+class CareerSection extends StatelessWidget {
   final List<Subject> subjects;
-  const PsychologySection({super.key, required this.subjects});
+  const CareerSection({super.key, required this.subjects});
 
   @override
   Widget build(BuildContext context) {
     return SectionCard(
-      title: 'Psychology & Behavior',
+      title: 'Careers',
       child: SizedBox(
         height: 80,
         child: ListView.separated(

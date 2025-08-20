@@ -12,12 +12,12 @@ export 'package:cubix_app/features/bottom_navbar/provider/navbar_provider.dart';
 export 'package:flutter_riverpod/flutter_riverpod.dart';
 export 'package:flutter_svg/flutter_svg.dart';
 
-export 'package:cubix_app/features/home/presentation/widgets/w_health_science.dart';
+export 'package:cubix_app/features/home/presentation/widgets/w_books_section.dart';
 export 'package:cubix_app/features/home/presentation/widgets/w_banner_slider.dart';
 export 'package:cubix_app/features/home/presentation/widgets/w_business_section.dart';
-export 'package:cubix_app/features/home/presentation/widgets/w_psychology_section.dart';
-export 'package:cubix_app/features/home/presentation/widgets/w_general_section.dart';
-export 'package:cubix_app/features/home/presentation/widgets/w_arts_humanties_section.dart';
+export 'package:cubix_app/features/home/presentation/widgets/w_career_section.dart';
+export 'package:cubix_app/features/home/presentation/widgets/w_creativity_section.dart';
+export 'package:cubix_app/features/home/presentation/widgets/w_curiosity_section.dart';
 
 export 'package:cubix_app/features/explore/models/course_model.dart';
 export 'package:cubix_app/features/explore/presentation/widgets/w_course_card.dart';

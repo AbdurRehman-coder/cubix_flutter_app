@@ -1,14 +1,14 @@
 import 'package:cubix_app/core/utils/app_exports.dart';
 import 'package:cubix_app/features/home/presentation/widgets/w_section_card.dart';
 
-class ArtsHumanitiesSection extends StatelessWidget {
+class CuriositySection extends StatelessWidget {
   final List<Subject> subjects;
-  const ArtsHumanitiesSection({super.key, required this.subjects});
+  const CuriositySection({super.key, required this.subjects});
 
   @override
   Widget build(BuildContext context) {
     return SectionCard(
-      title: 'Arts & Humanities',
+      title: 'Curiosity',
       child: SizedBox(
         height: getProportionateScreenHeight(100),
         child: ListView.separated(

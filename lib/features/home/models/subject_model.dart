@@ -3,67 +3,86 @@ class Subject {
   final String title;
   final String abbreviation;
   final String category;
+  final String? userCategory; // optional
 
   Subject({
     required this.id,
     required this.title,
     required this.abbreviation,
     required this.category,
+    this.userCategory,
   });
 
   factory Subject.fromJson(Map<String, dynamic> json) {
     return Subject(
-      id: json['_id'],
-      title: json['subject_title'],
-      abbreviation: json['subject_abbreviation'],
-      category: json['subject_category'],
+      id: json.containsKey('_id') ? json['_id'] as String : '',
+      title:
+          json.containsKey('subject_title')
+              ? json['subject_title'] as String
+              : '',
+      abbreviation:
+          json.containsKey('subject_abbreviation')
+              ? json['subject_abbreviation'] as String
+              : '',
+      category:
+          json.containsKey('subject_category')
+              ? json['subject_category'] as String
+              : '',
+      userCategory:
+          json.containsKey('subject_user_category')
+              ? json['subject_user_category'] as String
+              : null,
     );
   }
 }
 
 class SubjectsData {
-  final List<Subject> gen;
-  final List<Subject> healLife;
-  final List<Subject> psyHuman;
-  final List<Subject> artsHuman;
-  final List<Subject> innovation;
-  final List<Subject> busiEcon;
+  final List<Subject> curiosity;
+  final List<Subject> creativity;
+  final List<Subject> career;
+  final List<Subject> books;
+  final List<Subject> growth;
 
   SubjectsData({
-    required this.gen,
-    required this.healLife,
-    required this.psyHuman,
-    required this.artsHuman,
-    required this.innovation,
-    required this.busiEcon,
+    required this.curiosity,
+    required this.creativity,
+    required this.career,
+    required this.books,
+    required this.growth,
   });
 
   factory SubjectsData.fromJson(Map<String, dynamic> json) {
     return SubjectsData(
-      gen:
-          (json['gen'] as List<dynamic>? ?? [])
-              .map((e) => Subject.fromJson(e))
-              .toList(),
-      healLife:
-          (json['heal_life'] as List<dynamic>? ?? [])
-              .map((e) => Subject.fromJson(e))
-              .toList(),
-      psyHuman:
-          (json['psy_human'] as List<dynamic>? ?? [])
-              .map((e) => Subject.fromJson(e))
-              .toList(),
-      artsHuman:
-          (json['arts_human'] as List<dynamic>? ?? [])
-              .map((e) => Subject.fromJson(e))
-              .toList(),
-      busiEcon:
-          (json['busi_econ'] as List<dynamic>? ?? [])
-              .map((e) => Subject.fromJson(e))
-              .toList(),
-      innovation:
-          (json['innovation'] as List<dynamic>? ?? [])
-              .map((e) => Subject.fromJson(e))
-              .toList(),
+      curiosity:
+          json.containsKey('curiosity')
+              ? (json['curiosity'] as List<dynamic>)
+                  .map((e) => Subject.fromJson(e))
+                  .toList()
+              : [],
+      creativity:
+          json.containsKey('creativity')
+              ? (json['creativity'] as List<dynamic>)
+                  .map((e) => Subject.fromJson(e))
+                  .toList()
+              : [],
+      career:
+          json.containsKey('career')
+              ? (json['career'] as List<dynamic>)
+                  .map((e) => Subject.fromJson(e))
+                  .toList()
+              : [],
+      books:
+          json.containsKey('book')
+              ? (json['book'] as List<dynamic>)
+                  .map((e) => Subject.fromJson(e))
+                  .toList()
+              : [],
+      growth:
+          json.containsKey('growth')
+              ? (json['growth'] as List<dynamic>)
+                  .map((e) => Subject.fromJson(e))
+                  .toList()
+              : [],
     );
   }
 }

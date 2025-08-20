@@ -17,7 +17,7 @@ class CreativitySection extends StatelessWidget {
           children:
               subjects.map((item) {
                 return Padding(
-                  padding: const EdgeInsets.only(right: 20),
+                  padding: const EdgeInsets.only(right: 15),
                   child: GestureDetector(
                     onTap: () {
                       Navigator.push(

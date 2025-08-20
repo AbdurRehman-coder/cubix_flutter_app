@@ -19,7 +19,17 @@ class HomeScreen extends ConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SvgPicture.asset(AppAssets.appIcon2, fit: BoxFit.scaleDown),
+              //SvgPicture.asset(AppAssets.appIcon2, fit: BoxFit.scaleDown),
+              Text(
+                'CUBIX',
+                style: AppTextStyles.headingTextStyle.copyWith(
+                  fontSize: 30,
+                  color: AppColors.blackColor,
+                  fontWeight: FontWeight.w700,
+                  letterSpacing: 0,
+                  height: 30 / 22,
+                ),
+              ),
               GestureDetector(
                 child: SvgPicture.asset(
                   AppAssets.feedbackIcon,
@@ -29,7 +39,7 @@ class HomeScreen extends ConsumerWidget {
               ),
             ],
           ),
-          SizedBox(height: getProportionateScreenHeight(30)),
+          SizedBox(height: getProportionateScreenHeight(20)),
 
           subjectsAsync.when(
             loading: () => HomeShimmer(),

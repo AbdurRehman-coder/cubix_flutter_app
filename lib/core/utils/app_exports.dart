@@ -14,7 +14,7 @@ export 'package:flutter_svg/flutter_svg.dart';
 
 export 'package:cubix_app/features/home/presentation/widgets/w_books_section.dart';
 export 'package:cubix_app/features/home/presentation/widgets/w_banner_slider.dart';
-export 'package:cubix_app/features/home/presentation/widgets/w_business_section.dart';
+export 'package:cubix_app/features/home/presentation/widgets/w_growth_section.dart';
 export 'package:cubix_app/features/home/presentation/widgets/w_career_section.dart';
 export 'package:cubix_app/features/home/presentation/widgets/w_creativity_section.dart';
 export 'package:cubix_app/features/home/presentation/widgets/w_curiosity_section.dart';

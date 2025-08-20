@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cubix_app/core/utils/app_exports.dart';
 import 'package:collection/collection.dart';
 import 'package:cubix_app/features/explore/presentation/widgets/w_downloading_widget.dart';
@@ -35,7 +37,7 @@ class CourseDetailsScreen extends ConsumerWidget {
               ),
             );
           }
-
+          log('Subject category: ${subject.category}');
           return SingleChildScrollView(
             child: Column(
               children: [

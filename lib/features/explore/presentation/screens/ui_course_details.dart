@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:cubix_app/core/utils/app_exports.dart';
 import 'package:collection/collection.dart';
+import 'package:cubix_app/core/utils/text_formatter.dart';
 import 'package:cubix_app/features/explore/presentation/widgets/w_downloading_widget.dart';
 
 class CourseDetailsScreen extends ConsumerWidget {
@@ -101,13 +102,16 @@ class CourseDetailsScreen extends ConsumerWidget {
                         ),
                       ),
                       SizedBox(height: getProportionateScreenHeight(10)),
-                      Text(
-                        subject.overview,
-                        style: AppTextStyles.bodyTextStyle.copyWith(
-                          fontSize: 14,
-                          color: AppColors.blackColor,
-                          fontWeight: FontWeight.w400,
-                          height: 1.4,
+
+                      RichText(
+                        text: TextFormatter.formatText(
+                          subject.overview,
+                          AppTextStyles.bodyTextStyle.copyWith(
+                            fontSize: 15,
+                            color: AppColors.blackColor,
+                            fontWeight: FontWeight.w400,
+                            height: 1.4,
+                          ),
                         ),
                       ),
                     ],

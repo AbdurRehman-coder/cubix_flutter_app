@@ -35,7 +35,7 @@ class AppAssets {
       case 'creativity':
         return 'assets/images/com101.png';
       case 'growth':
-        return 'assets/images/mgt101.png';
+        return 'assets/images/econ102.png';
       case 'career':
         return 'assets/images/psy101.png';
       case 'curiosity':

@@ -10,8 +10,9 @@ import 'package:get_it/get_it.dart';
 final GetIt locator = GetIt.instance;
 
 Future<void> initServices() async {
+  final sharedPrefService = await SharedPrefServices.getInstance();
+  locator.registerSingleton<SharedPrefServices>(sharedPrefService);
   locator.registerSingleton<ApiClient>(ApiClient());
-  locator.registerSingleton<SharedPrefServices>(SharedPrefServices());
   locator.registerSingleton<GoogleAuthService>(GoogleAuthService());
   locator.registerSingleton<AppleAuthServices>(AppleAuthServices());
 

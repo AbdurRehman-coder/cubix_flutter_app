@@ -26,9 +26,25 @@ class AppAssets {
   static const String deleteIcon = 'assets/icons/delete_icon.svg';
 
   static String getIconPath(String courseCode) {
-    // final formattedCode = courseCode.replaceAll(' ', '').toLowerCase();
-    // return 'assets/images/$formattedCode.png';
-    return 'assets/images/com101.png';
+    final formattedCode = courseCode.replaceAll(' ', '').toLowerCase();
+    return 'assets/images/$formattedCode.png';
+  }
+
+  static String getIconPathFromCategory(String category) {
+    switch (category.toLowerCase()) {
+      case 'creativity':
+        return 'assets/images/com101.png';
+      case 'growth':
+        return 'assets/images/mgt101.png';
+      case 'career':
+        return 'assets/images/psy101.png';
+      case 'curiosity':
+        return 'assets/images/clas101.png';
+      case 'book':
+        return 'assets/images/hlth101.png';
+      default:
+        return 'assets/images/com101.png'; // fallback
+    }
   }
 
   static Color getCategoryColor(String categoryName) {

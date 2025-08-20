@@ -36,7 +36,7 @@ class CreativitySection extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Image.asset(
-                            AppAssets.getIconPath(item.abbreviation),
+                            AppAssets.getIconPathFromCategory(item.category),
                             height: 45,
                             width: 45,
                             fit: BoxFit.cover,

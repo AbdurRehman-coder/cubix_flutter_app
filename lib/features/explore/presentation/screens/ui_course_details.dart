@@ -64,7 +64,7 @@ class CourseDetailsScreen extends ConsumerWidget {
                             ),
                           ),
                           Image.asset(
-                            AppAssets.getIconPath(subject.abbreviation),
+                            AppAssets.getIconPathFromCategory(subject.category),
                             width: 150,
                             height: 150,
                             fit: BoxFit.cover,

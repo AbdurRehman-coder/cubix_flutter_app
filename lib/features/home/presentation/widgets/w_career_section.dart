@@ -10,12 +10,11 @@ class CareerSection extends StatelessWidget {
     return SectionCard(
       title: 'Careers',
       child: SizedBox(
-        height: 80,
+        height: getProportionateScreenHeight(100),
         child: ListView.separated(
-          padding: EdgeInsets.zero,
           scrollDirection: Axis.horizontal,
           itemCount: subjects.length,
-          separatorBuilder: (_, __) => const SizedBox(width: 10),
+          separatorBuilder: (_, __) => const SizedBox(width: 12),
           itemBuilder: (context, index) {
             final item = subjects[index];
             return GestureDetector(
@@ -28,68 +27,128 @@ class CareerSection extends StatelessWidget {
                   ),
                 );
               },
-              child: Container(
-                padding: const EdgeInsets.fromLTRB(16, 16, 7, 16),
-                width: 180,
-                decoration: BoxDecoration(
-                  color: const Color(0xFFE6F0FE),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            item.title,
-                            maxLines: 2,
-                            style: AppTextStyles.bodyTextStyle.copyWith(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w700,
-                              color: AppColors.blackColor,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            item.abbreviation,
-                            style: AppTextStyles.bodyTextStyle.copyWith(
-                              fontSize: 11,
-                              fontWeight: FontWeight.w400,
-                              color: AppColors.textSecondaryColor,
-                            ),
-                          ),
-                        ],
+              child: Stack(
+                children: [
+                  Container(
+                    width: 123,
+                    height: 100,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16),
+                      color: const Color(0xFFC1DBFD),
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 13,
+                      vertical: 15,
+                    ),
+                    alignment: Alignment.bottomLeft,
+                    child: Text(
+                      item.title,
+                      style: AppTextStyles.bodyTextStyle.copyWith(
+                        fontSize: 14,
+                        color: AppColors.blackColor,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
+                  ),
 
-                    SizedBox(
-                      width: 20,
-                      height: 20,
-                      child: IconButton(
-                        onPressed: () {},
-                        style: IconButton.styleFrom(
-                          padding: EdgeInsets.zero,
-                          iconSize: 12,
-                          backgroundColor: AppColors.whiteColor,
-                        ),
-                        icon: Icon(
-                          Icons.arrow_forward_ios,
-                          size: 12,
-                          color: AppColors.greyColor,
-                        ),
-                      ),
+                  Positioned(
+                    top: 8,
+                    right: 14,
+                    child: Image.asset(
+                      AppAssets.getIconPathFromCategory(item.category),
+                      // AppAssets.getIconPath(item.abbreviation),
+                      height: 40,
+                      width: 40,
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             );
           },
         ),
       ),
+
+      //  SizedBox(
+      //   height: 80,
+      //   child: ListView.separated(
+      //     padding: EdgeInsets.zero,
+      //     scrollDirection: Axis.horizontal,
+      //     itemCount: subjects.length,
+      //     separatorBuilder: (_, __) => const SizedBox(width: 10),
+      //     itemBuilder: (context, index) {
+      //       final item = subjects[index];
+      //       return GestureDetector(
+      //         onTap: () {
+      //           Navigator.push(
+      //             context,
+      //             MaterialPageRoute(
+      //               builder:
+      //                   (context) => CourseDetailsScreen(subjectId: item.id),
+      //             ),
+      //           );
+      //         },
+      //         child: Container(
+      //           padding: const EdgeInsets.fromLTRB(16, 16, 7, 16),
+      //           width: 180,
+      //           decoration: BoxDecoration(
+      //             color: const Color(0xFFE6F0FE),
+      //             borderRadius: BorderRadius.circular(12),
+      //           ),
+      //           child: Row(
+      //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      //             crossAxisAlignment: CrossAxisAlignment.end,
+      //             children: [
+      //               Expanded(
+      //                 child: Column(
+      //                   crossAxisAlignment: CrossAxisAlignment.start,
+      //                   children: [
+      //                     Text(
+      //                       item.title,
+      //                       maxLines: 2,
+      //                       style: AppTextStyles.bodyTextStyle.copyWith(
+      //                         fontSize: 12,
+      //                         fontWeight: FontWeight.w700,
+      //                         color: AppColors.blackColor,
+      //                         overflow: TextOverflow.ellipsis,
+      //                       ),
+      //                     ),
+      //                     const SizedBox(height: 4),
+      //                     Text(
+      //                       item.abbreviation,
+      //                       style: AppTextStyles.bodyTextStyle.copyWith(
+      //                         fontSize: 11,
+      //                         fontWeight: FontWeight.w400,
+      //                         color: AppColors.textSecondaryColor,
+      //                       ),
+      //                     ),
+      //                   ],
+      //                 ),
+      //               ),
+
+      //               SizedBox(
+      //                 width: 20,
+      //                 height: 20,
+      //                 child: IconButton(
+      //                   onPressed: () {},
+      //                   style: IconButton.styleFrom(
+      //                     padding: EdgeInsets.zero,
+      //                     iconSize: 12,
+      //                     backgroundColor: AppColors.whiteColor,
+      //                   ),
+      //                   icon: Icon(
+      //                     Icons.arrow_forward_ios,
+      //                     size: 12,
+      //                     color: AppColors.greyColor,
+      //                   ),
+      //                 ),
+      //               ),
+      //             ],
+      //           ),
+      //         ),
+      //       );
+      //     },
+      //   ),
+      // ),
     );
   }
 }

@@ -28,7 +28,7 @@ class CourseCard extends StatelessWidget {
               ),
               child: Center(
                 child: Image.asset(
-                  AppAssets.getIconPath(subject.abbreviation),
+                  AppAssets.getIconPathFromCategory(subject.category),
                   fit: BoxFit.cover,
                   height: 91,
                   width: 91,

@@ -1,3 +1,4 @@
+import 'package:cubix_app/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
 import 'core/utils/app_exports.dart';
@@ -6,7 +7,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   AppUtils.initFirebaseCrashlytics(true);
   SystemChrome.setSystemUIOverlayStyle(

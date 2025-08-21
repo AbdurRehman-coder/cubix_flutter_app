@@ -74,7 +74,7 @@ class HomeScreen extends ConsumerWidget {
                   SizedBox(height: getProportionateScreenHeight(24)),
                   GrowthSection(subjects: subjects.growth),
                   SizedBox(height: getProportionateScreenHeight(24)),
-                  CareerSection(subjects: subjects.career),
+                  CareerSection(subjects: subjects.careers),
                   SizedBox(height: getProportionateScreenHeight(24)),
                   CuriositySection(subjects: subjects.curiosity),
                   SizedBox(height: getProportionateScreenHeight(24)),

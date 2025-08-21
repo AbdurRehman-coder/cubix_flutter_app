@@ -39,14 +39,14 @@ class Subject {
 class SubjectsData {
   final List<Subject> curiosity;
   final List<Subject> creativity;
-  final List<Subject> career;
+  final List<Subject> careers;
   final List<Subject> books;
   final List<Subject> growth;
 
   SubjectsData({
     required this.curiosity,
     required this.creativity,
-    required this.career,
+    required this.careers,
     required this.books,
     required this.growth,
   });
@@ -65,9 +65,9 @@ class SubjectsData {
                   .map((e) => Subject.fromJson(e))
                   .toList()
               : [],
-      career:
-          json.containsKey('career')
-              ? (json['career'] as List<dynamic>)
+      careers:
+          json.containsKey('careers')
+              ? (json['careers'] as List<dynamic>)
                   .map((e) => Subject.fromJson(e))
                   .toList()
               : [],

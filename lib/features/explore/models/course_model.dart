@@ -1,7 +1,7 @@
 enum CourseCategory {
   creativity('creativity', 'Creativity'),
   growth('growth', 'Growth '),
-  career('career', 'Careers '),
+  careers('careers', 'Careers '),
   curiosity('curiosity', 'Curiosity'),
   book('book', 'Books');
 
@@ -19,8 +19,8 @@ CourseCategory getCategoryFromTitle(String title) {
       return CourseCategory.curiosity;
     case 'book':
       return CourseCategory.book;
-    case 'career':
-      return CourseCategory.career;
+    case 'careers':
+      return CourseCategory.careers;
     case 'growth':
       return CourseCategory.growth;
     default:

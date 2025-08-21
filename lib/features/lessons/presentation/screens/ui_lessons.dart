@@ -90,7 +90,7 @@ class LessonsScreen extends ConsumerWidget {
                         ),
                         itemCount: activeList.length,
                         itemBuilder: (context, index) {
-                          bool isLastRow = index >= (15 - 2);
+                          bool isLastRow = index >= (activeList.length - 2);
                           final subjectDetailAsync = ref.watch(
                             subjectDetailProvider(activeList[index].subject),
                           );

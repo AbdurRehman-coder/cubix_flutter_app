@@ -1,7 +1,5 @@
 import 'package:cubix_app/core/utils/app_exports.dart';
 
-import '../../../../core/services/analytics_services.dart';
-
 class ExploreScreen extends ConsumerStatefulWidget {
   const ExploreScreen({super.key});
 
@@ -114,7 +112,7 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
                     ),
                     itemCount: tempList.length,
                     itemBuilder: (context, index) {
-                      bool isLastRow = index >= (15 - 2);
+                      bool isLastRow = index >= (tempList.length - 2);
 
                       return Padding(
                         padding: EdgeInsets.only(
@@ -123,7 +121,10 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
                         ),
                         child: GestureDetector(
                           onTap: () {
-                            analytics.logSubjectView(subjectTitle: tempList[index].title, subjectCategory: tempList[index].category);
+                            analytics.logSubjectView(
+                              subjectTitle: tempList[index].title,
+                              subjectCategory: tempList[index].category,
+                            );
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -159,8 +160,8 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
         return subjects.curiosity;
       case CourseCategory.book:
         return subjects.books;
-      case CourseCategory.career:
-        return subjects.career;
+      case CourseCategory.careers:
+        return subjects.careers;
       case CourseCategory.growth:
         return subjects.growth;
     }

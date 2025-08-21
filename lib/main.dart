@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         navigatorKey: navigatorKey,
         navigatorObservers: [
-          locator<AnalyticServices>().getAnalyticsObserver(),
+          FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance),
         ],
         theme: AppTheme.lightTheme,
         title: 'Cubix App',

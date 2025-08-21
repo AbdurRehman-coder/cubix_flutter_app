@@ -50,9 +50,9 @@ class CareerSection extends StatelessWidget {
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: AppTextStyles.bodyTextStyle.copyWith(
-                        fontSize: 14,
                         color: AppColors.blackColor,
-                        fontWeight: FontWeight.bold,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w700,
                       ),
                     ),
                   ),

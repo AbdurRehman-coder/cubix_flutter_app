@@ -70,3 +70,9 @@ export 'package:cubix_app/core/utils/app_utils.dart';
 export 'package:cubix_app/features/auth/models/user_model.dart';
 export 'package:cubix_app/features/settings/providers/settings_provider.dart';
 export 'package:cubix_app/core/services/analytics_services.dart';
+
+export 'package:cubix_app/firebase_options.dart';
+export 'package:firebase_analytics/firebase_analytics.dart';
+export 'package:firebase_core/firebase_core.dart';
+export 'package:flutter/services.dart';
+export 'package:flutter_dotenv/flutter_dotenv.dart';

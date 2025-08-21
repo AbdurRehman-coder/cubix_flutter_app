@@ -48,7 +48,7 @@ class _LessonDetailsScreenState extends ConsumerState<LessonDetailsScreen> {
             ),
             padding: const EdgeInsets.only(
               left: 16,
-              right: 65,
+              right: 16,
               top: 21,
               bottom: 20,
             ),
@@ -57,10 +57,14 @@ class _LessonDetailsScreenState extends ConsumerState<LessonDetailsScreen> {
               child: Row(
                 children: [
                   GestureDetector(
-                    onTap: () => Navigator.pop(context),
-                    child: SvgPicture.asset(AppAssets.crossIcon, height: 25),
+                    onTap: _handleBackButtonPress,
+                    child: Icon(
+                      Icons.keyboard_arrow_left_rounded,
+                      color: AppColors.blackColor,
+                      size: 35,
+                    ),
                   ),
-                  const SizedBox(width: 20),
+                  const SizedBox(width: 12),
                   Expanded(
                     child: Container(
                       padding: EdgeInsets.all(2),
@@ -84,6 +88,12 @@ class _LessonDetailsScreenState extends ConsumerState<LessonDetailsScreen> {
                         ),
                       ),
                     ),
+                  ),
+
+                  const SizedBox(width: 20),
+                  GestureDetector(
+                    onTap: () => Navigator.pop(context),
+                    child: SvgPicture.asset(AppAssets.crossIcon, height: 25),
                   ),
                 ],
               ),
@@ -215,6 +225,23 @@ class _LessonDetailsScreenState extends ConsumerState<LessonDetailsScreen> {
       setState(() {
         showLoading = false;
       });
+    }
+  }
+
+  Future<void> _handleBackButtonPress() async {
+    if (currentStep > 0) {
+      setState(() {
+        currentStep--;
+      });
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (_scrollController.hasClients) {
+          _scrollController.jumpTo(0);
+        }
+      });
+    } else {
+      // Optional: If you're on the first step, you can either pop the screen
+      // or disable the back button
+      Navigator.of(context).pop();
     }
   }
 }

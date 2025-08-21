@@ -20,7 +20,10 @@ class BooksSection extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 11, vertical: 0),
               child: GestureDetector(
                 onTap: () {
-                  locator.get<AnalyticServices>().logSubjectView(subjectTitle: subjects[index].title, subjectCategory: subjects[index].category);
+                  locator.get<AnalyticServices>().logSubjectView(
+                    subjectTitle: subjects[index].title,
+                    subjectCategory: subjects[index].category,
+                  );
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -44,20 +47,23 @@ class BooksSection extends StatelessWidget {
                         Positioned(
                           left: getProportionateScreenWidth(10),
                           right: 0,
-                          top: getProportionateScreenHeight(16),
-                          bottom: getProportionateScreenHeight(32),
+                          top: getProportionateScreenHeight(40),
+
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text(
-                                subjects[index].title,
-                                textAlign: TextAlign.center,
-                                maxLines: 4,
-                                overflow: TextOverflow.ellipsis,
-                                style: AppTextStyles.bodyTextStyle.copyWith(
-                                  fontSize: 10,
-                                  color: AppColors.whiteColor,
-                                  fontWeight: FontWeight.bold,
+                              SizedBox(
+                                width: getProportionateScreenWidth(80),
+                                child: Text(
+                                  subjects[index].title,
+                                  textAlign: TextAlign.center,
+                                  maxLines: 4,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: AppTextStyles.bodyTextStyle.copyWith(
+                                    fontSize: 12,
+                                    color: AppColors.whiteColor,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
                             ],

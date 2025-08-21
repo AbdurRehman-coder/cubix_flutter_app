@@ -22,7 +22,7 @@ class _LessonDetailsScreenState extends ConsumerState<LessonDetailsScreen> {
 
   bool showLoading = false;
 
-  final ScrollController _scrollController = ScrollController(); // 👈 Add this
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void dispose() {

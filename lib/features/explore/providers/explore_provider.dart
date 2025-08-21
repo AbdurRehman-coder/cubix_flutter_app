@@ -124,3 +124,42 @@ Future<void> _downloadSection({
     }
   }
 }
+
+final downloadManagerProvider =
+    StateNotifierProvider<DownloadManager, Set<String>>((ref) {
+      return DownloadManager(ref);
+    });
+
+class DownloadManager extends StateNotifier<Set<String>> {
+  final Ref ref;
+  final Map<String, Future> _active = {};
+
+  DownloadManager(this.ref) : super({});
+
+  Future<void> start(String subjectId, String sectionTitle) async {
+    final key = "$subjectId|$sectionTitle";
+    if (_active.containsKey(key)) return;
+
+    state = {...state, key}; // mark as downloading
+
+    final future = locator.get<HomeServices>().addSubjectSection(
+      subjectId: subjectId,
+      sectionTitle: sectionTitle,
+    );
+
+    _active[key] = future;
+
+    final result = await future;
+    _active.remove(key);
+
+    state = {...state}..remove(key);
+
+    if (result != null) {
+      locator.get<AnalyticServices>().logSubjectDownloaded(
+        sectionTitle: sectionTitle,
+        subjectId: subjectId,
+      );
+      ref.invalidate(subjectDetailProvider(subjectId)); // safe refresh
+    }
+  }
+}

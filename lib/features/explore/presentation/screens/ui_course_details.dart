@@ -147,9 +147,9 @@ class CourseDetailsScreen extends ConsumerWidget {
                             .pages
                             ?.isEmpty ??
                         true;
-                    final isLoading = ref.watch(
-                      sectionLoadingProvider(chapter.sectionTitle),
-                    );
+                    final isLoading = ref
+                        .watch(downloadManagerProvider)
+                        .contains("$subjectId|${chapter.sectionTitle}");
 
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -183,12 +183,20 @@ class CourseDetailsScreen extends ConsumerWidget {
                                           sectionTitle: chapter.sectionTitle,
                                           subjectId: subjectId,
                                         );
-                                        createSectionAndRefresh(
-                                          ref: ref,
-                                          context: context,
-                                          subjectId: subjectId,
-                                          sectionTitle: chapter.sectionTitle,
-                                        );
+                                        // createSectionAndRefresh(
+                                        //   ref: ref,
+                                        //   context: context,
+                                        //   subjectId: subjectId,
+                                        //   sectionTitle: chapter.sectionTitle,
+                                        // );
+                                        ref
+                                            .read(
+                                              downloadManagerProvider.notifier,
+                                            )
+                                            .start(
+                                              subjectId,
+                                              chapter.sectionTitle,
+                                            );
                                       },
 
                                       icon: SvgPicture.asset(
@@ -343,13 +351,23 @@ class CourseDetailsScreen extends ConsumerWidget {
 
                                         if (needToGenerateNext) {
                                           if (!context.mounted) return;
-                                          await createSectionSilently(
-                                            ref: ref,
-                                            context: context,
-                                            subjectId: subjectId,
-                                            sectionTitle:
+                                          ref
+                                              .read(
+                                                downloadManagerProvider
+                                                    .notifier,
+                                              )
+                                              .start(
+                                                subjectId,
                                                 nextSection.sectionTitle,
-                                          );
+                                              );
+
+                                          // await createSectionSilently(
+                                          //   ref: ref,
+                                          //   context: context,
+                                          //   subjectId: subjectId,
+                                          //   sectionTitle:
+                                          //       nextSection.sectionTitle,
+                                          // );
                                         }
                                       }
                                     }

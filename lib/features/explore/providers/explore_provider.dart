@@ -107,7 +107,7 @@ Future<void> _downloadSection({
     } else if (showErrors && context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text("Failed to generate section"),
+          content: Text("Failed to generate section. Please try again"),
           backgroundColor: Colors.redAccent,
         ),
       );
@@ -116,8 +116,8 @@ Future<void> _downloadSection({
     debugPrint("Error generating section: $e");
     if (showErrors && context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("Failed to generate section"),
+        SnackBar(
+          content: Text("Failed to generate section. Please try again."),
           backgroundColor: Colors.redAccent,
         ),
       );

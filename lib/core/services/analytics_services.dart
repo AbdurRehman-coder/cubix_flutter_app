@@ -1,5 +1,4 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:firebase_analytics/observer.dart';
 
 class AnalyticServices {
   late final FirebaseAnalytics _analytics;
@@ -15,30 +14,33 @@ class AnalyticServices {
   Future<void> logSubjectView({
     required String subjectTitle,
     required String subjectCategory,
-
   }) async {
     await _analytics.logEvent(
       name: 'subject_view',
       parameters: {
         'subject_title': subjectTitle,
-        'subject_category': subjectTitle,
+        'subject_category': subjectCategory,
       },
     );
   }
 
-
+  Future<void> logSubjectDownloadStart({
+    required String sectionTitle,
+    required String subjectId,
+  }) async {
+    await _analytics.logEvent(
+      name: 'subject_download_start',
+      parameters: {'section_title': sectionTitle, 'subject_id': subjectId},
+    );
+  }
 
   Future<void> logSubjectDownloaded({
     required String sectionTitle,
     required String subjectId,
-
   }) async {
     await _analytics.logEvent(
-      name: 'subject_view',
-      parameters: {
-        'section_title': sectionTitle,
-        'subject_id': subjectId,
-      },
+      name: 'subject_downloaded',
+      parameters: {'section_title': sectionTitle, 'subject_id': subjectId},
     );
   }
 
@@ -49,24 +51,17 @@ class AnalyticServices {
   }) async {
     await _analytics.logEvent(
       name: 'lesson_started',
-      parameters: {
-        'lesson_id': sectionTitle,
-        'lesson_title': lessonTitle,
-      },
+      parameters: {'lesson_id': sectionTitle, 'lesson_title': lessonTitle},
     );
   }
 
   Future<void> logLessonCompleted({
     required String sectionTitle,
     required String lessonTitle,
-
   }) async {
     await _analytics.logEvent(
       name: 'lesson_completed',
-      parameters: {
-        'lesson_id': sectionTitle,
-        'lesson_title': lessonTitle,
-      },
+      parameters: {'lesson_id': sectionTitle, 'lesson_title': lessonTitle},
     );
   }
 

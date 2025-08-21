@@ -77,7 +77,7 @@ class BooksSection extends StatelessWidget {
                       child: Text(
                         subjects[index].abbreviation,
                         textAlign: TextAlign.center,
-                        maxLines: 3,
+                        maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         style: AppTextStyles.bodyTextStyle.copyWith(
                           fontSize: 11,

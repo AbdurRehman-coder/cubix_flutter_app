@@ -1,16 +1,12 @@
-import 'dart:developer';
-
 import 'package:cubix_app/core/utils/app_exports.dart';
 import 'package:collection/collection.dart';
 import 'package:cubix_app/core/utils/text_formatter.dart';
 import 'package:cubix_app/features/explore/presentation/widgets/w_downloading_widget.dart';
 
-import '../../../../core/services/analytics_services.dart';
-
 class CourseDetailsScreen extends ConsumerWidget {
   final String subjectId;
 
-   CourseDetailsScreen({super.key, required this.subjectId});
+  CourseDetailsScreen({super.key, required this.subjectId});
 
   final analytics = locator<AnalyticServices>();
   @override
@@ -183,8 +179,10 @@ class CourseDetailsScreen extends ConsumerWidget {
                                     )
                                     : IconButton(
                                       onPressed: () {
-
-                                        analytics.logSubjectDownloaded(sectionTitle: chapter.sectionTitle, subjectId: subjectId);
+                                        analytics.logSubjectDownloadStart(
+                                          sectionTitle: chapter.sectionTitle,
+                                          subjectId: subjectId,
+                                        );
                                         createSectionAndRefresh(
                                           ref: ref,
                                           context: context,
@@ -253,7 +251,6 @@ class CourseDetailsScreen extends ConsumerWidget {
                                   isLoading: isLoading,
                                   sectionTitle: chapter.sectionTitle,
                                   onCompletion: () async {
-
                                     final progressService =
                                         locator.get<ProgressServices>();
 
@@ -310,8 +307,10 @@ class CourseDetailsScreen extends ConsumerWidget {
                                                 );
                                         if (sectionSuccess) updated = true;
 
-                                        analytics.logLessonCompleted(lessonTitle: topic.topicTitle, sectionTitle: chapter.sectionTitle);
-
+                                        analytics.logLessonCompleted(
+                                          lessonTitle: topic.topicTitle,
+                                          sectionTitle: chapter.sectionTitle,
+                                        );
                                       }
 
                                       if (updated) {

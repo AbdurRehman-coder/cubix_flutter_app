@@ -5,8 +5,6 @@ import 'package:cubix_app/features/auth/models/auth_request_model.dart';
 import 'package:cubix_app/features/auth/models/auth_response_model.dart';
 import 'package:dio/dio.dart';
 
-import '../../../core/services/analytics_services.dart';
-
 class AuthServices {
   final ApiClient apiClient;
   final GoogleAuthService googleAuthService;
@@ -38,7 +36,7 @@ class AuthServices {
       if (res.statusCode == 200 && data != null) {
         final auth = AuthResponse.fromJson(data);
         await localDBServices.saveLoggedUser(auth);
-         locator<AnalyticServices>().setUserId(auth.user.id);
+        locator<AnalyticServices>().setUserId(auth.user.id);
         log('✅ Signup success: ${auth.toJson()}');
         return auth;
       }

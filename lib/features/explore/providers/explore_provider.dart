@@ -99,6 +99,10 @@ Future<void> _downloadSection({
     );
 
     if (result != null) {
+      locator.get<AnalyticServices>().logSubjectDownloaded(
+        sectionTitle: sectionTitle,
+        subjectId: subjectId,
+      );
       ref.invalidate(subjectDetailProvider(subjectId));
     } else if (showErrors && context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(

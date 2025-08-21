@@ -239,8 +239,6 @@ class _LessonDetailsScreenState extends ConsumerState<LessonDetailsScreen> {
         }
       });
     } else {
-      // Optional: If you're on the first step, you can either pop the screen
-      // or disable the back button
       Navigator.of(context).pop();
     }
   }

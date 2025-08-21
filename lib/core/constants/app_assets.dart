@@ -55,7 +55,7 @@ class AppAssets {
         return const Color(0xffFFF5CB);
       case 'book':
         return const Color(0xffE5D3F1);
-      case 'career':
+      case 'careers':
         return const Color(0xffC1DBFD);
       case 'growth':
         return const Color(0xffC5E3D3);

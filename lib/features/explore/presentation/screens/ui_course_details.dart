@@ -356,7 +356,7 @@ class CourseDetailsScreen extends ConsumerWidget {
                                                 downloadManagerProvider
                                                     .notifier,
                                               )
-                                              .start(
+                                              .startSilent(
                                                 subjectId,
                                                 nextSection.sectionTitle,
                                               );

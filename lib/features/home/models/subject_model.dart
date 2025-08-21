@@ -4,6 +4,8 @@ class Subject {
   final String abbreviation;
   final String category;
   final String? userCategory; // optional
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
 
   Subject({
     required this.id,
@@ -11,6 +13,8 @@ class Subject {
     required this.abbreviation,
     required this.category,
     this.userCategory,
+    this.createdAt,
+    this.updatedAt,
   });
 
   factory Subject.fromJson(Map<String, dynamic> json) {
@@ -32,7 +36,27 @@ class Subject {
           json.containsKey('subject_user_category')
               ? json['subject_user_category'] as String
               : null,
+      createdAt:
+          json.containsKey('createdAt')
+              ? DateTime.tryParse(json['createdAt'])
+              : null,
+      updatedAt:
+          json.containsKey('updatedAt')
+              ? DateTime.tryParse(json['updatedAt'])
+              : null,
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      '_id': id,
+      'subject_title': title,
+      'subject_abbreviation': abbreviation,
+      'subject_category': category,
+      'subject_user_category': userCategory,
+      'createdAt': createdAt?.toIso8601String(),
+      'updatedAt': updatedAt?.toIso8601String(),
+    };
   }
 }
 
@@ -52,37 +76,28 @@ class SubjectsData {
   });
 
   factory SubjectsData.fromJson(Map<String, dynamic> json) {
+    List<Subject> parseAndSort(String key) {
+      if (!json.containsKey(key)) return [];
+      final list =
+          (json[key] as List<dynamic>).map((e) => Subject.fromJson(e)).toList();
+
+      // Sort latest first (nulls go last)
+      list.sort((a, b) {
+        if (a.createdAt == null && b.createdAt == null) return 0;
+        if (a.createdAt == null) return 1;
+        if (b.createdAt == null) return -1;
+        return b.createdAt!.compareTo(a.createdAt!);
+      });
+
+      return list;
+    }
+
     return SubjectsData(
-      curiosity:
-          json.containsKey('curiosity')
-              ? (json['curiosity'] as List<dynamic>)
-                  .map((e) => Subject.fromJson(e))
-                  .toList()
-              : [],
-      creativity:
-          json.containsKey('creativity')
-              ? (json['creativity'] as List<dynamic>)
-                  .map((e) => Subject.fromJson(e))
-                  .toList()
-              : [],
-      careers:
-          json.containsKey('careers')
-              ? (json['careers'] as List<dynamic>)
-                  .map((e) => Subject.fromJson(e))
-                  .toList()
-              : [],
-      books:
-          json.containsKey('book')
-              ? (json['book'] as List<dynamic>)
-                  .map((e) => Subject.fromJson(e))
-                  .toList()
-              : [],
-      growth:
-          json.containsKey('growth')
-              ? (json['growth'] as List<dynamic>)
-                  .map((e) => Subject.fromJson(e))
-                  .toList()
-              : [],
+      curiosity: parseAndSort('curiosity'),
+      creativity: parseAndSort('creativity'),
+      careers: parseAndSort('careers'),
+      books: parseAndSort('book'),
+      growth: parseAndSort('growth'),
     );
   }
 }

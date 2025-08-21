@@ -111,32 +111,25 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
                       mainAxisSpacing: getProportionateScreenHeight(30),
                     ),
                     itemCount: tempList.length,
+                    padding: const EdgeInsets.only(bottom: 10),
                     itemBuilder: (context, index) {
-                      bool isLastRow = index >= (tempList.length - 2);
-
-                      return Padding(
-                        padding: EdgeInsets.only(
-                          bottom:
-                              isLastRow ? getProportionateScreenHeight(10) : 0,
-                        ),
-                        child: GestureDetector(
-                          onTap: () {
-                            analytics.logSubjectView(
-                              subjectTitle: tempList[index].title,
-                              subjectCategory: tempList[index].category,
-                            );
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder:
-                                    (context) => CourseDetailsScreen(
-                                      subjectId: tempList[index].id,
-                                    ),
-                              ),
-                            );
-                          },
-                          child: CourseCard(subject: tempList[index]),
-                        ),
+                      return GestureDetector(
+                        onTap: () {
+                          analytics.logSubjectView(
+                            subjectTitle: tempList[index].title,
+                            subjectCategory: tempList[index].category,
+                          );
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder:
+                                  (context) => CourseDetailsScreen(
+                                    subjectId: tempList[index].id,
+                                  ),
+                            ),
+                          );
+                        },
+                        child: CourseCard(subject: tempList[index]),
                       );
                     },
                   ),

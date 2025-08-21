@@ -89,8 +89,8 @@ class LessonsScreen extends ConsumerWidget {
                           mainAxisSpacing: getProportionateScreenHeight(24),
                         ),
                         itemCount: activeList.length,
+                        padding: const EdgeInsets.only(bottom: 10),
                         itemBuilder: (context, index) {
-                          bool isLastRow = index >= (activeList.length - 2);
                           final subjectDetailAsync = ref.watch(
                             subjectDetailProvider(activeList[index].subject),
                           );
@@ -103,19 +103,11 @@ class LessonsScreen extends ConsumerWidget {
                                 return const Text("No data");
                               }
 
-                              return Padding(
-                                padding: EdgeInsets.only(
-                                  bottom:
-                                      isLastRow
-                                          ? getProportionateScreenHeight(10)
-                                          : 0,
-                                ),
-                                child: _buildSubjectCard(
-                                  context,
-                                  activeList[index],
-                                  ref,
-                                  subjectDetail,
-                                ),
+                              return _buildSubjectCard(
+                                context,
+                                activeList[index],
+                                ref,
+                                subjectDetail,
                               );
                             },
                           );

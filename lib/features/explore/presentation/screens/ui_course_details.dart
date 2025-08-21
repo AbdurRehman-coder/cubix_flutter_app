@@ -360,14 +360,6 @@ class CourseDetailsScreen extends ConsumerWidget {
                                                 subjectId,
                                                 nextSection.sectionTitle,
                                               );
-
-                                          // await createSectionSilently(
-                                          //   ref: ref,
-                                          //   context: context,
-                                          //   subjectId: subjectId,
-                                          //   sectionTitle:
-                                          //       nextSection.sectionTitle,
-                                          // );
                                         }
                                       }
                                     }

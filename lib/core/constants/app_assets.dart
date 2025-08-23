@@ -1,5 +1,3 @@
-import '../utils/app_exports.dart';
-
 class AppAssets {
   static const String appLogoAnimation = 'assets/gifs/logo_animation.gif';
   static const String feedbackAnimation = 'assets/gifs/feedback_animation.gif';
@@ -27,6 +25,10 @@ class AppAssets {
   static String getIconPath(String abbreviation, String category) {
     if (category == "book") {
       return 'assets/icons/book.svg';
+    } else if (abbreviation == "EP") {
+      return 'assets/icons/Sky Color & Light.svg';
+    } else if (abbreviation == "AI: How, Uses & Future") {
+      return 'assets/icons/AIF.svg';
     } else {
       return 'assets/icons/$abbreviation.svg';
     }

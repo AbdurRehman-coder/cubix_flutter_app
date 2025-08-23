@@ -36,7 +36,7 @@ class SharedPrefServices {
     return true;
   }
 
-  Future<void> clearTokens() async {
-    await _prefs.clear();
+  Future<void> clearUserData() async {
+    await _prefs.remove(_authKey);
   }
 }

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cubix_app/core/constants/app_constants.dart';
 import 'package:cubix_app/core/utils/app_exports.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
@@ -44,8 +45,8 @@ class AppUtils {
 
               final url =
                   Platform.isIOS
-                      ? "https://apps.apple.com/app/idXXXXXXXXX"
-                      : "https://play.google.com/store/apps/details?id=com.cubixaiapp.mobile";
+                      ? AppConstants.appStoreUrl
+                      : AppConstants.playStoreUrl;
 
               final uri = Uri.parse(url);
               await launchUrl(uri, mode: LaunchMode.externalApplication);
@@ -84,5 +85,10 @@ class AppUtils {
         return true;
       };
     }
+  }
+
+  static void launchLink({required String url}) async {
+    final uri = Uri.parse(url);
+    await launchUrl(uri, mode: LaunchMode.externalApplication);
   }
 }

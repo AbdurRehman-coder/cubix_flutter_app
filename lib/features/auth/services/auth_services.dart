@@ -189,7 +189,7 @@ class AuthServices {
   Future<void> handleSignOut(BuildContext context) async {
     googleAuthService.handleSignOut();
     appleAuthServices.signOut();
-    localDBServices.clearTokens();
+    localDBServices.clearUserData();
     Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(builder: (_) => LoginScreen()),

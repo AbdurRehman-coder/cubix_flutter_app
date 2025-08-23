@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'package:cubix_app/core/utils/app_exports.dart';
 
+import '../../../../core/constants/app_constants.dart' show AppConstants;
+
 class LoginScreen extends ConsumerWidget {
   const LoginScreen({super.key});
 
@@ -134,16 +136,11 @@ class LoginScreen extends ConsumerWidget {
                                 recognizer:
                                     TapGestureRecognizer()
                                       ..onTap = () async {
-                                        final url = Uri.parse(
-                                          'https://yourapp.com/terms',
+                                        AppUtils.launchLink(
+                                          url:
+                                              AppConstants
+                                                  .termsAndConditionsUrl,
                                         );
-                                        if (await canLaunchUrl(url)) {
-                                          await launchUrl(
-                                            url,
-                                            mode:
-                                                LaunchMode.externalApplication,
-                                          );
-                                        }
                                       },
                               ),
                               const TextSpan(text: ' and\n'),
@@ -158,16 +155,9 @@ class LoginScreen extends ConsumerWidget {
                                 recognizer:
                                     TapGestureRecognizer()
                                       ..onTap = () async {
-                                        final url = Uri.parse(
-                                          'https://yourapp.com/privacy',
-                                        ); // replace with real URL
-                                        if (await canLaunchUrl(url)) {
-                                          await launchUrl(
-                                            url,
-                                            mode:
-                                                LaunchMode.externalApplication,
-                                          );
-                                        }
+                                        AppUtils.launchLink(
+                                          url: AppConstants.privacyPolicyUrl,
+                                        );
                                       },
                               ),
                             ],

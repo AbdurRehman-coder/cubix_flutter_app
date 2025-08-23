@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:cubix_app/core/constants/app_constants.dart';
 import 'package:cubix_app/core/utils/app_exports.dart';
 
 class SettingsScreen extends ConsumerStatefulWidget {
@@ -234,7 +235,9 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                           icon: 'assets/icons/privacy_icon.svg',
                           title: 'Privacy Policy',
                           onTap: () {
-                            // Handle privacy policy tap
+                            AppUtils.launchLink(
+                              url: AppConstants.privacyPolicyUrl,
+                            );
                           },
                         ),
 
@@ -249,7 +252,9 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                           icon: 'assets/icons/file_icon.svg',
                           title: 'Terms & Conditions',
                           onTap: () {
-                            // Handle terms tap
+                            AppUtils.launchLink(
+                              url: AppConstants.termsAndConditionsUrl,
+                            );
                           },
                         ),
 

@@ -197,15 +197,15 @@ class LessonsScreen extends ConsumerWidget {
               width: double.infinity,
               height: getProportionateScreenHeight(96),
               decoration: BoxDecoration(
-                color: AppAssets.getCategoryColor(subject.category),
+                color: AppColors.getCategoryColor(subject.category),
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(10),
                   topRight: Radius.circular(10),
                 ),
               ),
               child: Center(
-                child: Image.asset(
-                  AppAssets.getIconPathFromCategory(subject.category),
+                child: SvgPicture.asset(
+                  AppAssets.getIconPath(subject.abbreviation),
                   fit: BoxFit.cover,
                   height: getProportionateScreenHeight(85),
                   width: getProportionateScreenHeight(85),

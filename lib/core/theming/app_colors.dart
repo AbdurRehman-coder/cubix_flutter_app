@@ -13,4 +13,21 @@ class AppColors {
   static const Color blueColor = Color(0xFF096EF9);
   static const Color greyColor = Color(0xff6B6B6E);
   static const Color errorColor = Color(0xFFD32F2F);
+
+  static Color getCategoryColor(String categoryName) {
+    switch (categoryName) {
+      case 'creativity':
+        return const Color(0xffFFDBBF);
+      case 'curiosity':
+        return const Color(0xffFFF5CB);
+      case 'book':
+        return const Color(0xffE5D3F1);
+      case 'careers':
+        return const Color(0xFFC1DBFD);
+      case 'growth':
+        return const Color(0xffC5E3D3);
+      default:
+        return const Color(0xffFFDBBF);
+    }
+  }
 }

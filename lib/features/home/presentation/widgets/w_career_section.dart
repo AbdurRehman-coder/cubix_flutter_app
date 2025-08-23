@@ -38,7 +38,7 @@ class CareerSection extends StatelessWidget {
                     height: 100,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(16),
-                      color: const Color(0xFFC1DBFD),
+                      color: const Color(0xFFE6F0FE),
                     ),
                     padding: const EdgeInsets.symmetric(
                       horizontal: 13,
@@ -60,10 +60,9 @@ class CareerSection extends StatelessWidget {
                   Positioned(
                     top: 8,
                     right: 14,
-                    child: Image.asset(
-                      AppAssets.getIconPathFromCategory(item.category),
-
-                      height: 40,
+                    child: SvgPicture.asset(
+                      AppAssets.getIconPath(item.abbreviation),
+                      height: 45,
                       width: 40,
                     ),
                   ),

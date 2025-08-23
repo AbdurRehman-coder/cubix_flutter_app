@@ -19,7 +19,6 @@ class HomeScreen extends ConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              //SvgPicture.asset(AppAssets.appIcon2, fit: BoxFit.scaleDown),
               Text(
                 'CUBIX',
                 style: AppTextStyles.headingTextStyle.copyWith(

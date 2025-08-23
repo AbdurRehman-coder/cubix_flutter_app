@@ -9,40 +9,41 @@ class GrowthSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return SectionCard(
       title: 'Growth',
-      child: SizedBox(
-        height: getProportionateScreenHeight(130),
-        child: SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            children: List.generate((subjects.length / 2).ceil(), (colIndex) {
-              final firstItem = subjects[colIndex * 2];
-              final secondItem =
-                  (colIndex * 2 + 1 < subjects.length)
-                      ? subjects[colIndex * 2 + 1]
-                      : null;
-              return SizedBox(
-                width: 237,
-                child: Column(
-                  children: [
-                    _buildItem(firstItem, context),
-                    if (secondItem != null)
-                      SizedBox(height: getProportionateScreenHeight(15)),
-                    if (secondItem != null) _buildItem(secondItem, context),
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          children: List.generate((subjects.length / 2).ceil(), (colIndex) {
+            final firstItem = subjects[colIndex * 2];
+            final secondItem =
+                (colIndex * 2 + 1 < subjects.length)
+                    ? subjects[colIndex * 2 + 1]
+                    : null;
+            return SizedBox(
+              width: getProportionateScreenWidth(230),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  _buildItem(firstItem, context),
+                  if (secondItem != null) ...[
+                    SizedBox(height: getProportionateScreenHeight(15)),
+                    _buildItem(secondItem, context),
                   ],
-                ),
-              );
-            }),
-          ),
+                ],
+              ),
+            );
+          }),
         ),
       ),
     );
   }
 
   Widget _buildItem(Subject item, BuildContext context) {
-
     return GestureDetector(
       onTap: () {
-        locator.get<AnalyticServices>().logSubjectView(subjectTitle: item.title, subjectCategory: item.category);
+        locator.get<AnalyticServices>().logSubjectView(
+          subjectTitle: item.title,
+          subjectCategory: item.category,
+        );
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -51,16 +52,18 @@ class GrowthSection extends StatelessWidget {
         );
       },
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Image.asset(
-            AppAssets.getIconPathFromCategory(item.category),
+          SvgPicture.asset(
+            AppAssets.getIconPath(item.abbreviation),
             height: 55,
             width: 55,
           ),
-          SizedBox(width: getProportionateScreenWidth(18)),
+          SizedBox(width: getProportionateScreenWidth(12)),
           Expanded(
+            flex: 2,
             child: Column(
+              mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(

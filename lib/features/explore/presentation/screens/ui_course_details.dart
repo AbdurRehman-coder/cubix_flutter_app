@@ -44,7 +44,7 @@ class CourseDetailsScreen extends ConsumerWidget {
                 Container(
                   width: double.infinity,
                   decoration: BoxDecoration(
-                    color: AppAssets.getCategoryColor(subject.category),
+                    color: AppColors.getCategoryColor(subject.category),
                   ),
                   child: SafeArea(
                     child: Padding(
@@ -63,8 +63,8 @@ class CourseDetailsScreen extends ConsumerWidget {
                               ),
                             ),
                           ),
-                          Image.asset(
-                            AppAssets.getIconPathFromCategory(subject.category),
+                          SvgPicture.asset(
+                            AppAssets.getIconPath(subject.abbreviation),
                             width: 150,
                             height: 150,
                             fit: BoxFit.cover,
@@ -135,7 +135,7 @@ class CourseDetailsScreen extends ConsumerWidget {
                   itemCount: subject.sections.length,
                   physics: NeverScrollableScrollPhysics(),
                   separatorBuilder:
-                      (context, index) => const SizedBox(height: 72),
+                      (context, index) => const SizedBox(height: 30),
                   itemBuilder: (context, chapterIndex) {
                     final chapter = subject.sections[chapterIndex];
 
@@ -154,59 +154,51 @@ class CourseDetailsScreen extends ConsumerWidget {
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 20),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  'Chapter ${chapterIndex + 1}: ${chapter.sectionTitle}',
-                                  style: AppTextStyles.bodyTextStyle.copyWith(
-                                    fontSize: 18,
-                                    color: AppColors.blackColor,
-                                    fontWeight: FontWeight.w700,
-                                  ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Expanded(
+                              child: Text(
+                                'Chapter ${chapterIndex + 1}: ${chapter.sectionTitle}',
+                                style: AppTextStyles.bodyTextStyle.copyWith(
+                                  fontSize: 18,
+                                  color: AppColors.blackColor,
+                                  fontWeight: FontWeight.w700,
                                 ),
                               ),
-                              SizedBox(width: 12),
-                              if (needToGenerate)
-                                isLoading
-                                    ? Padding(
-                                      padding: const EdgeInsets.only(bottom: 8),
-                                      child: DownloadingWidget(),
-                                    )
-                                    : IconButton(
-                                      onPressed: () {
-                                        analytics.logSubjectDownloadStart(
-                                          sectionTitle: chapter.sectionTitle,
-                                          subjectId: subjectId,
-                                        );
-                                        // createSectionAndRefresh(
-                                        //   ref: ref,
-                                        //   context: context,
-                                        //   subjectId: subjectId,
-                                        //   sectionTitle: chapter.sectionTitle,
-                                        // );
-                                        ref
-                                            .read(
-                                              downloadManagerProvider.notifier,
-                                            )
-                                            .start(
-                                              subjectId,
-                                              chapter.sectionTitle,
-                                            );
-                                      },
+                            ),
+                            SizedBox(width: 12),
+                            if (needToGenerate)
+                              isLoading
+                                  ? Padding(
+                                    padding: const EdgeInsets.only(bottom: 8),
+                                    child: DownloadingWidget(),
+                                  )
+                                  : IconButton(
+                                    onPressed: () {
+                                      analytics.logSubjectDownloadStart(
+                                        sectionTitle: chapter.sectionTitle,
+                                        subjectId: subjectId,
+                                      );
 
-                                      icon: SvgPicture.asset(
-                                        AppAssets.downloadIcon,
-                                      ),
+                                      ref
+                                          .read(
+                                            downloadManagerProvider.notifier,
+                                          )
+                                          .start(
+                                            subjectId,
+                                            chapter.sectionTitle,
+                                          );
+                                    },
+
+                                    icon: SvgPicture.asset(
+                                      AppAssets.downloadIcon,
                                     ),
-                            ],
-                          ),
+                                  ),
+                          ],
                         ),
-
+                        SizedBox(height: 20),
                         Column(
                           children:
                               chapter.topics.asMap().entries.map((entry) {

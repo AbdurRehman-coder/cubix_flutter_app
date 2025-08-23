@@ -65,5 +65,4 @@ class DefaultFirebaseOptions {
     storageBucket: 'cubix-ai.firebasestorage.app',
     iosBundleId: 'com.cubixaiapp.mobile',
   );
-
 }

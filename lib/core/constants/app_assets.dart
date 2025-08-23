@@ -1,5 +1,3 @@
-import '../utils/app_exports.dart';
-
 class AppAssets {
   static const String appLogoAnimation = 'assets/gifs/logo_animation.gif';
   static const String feedbackAnimation = 'assets/gifs/feedback_animation.gif';
@@ -26,41 +24,23 @@ class AppAssets {
   static const String deleteIcon = 'assets/icons/delete_icon.svg';
 
   static String getIconPath(String courseCode) {
-    final formattedCode = courseCode.replaceAll(' ', '').toLowerCase();
-    return 'assets/images/$formattedCode.png';
+    return 'assets/icons/$courseCode.svg';
   }
 
-  static String getIconPathFromCategory(String category) {
-    switch (category.toLowerCase()) {
-      case 'creativity':
-        return 'assets/images/com101.png';
-      case 'growth':
-        return 'assets/images/econ102.png';
-      case 'careers':
-        return 'assets/images/psy101.png';
-      case 'curiosity':
-        return 'assets/images/clas101.png';
-      case 'book':
-        return 'assets/images/hlth101.png';
-      default:
-        return 'assets/images/com101.png'; // fallback
-    }
-  }
-
-  static Color getCategoryColor(String categoryName) {
-    switch (categoryName) {
-      case 'creativity':
-        return const Color(0xffFFDBBF);
-      case 'curiosity':
-        return const Color(0xffFFF5CB);
-      case 'book':
-        return const Color(0xffE5D3F1);
-      case 'careers':
-        return const Color(0xffC1DBFD);
-      case 'growth':
-        return const Color(0xffC5E3D3);
-      default:
-        return const Color(0xffFFDBBF);
-    }
-  }
+  // static String getIconPathFromCategory(String category) {
+  //   switch (category.toLowerCase()) {
+  //     case 'creativity':
+  //       return 'assets/images/com101.png';
+  //     case 'growth':
+  //       return 'assets/images/econ102.png';
+  //     case 'careers':
+  //       return 'assets/images/psy101.png';
+  //     case 'curiosity':
+  //       return 'assets/images/clas101.png';
+  //     case 'book':
+  //       return 'assets/images/hlth101.png';
+  //     default:
+  //       return 'assets/images/com101.png'; // fallback
+  //   }
+  // }
 }

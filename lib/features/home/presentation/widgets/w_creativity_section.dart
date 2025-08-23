@@ -20,7 +20,10 @@ class CreativitySection extends StatelessWidget {
                   padding: const EdgeInsets.only(right: 15),
                   child: GestureDetector(
                     onTap: () {
-                      locator.get<AnalyticServices>().logSubjectView(subjectTitle: item.title, subjectCategory: item.category);
+                      locator.get<AnalyticServices>().logSubjectView(
+                        subjectTitle: item.title,
+                        subjectCategory: item.category,
+                      );
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -36,13 +39,12 @@ class CreativitySection extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Image.asset(
-                            AppAssets.getIconPathFromCategory(item.category),
+                          SvgPicture.asset(
+                            AppAssets.getIconPath(item.abbreviation),
                             height: 45,
                             width: 45,
                             fit: BoxFit.cover,
                           ),
-                          const SizedBox(height: 6),
                           Text(
                             item.title,
                             style: AppTextStyles.bodyTextStyle.copyWith(

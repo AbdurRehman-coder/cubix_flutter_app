@@ -38,42 +38,39 @@ class _FeedbackDialogState extends ConsumerState<FeedbackDialog>
   }
 
   void _submitFeedback() async {
-   try{
-     if (_formKey.currentState!.validate()) {
-       setState(() {
-         _showLoading = true;
-       });
-       final success = await locator.get<HomeServices>().createFeedback(
-         description: _feedbackController.text,
-       );
-       if (success) {
-         setState(() {
-           _isFeedbackSent = true;
-           _showLoading = false;
-         });
-         _animationController.forward();
-       } else {
-         setState(() {
-           _showLoading = false;
-         });
-         if (!mounted) return;
-         ScaffoldMessenger.of(context).showSnackBar(
-           const SnackBar(content: Text("Failed to send feedback")),
-         );
-       }
-     }
-
-   }
-   catch (e){
-     if (!mounted) return;
-     ScaffoldMessenger.of(context).showSnackBar(
-       const SnackBar(content: Text("Failed to send feedback")),
-     );
-     setState(() {
-       _showLoading= false;
-     });
-
-   }
+    try {
+      if (_formKey.currentState!.validate()) {
+        setState(() {
+          _showLoading = true;
+        });
+        final success = await locator.get<HomeServices>().createFeedback(
+          description: _feedbackController.text,
+        );
+        if (success) {
+          setState(() {
+            _isFeedbackSent = true;
+            _showLoading = false;
+          });
+          _animationController.forward();
+        } else {
+          setState(() {
+            _showLoading = false;
+          });
+          if (!mounted) return;
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Failed to send feedback")),
+          );
+        }
+      }
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text("Failed to send feedback")));
+      setState(() {
+        _showLoading = false;
+      });
+    }
   }
 
   void _closeFeedbackForm() {

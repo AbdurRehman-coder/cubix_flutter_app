@@ -55,7 +55,7 @@ class GrowthSection extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           SvgPicture.asset(
-            AppAssets.getIconPath(item.abbreviation),
+            AppAssets.getIconPath(item.abbreviation, item.category),
             height: 55,
             width: 55,
           ),

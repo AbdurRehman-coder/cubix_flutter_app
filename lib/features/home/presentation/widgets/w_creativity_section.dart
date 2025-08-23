@@ -40,7 +40,10 @@ class CreativitySection extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           SvgPicture.asset(
-                            AppAssets.getIconPath(item.abbreviation),
+                            AppAssets.getIconPath(
+                              item.abbreviation,
+                              item.category,
+                            ),
                             height: 45,
                             width: 45,
                             fit: BoxFit.cover,

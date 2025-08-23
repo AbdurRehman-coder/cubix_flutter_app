@@ -61,7 +61,7 @@ class CareerSection extends StatelessWidget {
                     top: 8,
                     right: 14,
                     child: SvgPicture.asset(
-                      AppAssets.getIconPath(item.abbreviation),
+                      AppAssets.getIconPath(item.abbreviation, item.category),
                       height: 45,
                       width: 40,
                     ),

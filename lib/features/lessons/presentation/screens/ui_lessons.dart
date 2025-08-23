@@ -205,7 +205,7 @@ class LessonsScreen extends ConsumerWidget {
               ),
               child: Center(
                 child: SvgPicture.asset(
-                  AppAssets.getIconPath(subject.abbreviation),
+                  AppAssets.getIconPath(subject.abbreviation, subject.category),
                   fit: BoxFit.cover,
                   height: getProportionateScreenHeight(85),
                   width: getProportionateScreenHeight(85),

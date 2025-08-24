@@ -51,6 +51,15 @@ class DownloadManager extends StateNotifier<Set<String>> {
     required bool silent,
   }) {
     final key = "$subjectId|$sectionTitle";
+
+
+    if (_inflight.contains(key)) {
+      if (!silent) {
+        state = {...state, key};
+      }
+      return Future.value();
+    }
+
     if (_inflight.contains(key)) return Future.value();
 
     _inflight.add(key);
@@ -100,8 +109,15 @@ class DownloadManager extends StateNotifier<Set<String>> {
           }
         } finally {
           _inflight.remove(key);
-          if (!t.silent) state = {...state}..remove(key);
-          if (!t.completer.isCompleted) t.completer.complete();
+
+          // ✅ Always remove from state if it was marked loading (silent or not)
+          if (state.contains(key)) {
+            state = {...state}..remove(key);
+          }
+
+          if (!t.completer.isCompleted) {
+            t.completer.complete();
+          }
         }
       }
     } finally {
@@ -111,6 +127,7 @@ class DownloadManager extends StateNotifier<Set<String>> {
       }
     }
   }
+
 
   void _showErrorSnackbar(String msg) {
     final context = navigatorKey.currentContext;

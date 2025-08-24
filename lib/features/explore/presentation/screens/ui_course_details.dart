@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cubix_app/core/utils/app_exports.dart';
 import 'package:collection/collection.dart';
 import 'package:cubix_app/core/utils/text_formatter.dart';
@@ -150,6 +152,7 @@ class CourseDetailsScreen extends ConsumerWidget {
                             .pages
                             ?.isEmpty ??
                         true;
+
                     final isLoading = ref
                         .watch(downloadManagerProvider)
                         .contains("$subjectId|${chapter.sectionTitle}");
@@ -184,7 +187,6 @@ class CourseDetailsScreen extends ConsumerWidget {
                                         sectionTitle: chapter.sectionTitle,
                                         subjectId: subjectId,
                                       );
-
                                       ref
                                           .read(
                                             downloadManagerProvider.notifier,
@@ -194,7 +196,6 @@ class CourseDetailsScreen extends ConsumerWidget {
                                             chapter.sectionTitle,
                                           );
                                     },
-
                                     icon: SvgPicture.asset(
                                       AppAssets.downloadIcon,
                                     ),
@@ -346,6 +347,7 @@ class CourseDetailsScreen extends ConsumerWidget {
 
                                         if (needToGenerateNext) {
                                           if (!context.mounted) return;
+                                          log('🚀 Auto-downloading next section: ${nextSection.sectionTitle}');
                                           ref
                                               .read(
                                                 downloadManagerProvider

@@ -10,7 +10,7 @@ class CuriositySection extends StatelessWidget {
     return SectionCard(
       title: 'Curiosity',
       child: SizedBox(
-        height: 80,
+        height: getProportionateScreenHeight(70),
         child: ListView.separated(
           padding: EdgeInsets.zero,
           scrollDirection: Axis.horizontal,
@@ -33,59 +33,58 @@ class CuriositySection extends StatelessWidget {
                 );
               },
               child: Container(
-                padding: const EdgeInsets.fromLTRB(16, 16, 7, 16),
+                padding: const EdgeInsets.fromLTRB(16, 16, 7, 10),
                 width: 180,
                 decoration: BoxDecoration(
                   color: const Color(0xFFFFF5CB),
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.end,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            item.title,
-                            maxLines: 2,
-                            style: AppTextStyles.bodyTextStyle.copyWith(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w700,
-                              color: AppColors.blackColor,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            item.abbreviation,
-                            style: AppTextStyles.bodyTextStyle.copyWith(
-                              fontSize: 11,
-                              fontWeight: FontWeight.w400,
-                              color: AppColors.textSecondaryColor,
-                            ),
-                          ),
-                        ],
+                    Text(
+                      item.title,
+                      maxLines: 2,
+                      style: AppTextStyles.bodyTextStyle.copyWith(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.blackColor,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
 
-                    SizedBox(
-                      width: 20,
-                      height: 20,
-                      child: IconButton(
-                        onPressed: () {},
-                        style: IconButton.styleFrom(
-                          padding: EdgeInsets.zero,
-                          iconSize: 12,
-                          backgroundColor: Color(0xFFFED730),
+                    Spacer(),
+
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          item.abbreviation,
+                          style: AppTextStyles.bodyTextStyle.copyWith(
+                            fontSize: 11,
+                            fontWeight: FontWeight.w400,
+                            color: AppColors.textSecondaryColor,
+                          ),
                         ),
-                        icon: Icon(
-                          Icons.arrow_forward_ios,
-                          size: 12,
-                          color: AppColors.whiteColor,
+                        SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: IconButton(
+                            onPressed: () {},
+                            style: IconButton.styleFrom(
+                              padding: EdgeInsets.zero,
+                              iconSize: 12,
+                              backgroundColor: Color(0xFFFED730),
+                            ),
+                            icon: Icon(
+                              Icons.arrow_forward_ios,
+                              size: 12,
+                              color: AppColors.whiteColor,
+                            ),
+                          ),
                         ),
-                      ),
+                      ],
                     ),
                   ],
                 ),

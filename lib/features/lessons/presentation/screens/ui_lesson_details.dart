@@ -139,7 +139,7 @@ class _LessonDetailsScreenState extends ConsumerState<LessonDetailsScreen> {
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(8),
                             child: CachedNetworkImage(
-                              imageUrl: currentPage.pageDiagram ?? '',
+                              imageUrl: currentPage.pageDiagram!,
                               fit: BoxFit.cover,
                               placeholder:
                                   (context, url) => Image.network(

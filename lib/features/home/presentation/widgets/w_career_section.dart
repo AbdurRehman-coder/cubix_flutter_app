@@ -10,8 +10,9 @@ class CareerSection extends StatelessWidget {
     return SectionCard(
       title: 'Careers',
       child: SizedBox(
-        height: getProportionateScreenHeight(100),
+        height: getProportionateScreenHeight(98),
         child: ListView.separated(
+          padding: EdgeInsets.zero,
           scrollDirection: Axis.horizontal,
           itemCount: subjects.length,
           separatorBuilder: (_, __) => const SizedBox(width: 12),
@@ -31,21 +32,29 @@ class CareerSection extends StatelessWidget {
                   ),
                 );
               },
-              child: Stack(
-                children: [
-                  Container(
-                    width: 123,
-                    height: 100,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16),
-                      color: const Color(0xFFE6F0FE),
+              child: Container(
+                width: 123,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                  color: const Color(0xFFE6F0FE),
+                ),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 13,
+                  vertical: 8,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Align(
+                      alignment: Alignment.topRight,
+                      child: SvgPicture.asset(
+                        AppAssets.getIconPath(item.abbreviation, item.category),
+                        height: 50,
+                        width: 50,
+                      ),
                     ),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 13,
-                      vertical: 15,
-                    ),
-                    alignment: Alignment.bottomLeft,
-                    child: Text(
+                    SizedBox(height: 12),
+                    Text(
                       item.title,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
@@ -55,18 +64,8 @@ class CareerSection extends StatelessWidget {
                         fontWeight: FontWeight.w700,
                       ),
                     ),
-                  ),
-
-                  Positioned(
-                    top: 8,
-                    right: 14,
-                    child: SvgPicture.asset(
-                      AppAssets.getIconPath(item.abbreviation, item.category),
-                      height: 45,
-                      width: 40,
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             );
           },

@@ -17,7 +17,7 @@ class BooksSection extends StatelessWidget {
           itemCount: subjects.length,
           itemBuilder: (context, index) {
             return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 11, vertical: 0),
+              padding: const EdgeInsets.only(right: 20),
               child: GestureDetector(
                 onTap: () {
                   locator.get<AnalyticServices>().logSubjectView(
@@ -73,7 +73,7 @@ class BooksSection extends StatelessWidget {
                     ),
 
                     Padding(
-                      padding: const EdgeInsets.only(left: 8, top: 4),
+                      padding: const EdgeInsets.only(left: 8, top: 6),
                       child: Text(
                         subjects[index].abbreviation,
                         textAlign: TextAlign.center,

@@ -21,6 +21,7 @@ class GrowthSection extends StatelessWidget {
             return SizedBox(
               width: getProportionateScreenWidth(230),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   _buildItem(firstItem, context),

@@ -12,7 +12,7 @@ class HomeScreen extends ConsumerWidget {
       child: ListView(
         padding: EdgeInsets.symmetric(
           horizontal: getProportionateScreenWidth(16),
-          vertical: getProportionateScreenHeight(21),
+          vertical: getProportionateScreenHeight(16),
         ),
         children: [
           Row(
@@ -38,8 +38,7 @@ class HomeScreen extends ConsumerWidget {
               ),
             ],
           ),
-          SizedBox(height: getProportionateScreenHeight(20)),
-
+          SizedBox(height: getProportionateScreenHeight(18)),
           subjectsAsync.when(
             loading: () => HomeShimmer(),
             error:
@@ -63,7 +62,6 @@ class HomeScreen extends ConsumerWidget {
                   ),
                 );
               }
-
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

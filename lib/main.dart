@@ -1,5 +1,3 @@
-import 'dart:io';
-import 'package:device_info_plus/device_info_plus.dart';
 import 'core/utils/app_exports.dart';
 
 Future<void> main() async {
@@ -62,12 +60,11 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> _checkAndroidVersion() async {
-    if (Platform.isAndroid) {
-      final androidInfo = await DeviceInfoPlugin().androidInfo;
-      final is14OrAbove = androidInfo.version.sdkInt >= 34;
+    bool status = await AppUtils.checkAndroidVersion();
+    WidgetsBinding.instance.addPostFrameCallback((v){
       setState(() {
-        isAndroid14OrAbove = is14OrAbove;
+        isAndroid14OrAbove = status;
       });
-    }
+    });
   }
 }

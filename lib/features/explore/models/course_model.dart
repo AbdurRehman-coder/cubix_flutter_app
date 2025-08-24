@@ -17,7 +17,7 @@ CourseCategory getCategoryFromTitle(String title) {
       return CourseCategory.creativity;
     case 'curiosity':
       return CourseCategory.curiosity;
-    case 'book':
+    case 'books':
       return CourseCategory.book;
     case 'careers':
       return CourseCategory.careers;

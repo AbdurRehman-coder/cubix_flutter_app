@@ -1,3 +1,5 @@
+import 'dart:io';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'core/utils/app_exports.dart';
 
 Future<void> main() async {
@@ -22,8 +24,21 @@ Future<void> main() async {
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  bool isAndroid14OrAbove = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkAndroidVersion();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +47,7 @@ class MyApp extends StatelessWidget {
       top: false,
       left: false,
       right: false,
-      bottom: true,
+      bottom: isAndroid14OrAbove,
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         navigatorKey: navigatorKey,
@@ -44,5 +59,15 @@ class MyApp extends StatelessWidget {
         home: SplashScreen(),
       ),
     );
+  }
+
+  Future<void> _checkAndroidVersion() async {
+    if (Platform.isAndroid) {
+      final androidInfo = await DeviceInfoPlugin().androidInfo;
+      final is14OrAbove = androidInfo.version.sdkInt >= 34;
+      setState(() {
+        isAndroid14OrAbove = is14OrAbove;
+      });
+    }
   }
 }

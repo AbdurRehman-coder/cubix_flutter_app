@@ -10,7 +10,7 @@ class CareerSection extends StatelessWidget {
     return SectionCard(
       title: 'Careers',
       child: SizedBox(
-        height: getProportionateScreenHeight(98),
+        height: getProportionateScreenHeight(110),
         child: ListView.separated(
           padding: EdgeInsets.zero,
           scrollDirection: Axis.horizontal,

@@ -298,7 +298,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                     iconLeading: false,
                     text: 'Logout',
                     onPressed: () {
-                      showLogoutDialog(context);
+                      showLogoutDialog(context, ref);
                     },
                   ),
                 ),
@@ -413,13 +413,13 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 'Are you sure you want to delete your account? This action cannot be undone.',
             buttonText: 'Delete',
             onPressed: () {
-              locator.get<AuthServices>().handleDeleteAccount(context);
+              locator.get<AuthServices>().handleDeleteAccount(context, ref);
             },
           ),
     );
   }
 
-  void showLogoutDialog(BuildContext context) {
+  void showLogoutDialog(BuildContext context, WidgetRef ref) {
     showDialog(
       context: context,
       builder:
@@ -434,7 +434,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             description: 'Are you sure you want to logout?',
             buttonText: 'Yes',
             onPressed: () {
-              locator.get<AuthServices>().handleSignOut(context);
+              locator.get<AuthServices>().handleSignOut(context, ref);
             },
           ),
     );

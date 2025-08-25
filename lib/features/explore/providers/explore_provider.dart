@@ -7,13 +7,11 @@ final selectedCategoryProvider = StateProvider<CourseCategory>((ref) {
   return CourseCategory.creativity;
 });
 
-final subjectDetailProvider = FutureProvider.family<SubjectDetail?, String>((
-  ref,
-  subjectId,
-) async {
-  final homeServices = locator.get<HomeServices>();
-  return await homeServices.getSubjectDetail(subjectId);
-});
+final subjectDetailProvider = FutureProvider.autoDispose
+    .family<SubjectDetail?, String>((ref, subjectId) async {
+      final homeServices = locator.get<HomeServices>();
+      return await homeServices.getSubjectDetail(subjectId);
+    });
 
 final sectionLoadingProvider = StateProvider.family<bool, String>(
   (ref, title) => false,
@@ -51,7 +49,6 @@ class DownloadManager extends StateNotifier<Set<String>> {
     required bool silent,
   }) {
     final key = "$subjectId|$sectionTitle";
-
 
     if (_inflight.contains(key)) {
       if (!silent) {
@@ -99,6 +96,7 @@ class DownloadManager extends StateNotifier<Set<String>> {
             );
 
             // ✅ refresh immediately after each successful section
+            // ignore: unused_result
             await ref.refresh(subjectDetailProvider(t.subjectId).future);
           } else if (!t.silent) {
             _showErrorSnackbar("Failed to generate section. Please try again.");
@@ -127,7 +125,6 @@ class DownloadManager extends StateNotifier<Set<String>> {
       }
     }
   }
-
 
   void _showErrorSnackbar(String msg) {
     final context = navigatorKey.currentContext;

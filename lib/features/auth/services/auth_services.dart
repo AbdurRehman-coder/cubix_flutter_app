@@ -186,10 +186,11 @@ class AuthServices {
     return null;
   }
 
-  Future<void> handleSignOut(BuildContext context) async {
+  Future<void> handleSignOut(BuildContext context, WidgetRef ref) async {
     googleAuthService.handleSignOut();
     appleAuthServices.signOut();
     localDBServices.clearUserData();
+    clearAllCache(ref);
     Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(builder: (_) => LoginScreen()),
@@ -197,7 +198,7 @@ class AuthServices {
     );
   }
 
-  Future<void> handleDeleteAccount(BuildContext context) async {
+  Future<void> handleDeleteAccount(BuildContext context, WidgetRef ref) async {
     String url = '/users';
     try {
       final res = await apiClient.dio.delete(
@@ -208,7 +209,7 @@ class AuthServices {
       if (res.statusCode == 200) {
         if (!context.mounted) return;
         _showMessage(context, 'User deleted successfully.');
-        handleSignOut(context);
+        handleSignOut(context, ref);
       }
     } catch (e) {
       if (!context.mounted) return;
@@ -284,5 +285,19 @@ class AuthServices {
   void _showMessage(BuildContext context, String msg) {
     context.hideLoading();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
+  }
+
+  void clearAllCache(WidgetRef ref) {
+    ref.invalidate(progressProvider);
+    ref.invalidate(subjectsProvider);
+    ref.invalidate(subjectDetailProvider);
+    ref.invalidate(selectedTabProvider);
+    ref.invalidate(selectedCategoryProvider);
+    ref.invalidate(downloadManagerProvider);
+    ref.invalidate(bannerPageProvider);
+    ref.invalidate(notificationsProvider);
+    ref.invalidate(soundsProvider);
+    ref.invalidate(hapticsProvider);
+    ref.invalidate(bottomNavIndexProvider);
   }
 }

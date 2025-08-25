@@ -9,6 +9,8 @@ PODS:
     - GoogleUtilities/Environment (~> 8.0)
     - GoogleUtilities/UserDefaults (~> 8.0)
     - PromisesObjC (~> 2.4)
+  - device_info_plus (0.0.1):
+    - Flutter
   - Firebase/CoreOnly (12.0.0):
     - FirebaseCore (~> 12.0.0)
   - Firebase/Crashlytics (12.0.0):
@@ -176,6 +178,7 @@ PODS:
     - Flutter
 
 DEPENDENCIES:
+  - device_info_plus (from `.symlinks/plugins/device_info_plus/ios`)
   - firebase_analytics (from `.symlinks/plugins/firebase_analytics/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - firebase_crashlytics (from `.symlinks/plugins/firebase_crashlytics/ios`)
@@ -213,6 +216,8 @@ SPEC REPOS:
     - PromisesSwift
 
 EXTERNAL SOURCES:
+  device_info_plus:
+    :path: ".symlinks/plugins/device_info_plus/ios"
   firebase_analytics:
     :path: ".symlinks/plugins/firebase_analytics/ios"
   firebase_core:
@@ -239,6 +244,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   AppAuth: d4f13a8fe0baf391b2108511793e4b479691fb73
   AppCheckCore: cc8fd0a3a230ddd401f326489c99990b013f0c4f
+  device_info_plus: bf2e3232933866d73fe290f2942f2156cdd10342
   Firebase: 800d487043c0557d9faed71477a38d9aafb08a41
   firebase_analytics: 2d63841132d444fad3d3e71682dc0072ae2aaf08
   firebase_core: c70f903d70ec229c08c2f49aba5a8c1338546d40
@@ -272,4 +278,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 4b015915ec662986b54bf30ab778da63f7dda016
 
-COCOAPODS: 1.16.2
+COCOAPODS: 1.15.2

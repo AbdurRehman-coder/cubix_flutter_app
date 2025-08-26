@@ -10,7 +10,7 @@ class CuriositySection extends StatelessWidget {
     return SectionCard(
       title: 'Curiosity',
       child: SizedBox(
-        height: getProportionateScreenHeight(70),
+        height: getProportionateScreenHeight(80),
         child: ListView.separated(
           padding: EdgeInsets.zero,
           scrollDirection: Axis.horizontal,

@@ -347,7 +347,9 @@ class CourseDetailsScreen extends ConsumerWidget {
 
                                         if (needToGenerateNext) {
                                           if (!context.mounted) return;
-                                          log('🚀 Auto-downloading next section: ${nextSection.sectionTitle}');
+                                          log(
+                                            '🚀 Auto-downloading next section: ${nextSection.sectionTitle}',
+                                          );
                                           ref
                                               .read(
                                                 downloadManagerProvider

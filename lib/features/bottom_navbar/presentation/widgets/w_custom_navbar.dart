@@ -24,7 +24,7 @@ class CustomBottomNavBar extends ConsumerWidget {
           topRight: Radius.circular(30),
         ),
       ),
-      padding: const EdgeInsets.fromLTRB(0, 16, 0, 20),
+      padding: EdgeInsets.fromLTRB(0, 16, 0, getProportionateScreenHeight(35)),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: List.generate(navItems.length, (index) {

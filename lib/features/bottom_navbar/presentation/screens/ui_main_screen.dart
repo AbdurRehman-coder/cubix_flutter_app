@@ -29,9 +29,11 @@ class _MainScreenState extends ConsumerState<MainScreen> {
   Widget build(BuildContext context) {
     final currentIndex = ref.watch(bottomNavIndexProvider);
 
-    return Scaffold(
-      body: _pages[currentIndex],
-      bottomNavigationBar: const CustomBottomNavBar(),
+    return SafeArea(
+      child: Scaffold(
+        body: _pages[currentIndex],
+        bottomNavigationBar: const CustomBottomNavBar(),
+      ),
     );
   }
 

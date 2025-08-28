@@ -8,6 +8,7 @@ class PrimaryButton extends StatelessWidget {
   final Color? backgroundColor;
   final Color? textColor;
   final bool fullWidth;
+  final double? height;
   final Widget? icon;
   final double borderRadius;
   final bool enabled;
@@ -26,6 +27,7 @@ class PrimaryButton extends StatelessWidget {
     this.fullWidth = true,
     this.icon,
     this.borderRadius = 10,
+    this.height = 56,
     this.elevation = 0,
     this.iconLeading = false, // NEW: default to false (icon after text)
   });
@@ -66,12 +68,9 @@ class PrimaryButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(borderRadius),
         ),
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-        minimumSize: Size(
-          fullWidth ? double.infinity : 0,
-          getProportionateScreenHeight(56),
-        ),
+        minimumSize: Size(fullWidth ? double.infinity : 0, height ?? 56),
         elevation: elevation,
-        disabledBackgroundColor: AppColors.textSecondaryColor,
+        disabledBackgroundColor: AppColors.primaryOrangeColor,
       ),
       child: _buildButtonContent(),
     );
@@ -95,14 +94,11 @@ class PrimaryButton extends StatelessWidget {
 
     if (icon != null) {
       final textWidget = Text(text, style: AppTextStyles.buttonTextStyle);
-      const spacing = SizedBox();
+      const spacing = SizedBox(width: 4);
 
       return Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children:
-            iconLeading
-                ? [icon!, textWidget, spacing]
-                : [textWidget, spacing, icon!],
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [icon!, spacing, textWidget],
       );
     }
 

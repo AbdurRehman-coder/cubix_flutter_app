@@ -1,4 +1,5 @@
-import 'package:cubix_app/core/constants/app_assets.dart';
+import 'dart:developer';
+
 import 'package:cubix_app/core/utils/app_exports.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -12,14 +13,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-
-    Future.delayed(const Duration(seconds: 2), () {
-      if (!mounted) return;
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (_) => const LoginScreen()),
-      );
-    });
+    _handleNavigation();
   }
 
   @override
@@ -30,12 +24,8 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Column(
           children: [
             const Spacer(flex: 3),
-            Image.asset(
-              AppAssets.appLogo,
-              height: getProportionateScreenHeight(90),
-              width: getProportionateScreenWidth(90),
-            ),
-            SizedBox(height: getProportionateScreenHeight(14)),
+            Image.asset(AppAssets.appLogoAnimation, height: 90, width: 90),
+            const SizedBox(height: 14),
             Text(
               'Cubix',
               style: AppTextStyles.headingTextStyleInter.copyWith(
@@ -44,9 +34,7 @@ class _SplashScreenState extends State<SplashScreen> {
             ),
             const Spacer(flex: 3),
             Padding(
-              padding: EdgeInsets.only(
-                bottom: getProportionateScreenHeight(30),
-              ),
+              padding: const EdgeInsets.only(bottom: 20),
               child: Text(
                 'Where learning clicks into place',
                 style: AppTextStyles.bodyTextStyleInter.copyWith(
@@ -59,5 +47,24 @@ class _SplashScreenState extends State<SplashScreen> {
         ),
       ),
     );
+  }
+
+  Future<void> _handleNavigation() async {
+    final loggedUser = await locator.get<SharedPrefServices>().getLoggedUser();
+    log('Logged user: ${loggedUser?.toJson()}');
+    await Future.delayed(const Duration(seconds: 3));
+    if (!mounted) return;
+
+    if (loggedUser == null || loggedUser.accessToken.isEmpty) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const LoginScreen()),
+      );
+    } else {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const MainScreen()),
+      );
+    }
   }
 }

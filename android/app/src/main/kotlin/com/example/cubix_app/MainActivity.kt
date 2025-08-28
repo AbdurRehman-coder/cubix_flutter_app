@@ -1,4 +1,4 @@
-package com.cubix.app
+package cubixaiapp.com
 
 import io.flutter.embedding.android.FlutterActivity
 

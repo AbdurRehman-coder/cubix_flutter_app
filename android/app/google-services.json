@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "549509585818",
+    "project_id": "cubix-ai",
+    "storage_bucket": "cubix-ai.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:549509585818:android:ad4b462f11c43e9bf9f823",
+        "android_client_info": {
+          "package_name": "com.cubixaiapp.mobile"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDsTaCtHVdRunYqi19WQn8k4oLo5KCBrzc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

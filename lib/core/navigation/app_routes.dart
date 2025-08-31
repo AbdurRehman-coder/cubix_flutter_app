@@ -1,9 +1,5 @@
-import 'package:cubix_app/features/auth/presentation/screens/ui_signin.dart';
-import 'package:cubix_app/features/bottom_navbar/presentation/screens/ui_main_screen.dart';
-import 'package:cubix_app/features/explore/presentation/screens/ui_course_details.dart';
+import 'package:cubix_app/core/utils/app_exports.dart';
 import 'package:cubix_app/features/lessons/presentation/screens/ui_lesson_details.dart';
-import 'package:cubix_app/features/splash/presentation/screens/ui_splash.dart';
-import 'package:flutter/material.dart';
 
 class AppRoutes {
   static const String splash = '/';
@@ -37,8 +33,14 @@ class AppRoutes {
       default:
         return MaterialPageRoute(
           builder:
-              (_) =>
-                  const Scaffold(body: Center(child: Text("No route defined"))),
+              (_) => Scaffold(
+                body: Center(
+                  child: Text(
+                    "No route defined",
+                    style: AppTextStyles.bodyTextStyle,
+                  ),
+                ),
+              ),
         );
     }
   }

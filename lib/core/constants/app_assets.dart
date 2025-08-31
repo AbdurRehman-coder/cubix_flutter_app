@@ -21,6 +21,7 @@ class AppAssets {
   static const String appIcon2 = 'assets/icons/app_logo_2.svg';
   static const String crossIcon = 'assets/icons/cross_icon.svg';
   static const String deleteIcon = 'assets/icons/delete_icon.svg';
+  static const String starsIcon = 'assets/icons/stars_icon.svg';
 
   static String getIconPath(String abbreviation, String category) {
     if (category == "book") {

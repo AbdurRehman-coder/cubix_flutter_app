@@ -24,14 +24,10 @@ class BooksSection extends StatelessWidget {
                     subjectTitle: subjects[index].title,
                     subjectCategory: subjects[index].category,
                   );
-                  Navigator.push(
+                  Navigator.pushNamed(
                     context,
-                    MaterialPageRoute(
-                      builder:
-                          (context) => CourseDetailsScreen(
-                            subjectId: subjects[index].id,
-                          ),
-                    ),
+                    AppRoutes.courseDetails,
+                    arguments: subjects[index].id,
                   );
                 },
                 child: Column(

@@ -24,12 +24,10 @@ class CareerSection extends StatelessWidget {
                   subjectTitle: item.title,
                   subjectCategory: item.category,
                 );
-                Navigator.push(
+                Navigator.pushNamed(
                   context,
-                  MaterialPageRoute(
-                    builder:
-                        (context) => CourseDetailsScreen(subjectId: item.id),
-                  ),
+                  AppRoutes.courseDetails,
+                  arguments: item.id,
                 );
               },
               child: Container(

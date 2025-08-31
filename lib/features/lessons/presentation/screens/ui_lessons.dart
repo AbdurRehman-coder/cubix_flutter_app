@@ -176,11 +176,10 @@ class LessonsScreen extends ConsumerWidget {
   ) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(
+        Navigator.pushNamed(
           context,
-          MaterialPageRoute(
-            builder: (context) => CourseDetailsScreen(subjectId: subject.id),
-          ),
+          AppRoutes.courseDetails,
+          arguments: subject.id,
         );
       },
       child: Container(

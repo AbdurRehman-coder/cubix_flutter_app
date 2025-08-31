@@ -54,14 +54,15 @@ class _MyAppState extends State<MyApp> {
         ],
         theme: AppTheme.lightTheme,
         title: 'Cubix App',
-        home: SplashScreen(),
+        initialRoute: AppRoutes.splash,
+        onGenerateRoute: AppRoutes.generateRoute,
       ),
     );
   }
 
   Future<void> _checkAndroidVersion() async {
     bool status = await AppUtils.checkAndroidVersion();
-    WidgetsBinding.instance.addPostFrameCallback((v){
+    WidgetsBinding.instance.addPostFrameCallback((v) {
       setState(() {
         isAndroid14OrAbove = status;
       });

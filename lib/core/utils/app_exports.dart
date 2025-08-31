@@ -5,7 +5,7 @@ export 'package:cubix_app/core/utils/app_exports.dart';
 export 'package:cubix_app/core/theming/app_theme.dart';
 export 'package:cubix_app/core/utils/text_styles.dart';
 export 'package:cubix_app/core/utils/responsive_config.dart';
-export 'package:cubix_app/features/auth/presentation/screens/ui_login.dart';
+export 'package:cubix_app/features/auth/presentation/screens/ui_signin.dart';
 export 'package:cubix_app/core/widgets/w_primary_button.dart';
 export 'package:cubix_app/core/constants/app_assets.dart';
 export 'package:cubix_app/features/bottom_navbar/provider/navbar_provider.dart';
@@ -76,3 +76,5 @@ export 'package:firebase_analytics/firebase_analytics.dart';
 export 'package:firebase_core/firebase_core.dart';
 export 'package:flutter/services.dart';
 export 'package:flutter_dotenv/flutter_dotenv.dart';
+
+export 'package:cubix_app/core/navigation/app_routes.dart';

@@ -1,5 +1,4 @@
 import 'package:cubix_app/core/utils/app_exports.dart';
-import 'package:cubix_app/features/lessons/presentation/screens/ui_lesson_details.dart';
 
 class TopicItem extends StatelessWidget {
   final SubjectTopic topic;
@@ -110,15 +109,14 @@ class TopicItem extends StatelessWidget {
                   lessonTitle: topic.topicTitle,
                   sectionTitle: sectionTitle,
                 );
-                Navigator.push(
+
+                Navigator.pushNamed(
                   context,
-                  MaterialPageRoute(
-                    builder:
-                        (context) => LessonDetailsScreen(
-                          subjectTopic: topic,
-                          onCompletion: onCompletion,
-                        ),
-                  ),
+                  AppRoutes.lessonDetails,
+                  arguments: {
+                    'subjectTopic': topic,
+                    'onCompletion': onCompletion,
+                  },
                 );
               }
             },

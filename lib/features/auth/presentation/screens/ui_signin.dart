@@ -3,8 +3,8 @@ import 'package:cubix_app/core/utils/app_exports.dart';
 
 import '../../../../core/constants/app_constants.dart' show AppConstants;
 
-class LoginScreen extends ConsumerWidget {
-  const LoginScreen({super.key});
+class SignInScreen extends ConsumerWidget {
+  const SignInScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

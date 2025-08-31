@@ -119,14 +119,10 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
                             subjectTitle: tempList[index].title,
                             subjectCategory: tempList[index].category,
                           );
-                          Navigator.push(
+                          Navigator.pushNamed(
                             context,
-                            MaterialPageRoute(
-                              builder:
-                                  (context) => CourseDetailsScreen(
-                                    subjectId: tempList[index].id,
-                                  ),
-                            ),
+                            AppRoutes.courseDetails,
+                            arguments: tempList[index].id,
                           );
                         },
                         child: CourseCard(subject: tempList[index]),

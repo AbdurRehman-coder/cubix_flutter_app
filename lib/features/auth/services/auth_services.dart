@@ -191,10 +191,10 @@ class AuthServices {
     appleAuthServices.signOut();
     localDBServices.clearUserData();
     clearAllCache(ref);
-    Navigator.pushAndRemoveUntil(
+    Navigator.pushNamedAndRemoveUntil(
       context,
-      MaterialPageRoute(builder: (_) => LoginScreen()),
-      (_) => false,
+      AppRoutes.signIn,
+      (route) => false,
     );
   }
 
@@ -256,10 +256,11 @@ class AuthServices {
 
   void _navigateToMain(BuildContext context) {
     context.hideLoading();
-    Navigator.pushAndRemoveUntil(
+
+    Navigator.pushNamedAndRemoveUntil(
       context,
-      MaterialPageRoute(builder: (_) => MainScreen()),
-      (_) => false,
+      AppRoutes.mainScreen,
+      (route) => false,
     );
   }
 

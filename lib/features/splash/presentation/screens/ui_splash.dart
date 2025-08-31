@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:cubix_app/core/utils/app_exports.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -56,15 +55,9 @@ class _SplashScreenState extends State<SplashScreen> {
     if (!mounted) return;
 
     if (loggedUser == null || loggedUser.accessToken.isEmpty) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (_) => const LoginScreen()),
-      );
+      Navigator.pushNamed(context, AppRoutes.signIn);
     } else {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (_) => const MainScreen()),
-      );
+      Navigator.pushReplacementNamed(context, AppRoutes.mainScreen);
     }
   }
 }

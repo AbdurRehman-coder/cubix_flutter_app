@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:cubix_app/core/constants/api_endpoints.dart';
 import 'package:cubix_app/core/services/api_client.dart';
 import 'package:cubix_app/features/home/models/subject_details_model.dart';
 import 'package:dio/dio.dart';
@@ -11,10 +12,8 @@ class HomeServices {
   HomeServices({required this.apiClient});
 
   Future<SubjectsData?> getSubjects() async {
-    const String url = "/subjects";
     try {
-      Response response = await apiClient.dio.get(url);
-
+      Response response = await apiClient.dio.get(ApiEndpoints.subjects);
       if (response.statusCode == 200 && response.data['data'] != null) {
         final dataJson = response.data['data'];
         final subjectsData = SubjectsData.fromJson(dataJson);
@@ -30,7 +29,7 @@ class HomeServices {
   }
 
   Future<SubjectDetail?> getSubjectDetail(String subjectId) async {
-    final String url = "/subjects/$subjectId";
+    final String url = ApiEndpoints.subjectDetail(subjectId);
     try {
       final response = await apiClient.dio.get(url);
       if (response.statusCode == 200 && response.data['data'] != null) {
@@ -48,10 +47,9 @@ class HomeServices {
     required String subjectId,
     required String sectionTitle,
   }) async {
-    const String url = "/subjects/section";
     try {
       final response = await apiClient.dio.post(
-        url,
+        ApiEndpoints.subjectSections,
         data: {"subject_id": subjectId, "section_title": sectionTitle},
       );
       if ((response.statusCode == 200 || response.statusCode == 201) &&
@@ -69,11 +67,9 @@ class HomeServices {
   ///
   ///  Create feedbacks
   Future<bool> createFeedback({required String description}) async {
-    const String url = "/feedbacks";
-
     try {
       final response = await apiClient.dio.post(
-        url,
+        ApiEndpoints.feedbacks,
         data: {"description": description},
       );
       if ((response.statusCode == 200 || response.statusCode == 201) &&

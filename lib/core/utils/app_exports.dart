@@ -60,7 +60,7 @@ export 'package:cubix_app/core/widgets/w_custom_message.dart';
 export 'package:cubix_app/features/explore/providers/explore_provider.dart';
 export 'package:cubix_app/features/explore/presentation/widgets/w_course_details_shimmer.dart';
 export 'package:cubix_app/features/explore/presentation/widgets/w_topic_item.dart';
-export 'package:cubix_app/features/lessons/data/progress_services.dart';
+export 'package:cubix_app/features/lessons/services/progress_services.dart';
 export 'package:cubix_app/features/lessons/provider/progress_provider.dart';
 
 export 'package:cubix_app/features/home/models/subject_details_model.dart';

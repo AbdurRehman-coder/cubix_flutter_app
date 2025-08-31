@@ -4,7 +4,7 @@ import 'package:cubix_app/core/services/google_auth_services.dart';
 import 'package:cubix_app/core/services/shared_prefs_services.dart';
 import 'package:cubix_app/features/auth/services/auth_services.dart';
 import 'package:cubix_app/features/home/data/home_services.dart';
-import 'package:cubix_app/features/lessons/data/progress_services.dart';
+import 'package:cubix_app/features/lessons/services/progress_services.dart';
 import 'package:get_it/get_it.dart';
 
 import 'analytics_services.dart';

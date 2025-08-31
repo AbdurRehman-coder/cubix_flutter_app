@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:cubix_app/core/constants/api_endpoints.dart';
 import 'package:cubix_app/core/utils/app_exports.dart';
 import 'package:cubix_app/core/utils/app_extensions.dart';
 import 'package:cubix_app/features/auth/models/auth_request_model.dart';
@@ -83,7 +84,7 @@ class AuthServices {
         appVersion: appVersion,
       );
 
-      final auth = await _signup("/auth/sign-in/google", req, context);
+      final auth = await _signup(ApiEndpoints.loginWithGoogle, req, context);
       if (auth != null && context.mounted) {
         _navigateToMain(context);
       }
@@ -111,7 +112,7 @@ class AuthServices {
         appVersion: appVersion,
       );
 
-      final auth = await _signup("/auth/sign-in/apple", req, context);
+      final auth = await _signup(ApiEndpoints.loginWithApple, req, context);
       if (auth != null && context.mounted) {
         _navigateToMain(context);
       }
@@ -144,7 +145,7 @@ class AuthServices {
       )..options.headers['Authorization'] = 'Bearer ${user!.refreshToken}';
 
       final res = await refreshDio.post(
-        '/auth/refresh',
+        ApiEndpoints.refreshToken,
         data: {"appVersion": appVersion},
         options: Options(headers: {"Content-Type": "application/json"}),
       );
@@ -199,10 +200,9 @@ class AuthServices {
   }
 
   Future<void> handleDeleteAccount(BuildContext context, WidgetRef ref) async {
-    String url = '/users';
     try {
       final res = await apiClient.dio.delete(
-        url,
+        ApiEndpoints.users,
         options: Options(headers: {"Content-Type": "application/json"}),
       );
 
@@ -222,10 +222,9 @@ class AuthServices {
     BuildContext context,
     String authUserId,
   ) async {
-    const url = '/users/re-activate';
     try {
       final res = await apiClient.dio.patch(
-        url,
+        ApiEndpoints.reactivateAccount,
         data: {"authUserID": authUserId},
         options: Options(headers: {"Content-Type": "application/json"}),
       );

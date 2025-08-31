@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:cubix_app/core/constants/api_endpoints.dart';
 import 'package:cubix_app/core/services/api_client.dart';
 import 'package:cubix_app/features/lessons/models/progress_model.dart';
 import 'package:dio/dio.dart';
@@ -9,10 +10,8 @@ class ProgressServices {
   ProgressServices({required this.apiClient});
 
   Future<List<ProgressModel>?> getAllProgress() async {
-    String url = "/progress";
     try {
-      Response response = await apiClient.dio.get(url);
-
+      Response response = await apiClient.dio.get(ApiEndpoints.progress);
       if (response.statusCode == 200 && response.data['data'] != null) {
         final dataJson = response.data['data'];
         final progressData =
@@ -31,10 +30,9 @@ class ProgressServices {
   }
 
   Future<ProgressModel?> createProgress({required String subjectId}) async {
-    const String url = "/progress";
     try {
       Response response = await apiClient.dio.post(
-        url,
+        ApiEndpoints.progress,
         data: {"subject_id": subjectId},
       );
       if (response.statusCode == 201) {
@@ -56,11 +54,9 @@ class ProgressServices {
     required String title,
     required String type,
   }) async {
-    const String url = "/progress";
-
     try {
       Response response = await apiClient.dio.patch(
-        url,
+        ApiEndpoints.progress,
         data: {"progress_id": progressId, "title": title, "type": type},
       );
       if (response.statusCode == 200 || response.statusCode == 201) {

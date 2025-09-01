@@ -20,7 +20,7 @@ class _ChatBotScreenState extends State<ChatBotScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: true,
+      resizeToAvoidBottomInset: false,
       backgroundColor: AppColors.backgroundColor,
       bottomNavigationBar: Padding(
         padding: EdgeInsets.only(

@@ -22,7 +22,7 @@ class AppAssets {
   static const String crossIcon = 'assets/icons/cross_icon.svg';
   static const String deleteIcon = 'assets/icons/delete_icon.svg';
   static const String starsIcon = 'assets/icons/stars_icon.svg';
-
+  static const String searchIcon = 'assets/icons/search_icon.svg';
   static String getIconPath(String abbreviation, String category) {
     if (category == "book") {
       return 'assets/icons/book.svg';

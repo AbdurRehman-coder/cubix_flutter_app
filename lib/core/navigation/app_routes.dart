@@ -1,4 +1,5 @@
 import 'package:cubix_app/core/utils/app_exports.dart';
+import 'package:cubix_app/features/ai_chatbot/presentation/screens/ui_chatbot.dart';
 import 'package:cubix_app/features/lessons/presentation/screens/ui_lesson_details.dart';
 
 class AppRoutes {
@@ -7,6 +8,7 @@ class AppRoutes {
   static const String mainScreen = '/main';
   static const String courseDetails = '/courseDetails';
   static const String lessonDetails = '/lessonDetails';
+  static const String chatBot = '/chatbot';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -21,6 +23,10 @@ class AppRoutes {
         return MaterialPageRoute(
           builder: (_) => CourseDetailsScreen(subjectId: subjectId),
         );
+
+      case chatBot:
+        return MaterialPageRoute(builder: (_) => ChatBotScreen());
+
       case lessonDetails:
         final args = settings.arguments as Map<String, dynamic>;
         return MaterialPageRoute(

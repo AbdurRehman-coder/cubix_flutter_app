@@ -1,4 +1,5 @@
 import 'package:cubix_app/core/utils/app_exports.dart';
+import 'package:cubix_app/features/home/presentation/widgets/w_chatbot_section.dart';
 import 'package:cubix_app/features/home/presentation/widgets/w_feedback_dialog.dart';
 
 class HomeScreen extends ConsumerWidget {
@@ -39,6 +40,7 @@ class HomeScreen extends ConsumerWidget {
             ],
           ),
           SizedBox(height: getProportionateScreenHeight(18)),
+
           subjectsAsync.when(
             loading: () => HomeShimmer(),
             error:
@@ -65,8 +67,10 @@ class HomeScreen extends ConsumerWidget {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  ChatBotSection(),
+                  SizedBox(height: getProportionateScreenHeight(24)),
                   HomeBannerSlider(),
-                  SizedBox(height: getProportionateScreenHeight(16)),
+                  SizedBox(height: getProportionateScreenHeight(24)),
                   CreativitySection(subjects: subjects.creativity),
                   SizedBox(height: getProportionateScreenHeight(24)),
                   GrowthSection(subjects: subjects.growth),

@@ -1,35 +1,31 @@
+import 'dart:developer';
+
+import 'package:cubix_app/features/ai_chatbot/data/sample_model.dart';
+import 'package:cubix_app/features/ai_chatbot/providers/chat_provider.dart';
 import '../../../../core/utils/app_exports.dart';
 
-class ChatBotScreen extends StatefulWidget {
+class ChatBotScreen extends ConsumerStatefulWidget {
   const ChatBotScreen({super.key});
 
   @override
-  State<ChatBotScreen> createState() => _ChatBotScreenState();
+  ConsumerState<ChatBotScreen> createState() => _ChatBotScreenState();
 }
 
-class _ChatBotScreenState extends State<ChatBotScreen> {
+class _ChatBotScreenState extends ConsumerState<ChatBotScreen> {
   final TextEditingController controller = TextEditingController();
-
-  final List<String> preDefinedMessages = [
-    "A Goal You Want To\nReach",
-    "A Skill You Want To\nImprove",
-    "A Subject Or Topic You Want To Learn",
-    "A Textbook Or Non-Fiction\nBook You Want To Learn\nFrom",
-  ];
-
-  final List<String> messages = [];
 
   void _sendMessage() {
     if (controller.text.isNotEmpty) {
-      setState(() {
-        messages.add(controller.text);
-        controller.clear();
-      });
+      ref.read(chatProvider.notifier).sendMessage(controller.text);
+      controller.clear();
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final initialMessagesAsync = ref.watch(initialMessagesProvider);
+    final chatMessages = ref.watch(chatProvider);
+
     return Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: AppColors.backgroundColor,
@@ -60,38 +56,42 @@ class _ChatBotScreenState extends State<ChatBotScreen> {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-          child: messages.isEmpty ? _buildDefaultView() : _buildChatView(),
+          child:
+              chatMessages.isEmpty
+                  ? initialMessagesAsync.when(
+                    data: (data) {
+                      return _buildDefaultView(data ?? []);
+                    },
+                    loading:
+                        () => const Center(child: CircularProgressIndicator()),
+                    error:
+                        (err, _) => Center(
+                          child: Text(
+                            "Error loading: $err",
+                            style: AppTextStyles.bodyTextStyle.copyWith(
+                              fontSize: 14,
+                              color: AppColors.textTertiaryColor,
+                            ),
+                          ),
+                        ),
+                  )
+                  : _buildChatView(chatMessages),
         ),
       ),
     );
   }
 
-  Widget _buildDefaultView() {
+  Widget _buildDefaultView(List<AssistantSample> preDefinedMessages) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: Text(
-                'What Do You Want To\nLearn Today?',
-                style: AppTextStyles.bodyTextStyle.copyWith(
-                  color: AppColors.lightBlackColor,
-                  fontWeight: FontWeight.w700,
-                  fontSize: 28,
-                ),
-              ),
-            ),
-            GestureDetector(
-              onTap: () => Navigator.pop(context),
-              child: Icon(
-                Icons.close_sharp,
-                size: 27,
-                color: AppColors.lightBlackColor,
-              ),
-            ),
-          ],
+        Text(
+          'What Do You Want To\nLearn Today?',
+          style: AppTextStyles.bodyTextStyle.copyWith(
+            color: AppColors.lightBlackColor,
+            fontWeight: FontWeight.w700,
+            fontSize: 28,
+          ),
         ),
         const SizedBox(height: 10),
         Text(
@@ -126,15 +126,13 @@ class _ChatBotScreenState extends State<ChatBotScreen> {
             crossAxisCount: 2,
             mainAxisSpacing: 15,
             crossAxisSpacing: 15,
-            childAspectRatio: 1.75,
+            childAspectRatio: 1.9,
           ),
           itemCount: preDefinedMessages.length,
           itemBuilder: (context, index) {
             return GestureDetector(
               onTap: () {
-                setState(() {
-                  controller.text = preDefinedMessages[index];
-                });
+                controller.text = preDefinedMessages[index].message;
               },
               child: Container(
                 decoration: BoxDecoration(
@@ -151,7 +149,7 @@ class _ChatBotScreenState extends State<ChatBotScreen> {
                     SvgPicture.asset(AppAssets.starsIcon),
                     const SizedBox(height: 4),
                     Text(
-                      preDefinedMessages[index],
+                      preDefinedMessages[index].interface,
                       style: AppTextStyles.bodyTextStyle.copyWith(
                         color: AppColors.lightBlackColor,
                         fontWeight: FontWeight.w500,
@@ -168,45 +166,89 @@ class _ChatBotScreenState extends State<ChatBotScreen> {
     );
   }
 
-  Widget _buildChatView() {
+  Widget _buildChatView(List<ChatMessage> chatMessages) {
     return Column(
       children: [
-        Align(
-          alignment: Alignment.topRight,
-          child: GestureDetector(
-            onTap: () => Navigator.pop(context),
-            child: Icon(
-              Icons.close_sharp,
-              size: 27,
-              color: AppColors.lightBlackColor,
-            ),
-          ),
-        ),
-        SizedBox(height: 20),
         Expanded(
           child: ListView.builder(
             padding: EdgeInsets.zero,
-            shrinkWrap: true,
-            itemCount: messages.length,
+            itemCount: chatMessages.length,
             itemBuilder: (context, index) {
+              final msg = chatMessages[index];
+              final isUser = msg.role == "user";
+              log('Message from ${isUser ? "User" : "AI"}: ${msg.options}');
               return Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8),
+                padding: const EdgeInsets.symmetric(vertical: 6),
                 child: Align(
-                  alignment: Alignment.centerRight,
-                  child: Container(
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: AppColors.whiteColor,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-
-                    child: Text(
-                      messages[index],
-                      style: AppTextStyles.bodyTextStyle.copyWith(
-                        color: AppColors.lightBlackColor,
-                        fontSize: 14,
+                  alignment:
+                      isUser ? Alignment.centerRight : Alignment.centerLeft,
+                  child: Column(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: AppColors.whiteColor,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child:
+                            msg.isLoading
+                                ? Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: const [
+                                    SizedBox(
+                                      width: 6,
+                                      height: 6,
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 2,
+                                      ),
+                                    ),
+                                    SizedBox(width: 8),
+                                    Text("Thinking..."),
+                                  ],
+                                )
+                                : Text(
+                                  msg.content,
+                                  style: AppTextStyles.bodyTextStyle.copyWith(
+                                    color: AppColors.lightBlackColor,
+                                    fontSize: 14,
+                                  ),
+                                ),
                       ),
-                    ),
+
+                      if (msg.options?.isNotEmpty ?? false) ...[
+                        const SizedBox(height: 8),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          spacing: 8,
+                          children:
+                              msg.options!.map((option) {
+                                Color btnColor;
+                                switch (option.buttonColor.toLowerCase()) {
+                                  case 'primary':
+                                    btnColor = AppColors.primaryOrangeColor;
+                                    break;
+                                  case 'subject':
+                                    btnColor = AppColors.blueColor;
+                                    break;
+                                  default:
+                                    btnColor = Colors.transparent;
+                                }
+                                return PrimaryButton(
+                                  backgroundColor: btnColor,
+                                  text: option.buttonMessage,
+                                  textColor:
+                                      btnColor == Colors.transparent
+                                          ? AppColors.textTertiaryColor
+                                          : AppColors.whiteColor,
+                                  onPressed: () {
+                                    controller.text = option.buttonMessage;
+                                    _sendMessage();
+                                  },
+                                );
+                              }).toList(),
+                        ),
+                      ],
+                    ],
                   ),
                 ),
               );

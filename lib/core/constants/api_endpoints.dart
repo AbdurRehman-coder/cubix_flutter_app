@@ -21,4 +21,7 @@ class ApiEndpoints {
 
   // Profile
   static const String profile = "$baseUrl/user/profile";
+
+  // Chat
+  static const String assistant = "/assistant";
 }

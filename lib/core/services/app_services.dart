@@ -2,6 +2,7 @@ import 'package:cubix_app/core/services/api_client.dart';
 import 'package:cubix_app/core/services/apple_auth_services.dart';
 import 'package:cubix_app/core/services/google_auth_services.dart';
 import 'package:cubix_app/core/services/shared_prefs_services.dart';
+import 'package:cubix_app/features/ai_chatbot/services/chat_service.dart';
 import 'package:cubix_app/features/auth/services/auth_services.dart';
 import 'package:cubix_app/features/home/data/home_services.dart';
 import 'package:cubix_app/features/lessons/services/progress_services.dart';
@@ -30,6 +31,10 @@ Future<void> initServices() async {
 
   locator.registerSingleton<HomeServices>(
     HomeServices(apiClient: locator.get<ApiClient>()),
+  );
+
+  locator.registerSingleton<ChatService>(
+    ChatService(apiClient: locator.get<ApiClient>()),
   );
 
   locator.registerSingleton<ProgressServices>(

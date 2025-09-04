@@ -48,4 +48,49 @@ class ChatService {
       throw Exception("Failed to send chat message: $e");
     }
   }
+
+  /// Create a new subject response
+  Future<ChatResponse?> createCustomSubject({
+    required String subjectTitle,
+    required String subjectTone,
+  }) async {
+    try {
+      final response = await apiClient.dio.post(
+        ApiEndpoints.assistantSubject, // must be added in ApiEndpoints
+        data: {
+          "subject_title": subjectTitle,
+          "subject_tone": subjectTone,
+        },
+      );
+
+      if (response.statusCode == 200 && response.data['data'] != null) {
+        return ChatResponse.fromJson(response.data);
+      }
+      return null;
+    } catch (e) {
+      log('Failed to create subject: $e');
+      throw Exception("Failed to create subject: $e");
+    }
+  }
+
+  /// Get a custom subject by ID
+  Future<ChatResponse?> getCustomSubject(String id) async {
+    try {
+      final response = await apiClient.dio.get(
+        "${ApiEndpoints.assistantSubject}/$id",
+      );
+
+      if (response.statusCode == 200 && response.data['data'] != null) {
+        return ChatResponse.fromJson(response.data);
+      }
+      return null;
+    } catch (e) {
+      log('Failed to fetch custom subject: $e');
+      throw Exception("Failed to fetch custom subject: $e");
+    }
+  }
+
+
+
+
 }

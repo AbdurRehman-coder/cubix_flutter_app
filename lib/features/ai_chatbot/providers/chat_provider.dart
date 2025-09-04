@@ -67,7 +67,7 @@ class ChatNotifier extends StateNotifier<List<ChatMessage>> {
       // Replace loading with error bubble
       state = [
         ...state..removeLast(),
-        ChatMessage(role: "assistant", content: "❌ Error sending message"),
+        ChatMessage(role: "assistant", content: "🚫 Error sending message"),
       ];
     }
   }

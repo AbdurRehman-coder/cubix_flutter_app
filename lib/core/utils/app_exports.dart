@@ -78,3 +78,8 @@ export 'package:flutter/services.dart';
 export 'package:flutter_dotenv/flutter_dotenv.dart';
 
 export 'package:cubix_app/core/navigation/app_routes.dart';
+
+export 'package:cubix_app/features/ai_chatbot/presentation/widgets/w_default_chat_view.dart';
+export 'package:cubix_app/features/ai_chatbot/presentation/widgets/w_default_shimmer.dart';
+export 'package:cubix_app/features/ai_chatbot/presentation/widgets/w_option_card.dart';
+export 'package:cubix_app/features/ai_chatbot/providers/chat_provider.dart';

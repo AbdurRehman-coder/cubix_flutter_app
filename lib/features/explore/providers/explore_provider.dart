@@ -3,15 +3,31 @@ import 'dart:async';
 import 'dart:collection';
 import 'package:cubix_app/main.dart';
 
+import 'package:equatable/equatable.dart';
+
+class SubjectParams extends Equatable {
+  final String subjectId;
+  final bool isAssistant;
+
+  const SubjectParams({required this.subjectId, required this.isAssistant});
+
+  @override
+  List<Object?> get props => [subjectId, isAssistant];
+}
+
+
 final selectedCategoryProvider = StateProvider<CourseCategory>((ref) {
   return CourseCategory.creativity;
 });
 
+
+
 final subjectDetailProvider = FutureProvider.autoDispose
-    .family<SubjectDetail?, String>((ref, subjectId) async {
-      final homeServices = locator.get<HomeServices>();
-      return await homeServices.getSubjectDetail(subjectId);
-    });
+    .family<SubjectDetail?, SubjectParams>((ref, params) async {
+  final homeServices = locator.get<HomeServices>();
+  return await homeServices.getSubjectDetail(params);
+});
+
 
 final sectionLoadingProvider = StateProvider.family<bool, String>(
   (ref, title) => false,
@@ -37,16 +53,17 @@ class DownloadManager extends StateNotifier<Set<String>> {
 
   DownloadManager(this.ref) : super({});
 
-  Future<void> start(String subjectId, String sectionTitle) =>
-      _enqueue(subjectId, sectionTitle, silent: false);
+  Future<void> start(String subjectId, String sectionTitle, {required bool isAssistant}) =>
+      _enqueue(subjectId, sectionTitle, silent: false, isAssistant: isAssistant);
 
-  Future<void> startSilent(String subjectId, String sectionTitle) =>
-      _enqueue(subjectId, sectionTitle, silent: true);
+  Future<void> startSilent(String subjectId, String sectionTitle, {required bool isAssistant}) =>
+      _enqueue(subjectId, sectionTitle, silent: true, isAssistant: isAssistant);
 
   Future<void> _enqueue(
     String subjectId,
     String sectionTitle, {
     required bool silent,
+        required bool isAssistant
   }) {
     final key = "$subjectId|$sectionTitle";
 
@@ -66,11 +83,11 @@ class DownloadManager extends StateNotifier<Set<String>> {
     final task = _Task(subjectId, sectionTitle, silent);
     q.add(task);
 
-    _runQueue(subjectId);
+    _runQueue(subjectId, isAssistant);
     return task.completer.future;
   }
 
-  Future<void> _runQueue(String subjectId) async {
+  Future<void> _runQueue(String subjectId, bool isAssistant) async {
     if (_running.contains(subjectId)) return;
     _running.add(subjectId);
 
@@ -87,6 +104,7 @@ class DownloadManager extends StateNotifier<Set<String>> {
           final result = await home.addSubjectSection(
             subjectId: t.subjectId,
             sectionTitle: t.sectionTitle,
+            subjectType: isAssistant ? "custom": "default"
           );
 
           if (result != null) {
@@ -97,7 +115,7 @@ class DownloadManager extends StateNotifier<Set<String>> {
 
             // ✅ refresh immediately after each successful section
             // ignore: unused_result
-            await ref.refresh(subjectDetailProvider(t.subjectId).future);
+            await ref.refresh(subjectDetailProvider(SubjectParams(subjectId: t.subjectId, isAssistant: isAssistant)).future);
           } else if (!t.silent) {
             _showErrorSnackbar("Failed to generate section. Please try again.");
           }
@@ -121,7 +139,7 @@ class DownloadManager extends StateNotifier<Set<String>> {
     } finally {
       _running.remove(subjectId);
       if ((_queues[subjectId]?.isNotEmpty ?? false)) {
-        scheduleMicrotask(() => _runQueue(subjectId));
+        scheduleMicrotask(() => _runQueue(subjectId, isAssistant));
       }
     }
   }

@@ -92,7 +92,7 @@ class LessonsScreen extends ConsumerWidget {
                         padding: const EdgeInsets.only(bottom: 10),
                         itemBuilder: (context, index) {
                           final subjectDetailAsync = ref.watch(
-                            subjectDetailProvider(activeList[index].subject),
+                            subjectDetailProvider(SubjectParams(subjectId: activeList[index].subject, isAssistant: false)),
                           );
 
                           return subjectDetailAsync.when(
@@ -196,7 +196,7 @@ class LessonsScreen extends ConsumerWidget {
               width: double.infinity,
               height: getProportionateScreenHeight(96),
               decoration: BoxDecoration(
-                color: AppColors.getCategoryColor(subject.category),
+                color: AppColors.getCategoryColor(subject.category ?? ''),
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(10),
                   topRight: Radius.circular(10),
@@ -204,7 +204,7 @@ class LessonsScreen extends ConsumerWidget {
               ),
               child: Center(
                 child: SvgPicture.asset(
-                  AppAssets.getIconPath(subject.abbreviation, subject.category),
+                  AppAssets.getIconPath(subject.abbreviation, subject.category ?? ''),
                   fit: BoxFit.cover,
                   height: getProportionateScreenHeight(85),
                   width: getProportionateScreenHeight(85),

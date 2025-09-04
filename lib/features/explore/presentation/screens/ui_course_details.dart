@@ -7,13 +7,18 @@ import 'package:cubix_app/features/explore/presentation/widgets/w_downloading_wi
 
 class CourseDetailsScreen extends ConsumerWidget {
   final String subjectId;
+  final bool isAssistantSubject;
 
-  CourseDetailsScreen({super.key, required this.subjectId});
+  CourseDetailsScreen({super.key, required this.subjectId, this.isAssistantSubject = false});
 
   final analytics = locator<AnalyticServices>();
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final subjectDetailAsync = ref.watch(subjectDetailProvider(subjectId));
+    final subjectDetailAsync = ref.watch(
+      subjectDetailProvider(
+        SubjectParams(subjectId: subjectId, isAssistant: isAssistantSubject),
+      ),
+    );
 
     return Scaffold(
       body: subjectDetailAsync.when(
@@ -46,7 +51,7 @@ class CourseDetailsScreen extends ConsumerWidget {
                 Container(
                   width: double.infinity,
                   decoration: BoxDecoration(
-                    color: AppColors.getCategoryColor(subject.category),
+                    color: AppColors.getCategoryColor(subject.category ?? ''),
                   ),
                   child: SafeArea(
                     child: Padding(
@@ -68,7 +73,7 @@ class CourseDetailsScreen extends ConsumerWidget {
                           SvgPicture.asset(
                             AppAssets.getIconPath(
                               subject.abbreviation,
-                              subject.category,
+                              subject.category ?? '',
                             ),
                             width: 150,
                             height: 150,
@@ -194,6 +199,7 @@ class CourseDetailsScreen extends ConsumerWidget {
                                           .start(
                                             subjectId,
                                             chapter.sectionTitle,
+                                        isAssistant: isAssistantSubject
                                           );
                                     },
                                     icon: SvgPicture.asset(
@@ -358,6 +364,7 @@ class CourseDetailsScreen extends ConsumerWidget {
                                               .startSilent(
                                                 subjectId,
                                                 nextSection.sectionTitle,
+                                              isAssistant: isAssistantSubject
                                               );
                                         }
                                       }

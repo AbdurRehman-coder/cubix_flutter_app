@@ -25,4 +25,6 @@ class ApiEndpoints {
   // Chat
   static const String assistant = "/assistant";
   static const String assistantSubject = '/assistant/subject';
+
+  static String getAssistantSubject(String subjectId) => "/assistant/subject/$subjectId";
 }

@@ -1,3 +1,5 @@
+import 'package:cubix_app/features/ai_chatbot/services/chat_service.dart';
+
 import '../../../../core/utils/app_exports.dart';
 
 class ChatBotScreen extends ConsumerStatefulWidget {
@@ -140,27 +142,106 @@ class _ChatBotScreenState extends ConsumerState<ChatBotScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      msg.isLoading
-                          ?
-                      Image.asset('assets/gifs/typing_indicator.gif', height: 50,) :
-                      Container(
-                        padding: const EdgeInsets.all(15),
+
+                      msg.isDownloading
+                          ? Container(
+                        padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
-                          color:
-                              isUser
-                                  ? AppColors.whiteColor
-                                  : Colors.transparent,
+                          color: Colors.blue.shade50,
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        child:
-                                 Text(
-                                  msg.content,
-                                  style: AppTextStyles.bodyTextStyle.copyWith(
-                                    color: AppColors.blackColor,
-                                    fontSize: 16,
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(strokeWidth: 2),
+                            ),
+                            const SizedBox(width: 10),
+                            Flexible(
+                              child: Text(
+                                msg.content,
+                                style: AppTextStyles.bodyTextStyle.copyWith(
+                                  color: AppColors.blackColor,
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                          : msg.content.contains("downloaded successfully")
+                          ? Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            msg.content,
+                            style: AppTextStyles.bodyTextStyle.copyWith(
+                              color: AppColors.blackColor,
+                              fontSize: 16,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          ElevatedButton(
+                            onPressed: () {
+                              // Navigate to CourseDetailsScreen
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => CourseDetailsScreen(
+                                    subjectId: '68b9da47d90867d760a93532',
+                                    isAssistantSubject: true,
                                   ),
                                 ),
+                              );
+                            },
+                            child: const Text("Go to Course"),
+                          ),
+                        ],
+                      )
+                          : msg.isLoading
+                          ? Image.asset('assets/gifs/typing_indicator.gif', height: 50)
+                          : Container(
+                        padding: const EdgeInsets.all(15),
+                        decoration: BoxDecoration(
+                          color: isUser ? AppColors.whiteColor : Colors.transparent,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Text(
+                          msg.content,
+                          style: AppTextStyles.bodyTextStyle.copyWith(
+                            color: AppColors.blackColor,
+                            fontSize: 16,
+                          ),
+                        ),
                       ),
+
+
+
+
+
+                      // msg.isLoading
+                      //     ?
+                      // Image.asset('assets/gifs/typing_indicator.gif', height: 50,) :
+                      // Container(
+                      //   padding: const EdgeInsets.all(15),
+                      //   decoration: BoxDecoration(
+                      //     color:
+                      //         isUser
+                      //             ? AppColors.whiteColor
+                      //             : Colors.transparent,
+                      //     borderRadius: BorderRadius.circular(10),
+                      //   ),
+                      //   child:
+                      //            Text(
+                      //             msg.content,
+                      //             style: AppTextStyles.bodyTextStyle.copyWith(
+                      //               color: AppColors.blackColor,
+                      //               fontSize: 16,
+                      //             ),
+                      //           ),
+                      // ),
                       if (msg.options?.isNotEmpty ?? false) ...[
                         const SizedBox(height: 8),
                         Column(
@@ -171,10 +252,18 @@ class _ChatBotScreenState extends ConsumerState<ChatBotScreen> {
                                   padding: const EdgeInsets.only(bottom: 12),
                                   child: CustomOptionCard(
                                     chatOption: option,
-                                    onTap: () {
-                                      controller.text = option.buttonMessage;
-                                      hasText.value = true;
-                                      _sendMessage();
+                                    onTap: () async {
+                                      if(option.buttonColor == 'primary'){
+                                        // Show downloading bubble
+                                        await ref.read(chatProvider.notifier).startDownloading(
+                                            msg.finalSubjectTitle ?? 'Subject'
+                                        );
+
+                                      } else {
+                                        controller.text = option.buttonMessage;
+                                        hasText.value = true;
+                                        _sendMessage();
+                                      }
                                     },
                                   ),
                                 );

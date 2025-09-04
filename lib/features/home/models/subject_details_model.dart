@@ -2,8 +2,10 @@ class SubjectDetail {
   final String id;
   final String title;
   final String abbreviation;
-  final String category;
+  final String? category;       // optional now
   final String overview;
+  final String? tone;           // optional (for assistant subjects)
+  final List<String>? tags;     // optional (for assistant subjects)
   final List<SubjectSection> sections;
   final DateTime createdAt;
   final DateTime updatedAt;
@@ -12,8 +14,10 @@ class SubjectDetail {
     required this.id,
     required this.title,
     required this.abbreviation,
-    required this.category,
+    this.category,
     required this.overview,
+    this.tone,
+    this.tags,
     required this.sections,
     required this.createdAt,
     required this.updatedAt,
@@ -24,12 +28,15 @@ class SubjectDetail {
       id: json['_id'],
       title: json['subject_title'],
       abbreviation: json['subject_abbreviation'],
-      category: json['subject_category'],
+      category: json['subject_category'], // may be null
       overview: json['subject_overview'],
-      sections:
-          (json['subject_sections'] as List)
-              .map((e) => SubjectSection.fromJson(e))
-              .toList(),
+      tone: json['subject_tone'], // may be null
+      tags: json['subject_tags'] != null
+          ? List<String>.from(json['subject_tags'])
+          : null,
+      sections: (json['subject_sections'] as List)
+          .map((e) => SubjectSection.fromJson(e))
+          .toList(),
       createdAt: DateTime.parse(json['createdAt']),
       updatedAt: DateTime.parse(json['updatedAt']),
     );
@@ -45,10 +52,9 @@ class SubjectSection {
   factory SubjectSection.fromJson(Map<String, dynamic> json) {
     return SubjectSection(
       sectionTitle: json['section_title'],
-      topics:
-          (json['topics'] as List)
-              .map((e) => SubjectTopic.fromJson(e))
-              .toList(),
+      topics: (json['topics'] as List)
+          .map((e) => SubjectTopic.fromJson(e))
+          .toList(),
     );
   }
 }
@@ -62,12 +68,11 @@ class SubjectTopic {
   factory SubjectTopic.fromJson(Map<String, dynamic> json) {
     return SubjectTopic(
       topicTitle: json['topic_title'],
-      pages:
-          json['pages'] != null
-              ? (json['pages'] as List)
-                  .map((e) => SubjectPage.fromJson(e))
-                  .toList()
-              : null,
+      pages: json['pages'] != null
+          ? (json['pages'] as List)
+          .map((e) => SubjectPage.fromJson(e))
+          .toList()
+          : null,
     );
   }
 }

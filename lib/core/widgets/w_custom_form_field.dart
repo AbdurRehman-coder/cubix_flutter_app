@@ -8,6 +8,7 @@ class CustomTextField extends StatelessWidget {
   final Color? fillColor;
   final int maxLines;
   final double borderRadius;
+  final Color? borderColor;
   final Widget? suffixIcon;
   final String? Function(String?)? validator;
 
@@ -19,6 +20,7 @@ class CustomTextField extends StatelessWidget {
     this.maxLines = 4,
     this.validator,
     this.borderRadius = 20,
+    this.borderColor,
     this.suffixIcon,
   });
 
@@ -51,7 +53,11 @@ class CustomTextField extends StatelessWidget {
         contentPadding: const EdgeInsets.all(16),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(borderRadius),
-          borderSide: const BorderSide(color: Color(0xffE3E3E4)),
+          borderSide:  BorderSide(color:
+
+
+          borderColor ??  Color(0xffE3E3E4),
+          ),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(borderRadius),

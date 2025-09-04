@@ -34,9 +34,13 @@ class CustomOptionCard extends StatelessWidget {
   (Color, Color, Color) _getColors(ChatOption option) {
     final colorName = option.buttonColor.toLowerCase();
 
+    if (colorName == 'subject') {
+      // ✅ Special case
+      return (Colors.transparent, AppColors.blackColor, AppColors.blackColor);
+    }
+
     final background = switch (colorName) {
       'primary' => AppColors.primaryOrangeColor,
-      'subject' => AppColors.blueColor,
       _ => Colors.transparent,
     };
 
@@ -44,13 +48,13 @@ class CustomOptionCard extends StatelessWidget {
 
     final border = isSecondary ? AppColors.primaryOrangeColor : background;
 
-    final text =
-        isSecondary
-            ? AppColors.primaryOrangeColor
-            : (background == Colors.transparent
-                ? AppColors.textTertiaryColor
-                : AppColors.whiteColor);
+    final text = isSecondary
+        ? AppColors.primaryOrangeColor
+        : (background == Colors.transparent
+        ? AppColors.textTertiaryColor
+        : AppColors.whiteColor);
 
     return (background, border, text);
   }
+
 }

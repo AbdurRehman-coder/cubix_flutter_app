@@ -51,6 +51,7 @@ class _ChatBotScreenState extends ConsumerState<ChatBotScreen> {
               ),
               child: CustomTextField(
                 controller: controller,
+                borderColor: AppColors.whiteColor,
                 maxLines: 1,
                 fillColor: AppColors.whiteColor,
                 hintText: 'Tell Me Your Idea',
@@ -139,8 +140,11 @@ class _ChatBotScreenState extends ConsumerState<ChatBotScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      msg.isLoading
+                          ?
+                      Image.asset('assets/gifs/typing_indicator.gif', height: 50,) :
                       Container(
-                        padding: const EdgeInsets.all(12),
+                        padding: const EdgeInsets.all(15),
                         decoration: BoxDecoration(
                           color:
                               isUser
@@ -149,26 +153,11 @@ class _ChatBotScreenState extends ConsumerState<ChatBotScreen> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child:
-                            msg.isLoading
-                                ? Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: const [
-                                    SizedBox(
-                                      width: 6,
-                                      height: 6,
-                                      child: CircularProgressIndicator(
-                                        strokeWidth: 2,
-                                      ),
-                                    ),
-                                    SizedBox(width: 8),
-                                    Text("Thinking..."),
-                                  ],
-                                )
-                                : Text(
+                                 Text(
                                   msg.content,
                                   style: AppTextStyles.bodyTextStyle.copyWith(
-                                    color: AppColors.lightBlackColor,
-                                    fontSize: 14,
+                                    color: AppColors.blackColor,
+                                    fontSize: 16,
                                   ),
                                 ),
                       ),

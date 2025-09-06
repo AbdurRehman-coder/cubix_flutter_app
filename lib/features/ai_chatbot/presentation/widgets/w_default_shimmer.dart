@@ -29,8 +29,8 @@ class DefaultChatShimmer extends StatelessWidget {
           Center(
             child: ShimmerBox(
               width: getProportionateScreenHeight(120),
-              height: getProportionateScreenHeight(120),
-              radius: 60,
+              height: getProportionateScreenHeight(40),
+              radius: 8,
             ),
           ),
 
@@ -50,7 +50,7 @@ class DefaultChatShimmer extends StatelessWidget {
               crossAxisSpacing: 15,
               childAspectRatio: 1.9,
             ),
-            itemCount: 4, // show 4 shimmer items
+            itemCount: 6, // show 6 shimmer items
             itemBuilder: (context, index) {
               return ShimmerBox(width: double.infinity, height: 60, radius: 8);
             },

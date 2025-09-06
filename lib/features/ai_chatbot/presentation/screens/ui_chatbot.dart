@@ -1,5 +1,3 @@
-import 'package:cubix_app/features/ai_chatbot/services/chat_service.dart';
-
 import '../../../../core/utils/app_exports.dart';
 
 class ChatBotScreen extends ConsumerStatefulWidget {
@@ -34,10 +32,19 @@ class _ChatBotScreenState extends ConsumerState<ChatBotScreen> {
     super.dispose();
   }
 
+  int _lastMessageCount = 0;
+
   @override
   Widget build(BuildContext context) {
     final initialMessagesAsync = ref.watch(initialMessagesProvider);
     final chatMessages = ref.watch(chatProvider);
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_lastMessageCount != chatMessages.length) {
+        _lastMessageCount = chatMessages.length;
+        _scrollToBottom();
+      }
+    });
 
     return Scaffold(
       resizeToAvoidBottomInset: true,
@@ -129,6 +136,7 @@ class _ChatBotScreenState extends ConsumerState<ChatBotScreen> {
             itemBuilder: (context, index) {
               final msg = chatMessages[index];
               final isUser = msg.role == "user";
+
               return Padding(
                 padding: EdgeInsets.only(
                   top: 20,
@@ -142,106 +150,110 @@ class _ChatBotScreenState extends ConsumerState<ChatBotScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-
                       msg.isDownloading
                           ? Container(
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          color: Colors.blue.shade50,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            SizedBox(
-                              width: 20,
-                              height: 20,
-                              child: CircularProgressIndicator(strokeWidth: 2),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 10,
                             ),
-                            const SizedBox(width: 10),
-                            Flexible(
-                              child: Text(
+                            decoration: BoxDecoration(
+                              color: AppColors.whiteColor,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                SizedBox(
+                                  width: 20,
+                                  height: 20,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    color: AppColors.primaryOrangeColor,
+                                  ),
+                                ),
+                                const SizedBox(width: 10),
+                                Flexible(
+                                  child: Text(
+                                    msg.content,
+                                    style: AppTextStyles.bodyTextStyle.copyWith(
+                                      color: AppColors.blackColor,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                          : msg.content.contains("downloaded successfully")
+                          ? Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
                                 msg.content,
                                 style: AppTextStyles.bodyTextStyle.copyWith(
                                   color: AppColors.blackColor,
                                   fontSize: 16,
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                      )
-                          : msg.content.contains("downloaded successfully")
-                          ? Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            msg.content,
-                            style: AppTextStyles.bodyTextStyle.copyWith(
-                              color: AppColors.blackColor,
-                              fontSize: 16,
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          ElevatedButton(
-                            onPressed: () {
-                              // Navigate to CourseDetailsScreen
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => CourseDetailsScreen(
-                                    subjectId: '68b9da47d90867d760a93532',
-                                    isAssistantSubject: true,
+                              const SizedBox(height: 8),
+
+                              GestureDetector(
+                                onTap: () {
+                                  if (msg.subjectId == null) return;
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder:
+                                          (context) => CourseDetailsScreen(
+                                            subjectId: msg.subjectId ?? '',
+                                            isAssistantSubject: true,
+                                          ),
+                                    ),
+                                  );
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 16,
+                                    vertical: 10,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: AppColors.blueColor,
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: Text(
+                                    'Go to Course',
+                                    style: AppTextStyles.bodyTextStyle.copyWith(
+                                      color: AppColors.whiteColor,
+                                      fontSize: 16,
+                                    ),
                                   ),
                                 ),
-                              );
-                            },
-                            child: const Text("Go to Course"),
-                          ),
-                        ],
-                      )
+                              ),
+                            ],
+                          )
                           : msg.isLoading
-                          ? Image.asset('assets/gifs/typing_indicator.gif', height: 50)
+                          ? Image.asset(
+                            'assets/gifs/typing_indicator.gif',
+                            height: 50,
+                          )
                           : Container(
-                        padding: const EdgeInsets.all(15),
-                        decoration: BoxDecoration(
-                          color: isUser ? AppColors.whiteColor : Colors.transparent,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Text(
-                          msg.content,
-                          style: AppTextStyles.bodyTextStyle.copyWith(
-                            color: AppColors.blackColor,
-                            fontSize: 16,
+                            padding: const EdgeInsets.all(15),
+                            decoration: BoxDecoration(
+                              color:
+                                  isUser
+                                      ? AppColors.whiteColor
+                                      : Colors.transparent,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Text(
+                              msg.content,
+                              style: AppTextStyles.bodyTextStyle.copyWith(
+                                color: AppColors.blackColor,
+                                fontSize: 16,
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
 
-
-
-
-
-                      // msg.isLoading
-                      //     ?
-                      // Image.asset('assets/gifs/typing_indicator.gif', height: 50,) :
-                      // Container(
-                      //   padding: const EdgeInsets.all(15),
-                      //   decoration: BoxDecoration(
-                      //     color:
-                      //         isUser
-                      //             ? AppColors.whiteColor
-                      //             : Colors.transparent,
-                      //     borderRadius: BorderRadius.circular(10),
-                      //   ),
-                      //   child:
-                      //            Text(
-                      //             msg.content,
-                      //             style: AppTextStyles.bodyTextStyle.copyWith(
-                      //               color: AppColors.blackColor,
-                      //               fontSize: 16,
-                      //             ),
-                      //           ),
-                      // ),
                       if (msg.options?.isNotEmpty ?? false) ...[
                         const SizedBox(height: 8),
                         Column(
@@ -253,12 +265,15 @@ class _ChatBotScreenState extends ConsumerState<ChatBotScreen> {
                                   child: CustomOptionCard(
                                     chatOption: option,
                                     onTap: () async {
-                                      if(option.buttonColor == 'primary'){
+                                      if (option.buttonColor == 'primary') {
                                         // Show downloading bubble
-                                        await ref.read(chatProvider.notifier).startDownloading(
-                                            msg.finalSubjectTitle ?? 'Subject'
-                                        );
-
+                                        await ref
+                                            .read(chatProvider.notifier)
+                                            .startDownloading(
+                                              msg.finalSubjectTitle ??
+                                                  'Subject',
+                                            );
+                                        _scrollToBottom();
                                       } else {
                                         controller.text = option.buttonMessage;
                                         hasText.value = true;
@@ -293,11 +308,15 @@ class _ChatBotScreenState extends ConsumerState<ChatBotScreen> {
   void _scrollToBottom() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (scrollController.hasClients) {
-        scrollController.animateTo(
-          scrollController.position.maxScrollExtent,
-          duration: const Duration(milliseconds: 300),
-          curve: Curves.easeOut,
-        );
+        Future.delayed(const Duration(milliseconds: 100), () {
+          if (scrollController.hasClients) {
+            scrollController.animateTo(
+              scrollController.position.maxScrollExtent,
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeOut,
+            );
+          }
+        });
       }
     });
   }

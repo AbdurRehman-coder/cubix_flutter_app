@@ -50,21 +50,18 @@ class ChatService {
   }
 
   /// Create a new subject response
-  Future<ChatResponse?> createCustomSubject({
+  Future<String?> createCustomSubject({
     required String subjectTitle,
     required String subjectTone,
   }) async {
     try {
       final response = await apiClient.dio.post(
         ApiEndpoints.assistantSubject, // must be added in ApiEndpoints
-        data: {
-          "subject_title": subjectTitle,
-          "subject_tone": subjectTone,
-        },
+        data: {"subject_title": subjectTitle, "subject_tone": subjectTone},
       );
 
       if (response.statusCode == 200 && response.data['data'] != null) {
-        return ChatResponse.fromJson(response.data);
+        return response.data['data']['_id'];
       }
       return null;
     } catch (e) {
@@ -89,8 +86,4 @@ class ChatService {
       throw Exception("Failed to fetch custom subject: $e");
     }
   }
-
-
-
-
 }

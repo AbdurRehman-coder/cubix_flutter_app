@@ -95,7 +95,6 @@ class _ChatBotScreenState extends ConsumerState<ChatBotScreen> {
                           controller: controller,
                           hasText: hasText,
                         ),
-
                     loading: () => DefaultChatShimmer(),
                     error:
                         (err, _) => Center(
@@ -136,6 +135,13 @@ class _ChatBotScreenState extends ConsumerState<ChatBotScreen> {
             itemBuilder: (context, index) {
               final msg = chatMessages[index];
               final isUser = msg.role == "user";
+
+              // 👇 scroll after the last item (text + options) is rendered
+              if (index == chatMessages.length - 1) {
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  _scrollToBottom();
+                });
+              }
 
               return Padding(
                 padding: EdgeInsets.only(
@@ -196,7 +202,6 @@ class _ChatBotScreenState extends ConsumerState<ChatBotScreen> {
                                 ),
                               ),
                               const SizedBox(height: 8),
-
                               GestureDetector(
                                 onTap: () {
                                   if (msg.subjectId == null) return;
@@ -253,7 +258,6 @@ class _ChatBotScreenState extends ConsumerState<ChatBotScreen> {
                               ),
                             ),
                           ),
-
                       if (msg.options?.isNotEmpty ?? false) ...[
                         const SizedBox(height: 8),
                         Column(
@@ -266,7 +270,6 @@ class _ChatBotScreenState extends ConsumerState<ChatBotScreen> {
                                     chatOption: option,
                                     onTap: () async {
                                       if (option.buttonColor == 'primary') {
-                                        // Show downloading bubble
                                         await ref
                                             .read(chatProvider.notifier)
                                             .startDownloading(

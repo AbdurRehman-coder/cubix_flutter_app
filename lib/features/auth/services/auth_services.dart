@@ -299,5 +299,7 @@ class AuthServices {
     ref.invalidate(soundsProvider);
     ref.invalidate(hapticsProvider);
     ref.invalidate(bottomNavIndexProvider);
+    ref.invalidate(chatProvider);
+    ref.invalidate(initialMessagesProvider);
   }
 }

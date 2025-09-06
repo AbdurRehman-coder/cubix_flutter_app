@@ -92,12 +92,17 @@ class LessonsScreen extends ConsumerWidget {
                         padding: const EdgeInsets.only(bottom: 10),
                         itemBuilder: (context, index) {
                           final subjectDetailAsync = ref.watch(
-                            subjectDetailProvider(SubjectParams(subjectId: activeList[index].subject, isAssistant: false)),
+                            subjectDetailProvider(
+                              SubjectParams(
+                                subjectId: activeList[index].subject,
+                                isAssistant: false,
+                              ),
+                            ),
                           );
 
                           return subjectDetailAsync.when(
                             loading: () => CourseCardShimmer(),
-                            error: (err, _) => const Text("Failed to load"),
+                            error: (err, _) => Text("Failed to load: $err"),
                             data: (subjectDetail) {
                               if (subjectDetail == null) {
                                 return const Text("No data");
@@ -204,7 +209,10 @@ class LessonsScreen extends ConsumerWidget {
               ),
               child: Center(
                 child: SvgPicture.asset(
-                  AppAssets.getIconPath(subject.abbreviation, subject.category ?? ''),
+                  AppAssets.getIconPath(
+                    subject.abbreviation,
+                    subject.category ?? '',
+                  ),
                   fit: BoxFit.cover,
                   height: getProportionateScreenHeight(85),
                   width: getProportionateScreenHeight(85),

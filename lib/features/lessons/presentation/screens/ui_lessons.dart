@@ -102,10 +102,16 @@ class LessonsScreen extends ConsumerWidget {
 
                           return subjectDetailAsync.when(
                             loading: () => CourseCardShimmer(),
-                            error: (err, _) => Text("Failed to load: $err"),
+                            error: (err, _) => Container(
+
+decoration: BoxDecoration(
+
+  color: AppColors.whiteColor,
+  borderRadius: BorderRadius.circular(10, ),),
+                                child: Center(child: Text("Failed to load subject", style: AppTextStyles.bodyTextStyle.copyWith(fontSize: 12, color: AppColors.textTertiaryColor),))),
                             data: (subjectDetail) {
                               if (subjectDetail == null) {
-                                return const Text("No data");
+                                return Center(child: const Text("No data"));
                               }
 
                               return _buildSubjectCard(

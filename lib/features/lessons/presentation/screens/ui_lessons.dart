@@ -94,7 +94,7 @@ class LessonsScreen extends ConsumerWidget {
                           final subjectDetailAsync = ref.watch(
                             subjectDetailProvider(
                               SubjectParams(
-                                subjectId: activeList[index].subject,
+                                subjectId: activeList[index].subject.id,
                                 isAssistant: false,
                               ),
                             ),

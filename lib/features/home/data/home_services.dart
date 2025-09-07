@@ -31,10 +31,9 @@ class HomeServices {
 
   Future<SubjectDetail?> getSubjectDetail(SubjectParams params) async {
     final String url =
-
-    params.isAssistant ?
-    
-    ApiEndpoints.getAssistantSubject(params.subjectId) : ApiEndpoints.subjectDetail(params.subjectId);
+        params.isAssistant
+            ? ApiEndpoints.getAssistantSubject(params.subjectId)
+            : ApiEndpoints.subjectDetail(params.subjectId);
     try {
       final response = await apiClient.dio.get(url);
       if (response.statusCode == 200 && response.data['data'] != null) {
@@ -51,13 +50,15 @@ class HomeServices {
   Future<SubjectDetail?> addSubjectSection({
     required String subjectId,
     required String sectionTitle,
-    required String subjectType
+    required String subjectType,
   }) async {
     try {
       final response = await apiClient.dio.post(
         ApiEndpoints.subjectSections,
-        data: {"subject_id": subjectId, "section_title": sectionTitle,
-        "subject_type" : subjectType
+        data: {
+          "subject_id": subjectId,
+          "section_title": sectionTitle,
+          "subject_type": subjectType,
         },
       );
       if ((response.statusCode == 200 || response.statusCode == 201) &&

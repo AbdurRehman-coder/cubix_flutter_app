@@ -15,19 +15,15 @@ class SubjectParams extends Equatable {
   List<Object?> get props => [subjectId, isAssistant];
 }
 
-
 final selectedCategoryProvider = StateProvider<CourseCategory>((ref) {
   return CourseCategory.creativity;
 });
 
-
-
 final subjectDetailProvider = FutureProvider.autoDispose
     .family<SubjectDetail?, SubjectParams>((ref, params) async {
-  final homeServices = locator.get<HomeServices>();
-  return await homeServices.getSubjectDetail(params);
-});
-
+      final homeServices = locator.get<HomeServices>();
+      return await homeServices.getSubjectDetail(params);
+    });
 
 final sectionLoadingProvider = StateProvider.family<bool, String>(
   (ref, title) => false,
@@ -53,17 +49,29 @@ class DownloadManager extends StateNotifier<Set<String>> {
 
   DownloadManager(this.ref) : super({});
 
-  Future<void> start(String subjectId, String sectionTitle, {required bool isAssistant}) =>
-      _enqueue(subjectId, sectionTitle, silent: false, isAssistant: isAssistant);
+  Future<void> start(
+    String subjectId,
+    String sectionTitle, {
+    required bool isAssistant,
+  }) => _enqueue(
+    subjectId,
+    sectionTitle,
+    silent: false,
+    isAssistant: isAssistant,
+  );
 
-  Future<void> startSilent(String subjectId, String sectionTitle, {required bool isAssistant}) =>
+  Future<void> startSilent(
+    String subjectId,
+    String sectionTitle, {
+    required bool isAssistant,
+  }) =>
       _enqueue(subjectId, sectionTitle, silent: true, isAssistant: isAssistant);
 
   Future<void> _enqueue(
     String subjectId,
     String sectionTitle, {
     required bool silent,
-        required bool isAssistant
+    required bool isAssistant,
   }) {
     final key = "$subjectId|$sectionTitle";
 
@@ -104,7 +112,7 @@ class DownloadManager extends StateNotifier<Set<String>> {
           final result = await home.addSubjectSection(
             subjectId: t.subjectId,
             sectionTitle: t.sectionTitle,
-            subjectType: isAssistant ? "custom": "default"
+            subjectType: isAssistant ? "custom" : "default",
           );
 
           if (result != null) {
@@ -115,7 +123,11 @@ class DownloadManager extends StateNotifier<Set<String>> {
 
             // ✅ refresh immediately after each successful section
             // ignore: unused_result
-            await ref.refresh(subjectDetailProvider(SubjectParams(subjectId: t.subjectId, isAssistant: isAssistant)).future);
+            await ref.refresh(
+              subjectDetailProvider(
+                SubjectParams(subjectId: t.subjectId, isAssistant: isAssistant),
+              ).future,
+            );
           } else if (!t.silent) {
             _showErrorSnackbar("Failed to generate section. Please try again.");
           }

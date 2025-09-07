@@ -40,11 +40,13 @@ class SubjectModel {
   final String id;
   final String subjectTitle;
   final String subjectAbbreviation;
+  final String subjectCategory;
 
   SubjectModel({
     required this.id,
     required this.subjectTitle,
     required this.subjectAbbreviation,
+    required this.subjectCategory,
   });
 
   factory SubjectModel.fromJson(Map<String, dynamic> json) {
@@ -52,6 +54,7 @@ class SubjectModel {
       id: json['_id'],
       subjectTitle: json['subject_title'] ?? '',
       subjectAbbreviation: json['subject_abbreviation'] ?? '',
+      subjectCategory: json['subject_category'] ?? '',
     );
   }
 }

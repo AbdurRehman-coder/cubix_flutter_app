@@ -9,7 +9,11 @@ class CourseDetailsScreen extends ConsumerWidget {
   final String subjectId;
   final bool isAssistantSubject;
 
-  CourseDetailsScreen({super.key, required this.subjectId, this.isAssistantSubject = false});
+  CourseDetailsScreen({
+    super.key,
+    required this.subjectId,
+    this.isAssistantSubject = false,
+  });
 
   final analytics = locator<AnalyticServices>();
   @override
@@ -199,7 +203,7 @@ class CourseDetailsScreen extends ConsumerWidget {
                                           .start(
                                             subjectId,
                                             chapter.sectionTitle,
-                                        isAssistant: isAssistantSubject
+                                            isAssistant: isAssistantSubject,
                                           );
                                     },
                                     icon: SvgPicture.asset(
@@ -278,6 +282,7 @@ class CourseDetailsScreen extends ConsumerWidget {
 
                                     if (existingProgress == null) {
                                       // No progress exists for this subject, so create it
+                                      log('No progress exists for this');
                                       final createdProgress =
                                           await progressService.createProgress(
                                             subjectId: subjectId,
@@ -364,7 +369,7 @@ class CourseDetailsScreen extends ConsumerWidget {
                                               .startSilent(
                                                 subjectId,
                                                 nextSection.sectionTitle,
-                                              isAssistant: isAssistantSubject
+                                                isAssistant: isAssistantSubject,
                                               );
                                         }
                                       }

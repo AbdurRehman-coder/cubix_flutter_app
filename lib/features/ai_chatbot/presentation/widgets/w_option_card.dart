@@ -48,13 +48,13 @@ class CustomOptionCard extends StatelessWidget {
 
     final border = isSecondary ? AppColors.primaryOrangeColor : background;
 
-    final text = isSecondary
-        ? AppColors.primaryOrangeColor
-        : (background == Colors.transparent
-        ? AppColors.textTertiaryColor
-        : AppColors.whiteColor);
+    final text =
+        isSecondary
+            ? AppColors.primaryOrangeColor
+            : (background == Colors.transparent
+                ? AppColors.textTertiaryColor
+                : AppColors.whiteColor);
 
     return (background, border, text);
   }
-
 }

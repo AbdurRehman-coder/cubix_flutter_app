@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cubix_app/core/utils/app_exports.dart';
 
 class LessonsScreen extends ConsumerWidget {
@@ -6,7 +8,6 @@ class LessonsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedTab = ref.watch(selectedTabProvider);
-
     final lessonProvider = ref.watch(progressProvider);
 
     return SafeArea(
@@ -91,36 +92,10 @@ class LessonsScreen extends ConsumerWidget {
                         itemCount: activeList.length,
                         padding: const EdgeInsets.only(bottom: 10),
                         itemBuilder: (context, index) {
-                          final subjectDetailAsync = ref.watch(
-                            subjectDetailProvider(
-                              SubjectParams(
-                                subjectId: activeList[index].subject.id,
-                                isAssistant: false,
-                              ),
-                            ),
-                          );
-
-                          return subjectDetailAsync.when(
-                            loading: () => CourseCardShimmer(),
-                            error: (err, _) => Container(
-
-decoration: BoxDecoration(
-
-  color: AppColors.whiteColor,
-  borderRadius: BorderRadius.circular(10, ),),
-                                child: Center(child: Text("Failed to load subject", style: AppTextStyles.bodyTextStyle.copyWith(fontSize: 12, color: AppColors.textTertiaryColor),))),
-                            data: (subjectDetail) {
-                              if (subjectDetail == null) {
-                                return Center(child: const Text("No data"));
-                              }
-
-                              return _buildSubjectCard(
-                                context,
-                                activeList[index],
-                                ref,
-                                subjectDetail,
-                              );
-                            },
+                          return _buildSubjectCard(
+                            context: context,
+                            progress: activeList[index],
+                            ref: ref,
                           );
                         },
                       ),
@@ -179,19 +154,32 @@ decoration: BoxDecoration(
     );
   }
 
-  Widget _buildSubjectCard(
-    BuildContext context,
-    ProgressModel progress,
-    WidgetRef ref,
-    SubjectDetail subject,
-  ) {
+  Widget _buildSubjectCard({
+    required BuildContext context,
+    required ProgressModel progress,
+    required WidgetRef ref,
+  }) {
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(
+
+
+
+
+        Navigator.push(
           context,
-          AppRoutes.courseDetails,
-          arguments: subject.id,
+          MaterialPageRoute(
+            builder:
+                (context) => CourseDetailsScreen(
+                  subjectId: progress.subject.id,
+                  isAssistantSubject: progress.subjectModel == "CustomSubjects",
+                ),
+          ),
         );
+        // Navigator.pushNamed(
+        //   context,
+        //   AppRoutes.courseDetails,
+        //   arguments: subject.id,
+        // );
       },
       child: Container(
         decoration: BoxDecoration(
@@ -207,7 +195,10 @@ decoration: BoxDecoration(
               width: double.infinity,
               height: getProportionateScreenHeight(96),
               decoration: BoxDecoration(
-                color: AppColors.getCategoryColor(subject.category ?? ''),
+                //todo: need to pass category
+                color: AppColors.getCategoryColor(
+                  progress.subject.subjectCategory ?? '',
+                ),
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(10),
                   topRight: Radius.circular(10),
@@ -216,8 +207,8 @@ decoration: BoxDecoration(
               child: Center(
                 child: SvgPicture.asset(
                   AppAssets.getIconPath(
-                    subject.abbreviation,
-                    subject.category ?? '',
+                    progress.subject.subjectAbbreviation,
+                    progress.subject.subjectCategory ?? '',
                   ),
                   fit: BoxFit.cover,
                   height: getProportionateScreenHeight(85),
@@ -234,7 +225,7 @@ decoration: BoxDecoration(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      subject.abbreviation,
+                      progress.subject.subjectAbbreviation,
                       textAlign: TextAlign.start,
                       style: AppTextStyles.bodyTextStyle.copyWith(
                         fontSize: 11,
@@ -244,7 +235,7 @@ decoration: BoxDecoration(
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      subject.title,
+                      progress.subject.subjectTitle,
                       textAlign: TextAlign.start,
                       maxLines: 2,
                       style: AppTextStyles.bodyTextStyle.copyWith(

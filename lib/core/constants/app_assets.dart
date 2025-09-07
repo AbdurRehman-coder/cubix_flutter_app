@@ -1,5 +1,3 @@
-
-
 class AppAssets {
   static const String appLogoAnimation = 'assets/gifs/logo_animation.gif';
   static const String feedbackAnimation = 'assets/gifs/feedback_animation.gif';
@@ -27,8 +25,7 @@ class AppAssets {
   static const String searchIcon = 'assets/icons/search_icon.svg';
 
   static String getIconPath(String abbreviation, String category) {
-
-    if(category.isEmpty){
+    if (category.isEmpty || category == "custom") {
       return 'assets/icons/RI.svg';
     }
     if (category == "book") {

@@ -9,7 +9,7 @@ class HomeShimmer extends StatelessWidget {
     return ListView(
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
-      padding:  EdgeInsets.zero,
+      padding: EdgeInsets.zero,
       children: [
         _shimmerBanner(),
         const SizedBox(height: 24),

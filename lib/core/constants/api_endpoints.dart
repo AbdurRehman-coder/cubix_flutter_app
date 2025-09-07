@@ -26,5 +26,6 @@ class ApiEndpoints {
   static const String assistant = "/assistant";
   static const String assistantSubject = '/assistant/subject';
 
-  static String getAssistantSubject(String subjectId) => "/assistant/subject/$subjectId";
+  static String getAssistantSubject(String subjectId) =>
+      "/assistant/subject/$subjectId";
 }

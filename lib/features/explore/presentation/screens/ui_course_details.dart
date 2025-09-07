@@ -226,7 +226,7 @@ class CourseDetailsScreen extends ConsumerWidget {
                                     .maybeWhen(
                                       data:
                                           (data) => data?.firstWhereOrNull(
-                                            (p) => p.subject == subjectId,
+                                            (p) => p.subject.id == subjectId,
                                           ),
                                       orElse: () => null,
                                     );
@@ -275,7 +275,7 @@ class CourseDetailsScreen extends ConsumerWidget {
                                     // Find progress for this specific subject
                                     final existingProgress = progressList
                                         ?.firstWhereOrNull(
-                                          (p) => p.subject == subjectId,
+                                          (p) => p.subject.id == subjectId,
                                         ); // ✅ safe
 
                                     String? progressId;

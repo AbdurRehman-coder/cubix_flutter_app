@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cubix_app/core/utils/app_exports.dart';
 
 class LessonsScreen extends ConsumerWidget {
@@ -161,10 +159,6 @@ class LessonsScreen extends ConsumerWidget {
   }) {
     return GestureDetector(
       onTap: () {
-
-
-
-
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -197,7 +191,7 @@ class LessonsScreen extends ConsumerWidget {
               decoration: BoxDecoration(
                 //todo: need to pass category
                 color: AppColors.getCategoryColor(
-                  progress.subject.subjectCategory ?? '',
+                  progress.subject.subjectCategory,
                 ),
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(10),
@@ -208,7 +202,7 @@ class LessonsScreen extends ConsumerWidget {
                 child: SvgPicture.asset(
                   AppAssets.getIconPath(
                     progress.subject.subjectAbbreviation,
-                    progress.subject.subjectCategory ?? '',
+                    progress.subject.subjectCategory,
                   ),
                   fit: BoxFit.cover,
                   height: getProportionateScreenHeight(85),

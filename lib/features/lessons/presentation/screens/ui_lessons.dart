@@ -1,4 +1,5 @@
 import 'package:cubix_app/core/utils/app_exports.dart';
+import 'package:cubix_app/features/lessons/presentation/widgets/w_downloading_lesson_widget.dart';
 
 class LessonsScreen extends ConsumerWidget {
   const LessonsScreen({super.key});
@@ -7,6 +8,7 @@ class LessonsScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedTab = ref.watch(selectedTabProvider);
     final lessonProvider = ref.watch(progressProvider);
+    final downloadingSubjects = ref.watch(downloadingSubjectsProvider);
 
     return SafeArea(
       child: Column(
@@ -87,12 +89,29 @@ class LessonsScreen extends ConsumerWidget {
                           crossAxisSpacing: getProportionateScreenWidth(36),
                           mainAxisSpacing: getProportionateScreenHeight(24),
                         ),
-                        itemCount: activeList.length,
+
+                        /// itemCount: activeList.length,
+                        itemCount:
+                            downloadingSubjects.length + activeList.length,
                         padding: const EdgeInsets.only(bottom: 10),
                         itemBuilder: (context, index) {
+                          if (index < downloadingSubjects.length) {
+                            return DownloadingSubjectCard(
+                              title: downloadingSubjects[index],
+                            );
+                          }
+
+                          if (index < downloadingSubjects.length) {
+                            return DownloadingSubjectCard(
+                              title: downloadingSubjects[index],
+                            );
+                          }
+                          final progress =
+                              activeList[index - downloadingSubjects.length];
+
                           return _buildSubjectCard(
                             context: context,
-                            progress: activeList[index],
+                            progress: progress,
                             ref: ref,
                           );
                         },

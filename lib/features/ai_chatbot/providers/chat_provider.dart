@@ -5,6 +5,7 @@ import 'package:cubix_app/features/ai_chatbot/data/chat_response_model.dart';
 
 import 'package:cubix_app/features/ai_chatbot/data/sample_model.dart';
 import 'package:cubix_app/features/ai_chatbot/services/chat_service.dart';
+import 'package:cubix_app/main.dart';
 
 /// Represent a single chat message
 class ChatMessage {
@@ -92,18 +93,32 @@ class ChatNotifier extends StateNotifier<List<ChatMessage>> {
     );
     state = [...state, downloadingMessage];
 
+    // Add subject to global downloading list
+    final container = ProviderScope.containerOf(navigatorKey.currentContext!);
+    final downloadingSubjectsNotifier = container.read(
+      downloadingSubjectsProvider.notifier,
+    );
+    downloadingSubjectsNotifier.state = [
+      ...downloadingSubjectsNotifier.state,
+      subjectTitle,
+    ];
+
     try {
-      // Trigger your service or simulate download
       final subjectId = await chatService.createCustomSubject(
         subjectTitle: subjectTitle,
         subjectTone: 'formal',
       );
 
-      log('Here is the downloaded subject response: $subjectId');
-      // Remove downloading bubble after completion
+      // Remove bubble
       state = state.where((m) => m != downloadingMessage).toList();
 
-      // Optionally add a success confirmation
+      // Remove from downloading list
+      downloadingSubjectsNotifier.state =
+          downloadingSubjectsNotifier.state
+              .where((s) => s != subjectTitle)
+              .toList();
+
+      // Add success confirmation
       state = [
         ...state,
         ChatMessage(
@@ -114,8 +129,16 @@ class ChatNotifier extends StateNotifier<List<ChatMessage>> {
         ),
       ];
     } catch (e) {
-      // Remove downloading bubble and show error
+      // Remove bubble
       state = state.where((m) => m != downloadingMessage).toList();
+
+      // Remove from downloading list
+      downloadingSubjectsNotifier.state =
+          downloadingSubjectsNotifier.state
+              .where((s) => s != subjectTitle)
+              .toList();
+
+      // Show error
       state = [
         ...state,
         ChatMessage(
@@ -138,3 +161,5 @@ final initialMessagesProvider = FutureProvider<List<AssistantSample>?>((
   final service = locator.get<ChatService>();
   return await service.getInitialMessages();
 });
+
+final downloadingSubjectsProvider = StateProvider<List<String>>((ref) => []);

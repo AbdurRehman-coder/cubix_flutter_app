@@ -91,6 +91,7 @@ class ChatNotifier extends StateNotifier<List<ChatMessage>> {
       content: "Downloading $subjectTitle...",
       isDownloading: true,
     );
+
     state = [...state, downloadingMessage];
 
     // Add subject to global downloading list
@@ -128,6 +129,7 @@ class ChatNotifier extends StateNotifier<List<ChatMessage>> {
           finalSubjectTitle: subjectTitle,
         ),
       ];
+      container.invalidate(progressProvider);
     } catch (e) {
       // Remove bubble
       state = state.where((m) => m != downloadingMessage).toList();

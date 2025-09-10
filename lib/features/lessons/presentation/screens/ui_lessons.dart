@@ -51,83 +51,72 @@ class LessonsScreen extends ConsumerWidget {
                 ),
 
             data: (progressList) {
-              if (progressList == null || progressList.isEmpty) {
-                return MessageWidget(
-                  title: 'You haven’t started any courses yet.',
-                  subtitle: 'Let’s pick a course and get learning!',
-                );
-              }
-
               final completedList =
-                  progressList
-                      .where(
-                        (element) =>
-                            element.sectionProgress.length ==
-                            element.totalSections,
-                      )
+                  (progressList ?? [])
+                      .where((e) => e.sectionProgress.length == e.totalSections)
                       .toList();
 
               final ongoingList =
-                  progressList
-                      .where(
-                        (element) =>
-                            element.sectionProgress.length <
-                            element.totalSections,
-                      )
+                  (progressList ?? [])
+                      .where((e) => e.sectionProgress.length < e.totalSections)
                       .toList();
 
               final activeList = selectedTab == 0 ? ongoingList : completedList;
 
-              return activeList.isNotEmpty
-                  ? Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 27),
-                      child: GridView.builder(
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          childAspectRatio: 0.7,
-                          crossAxisSpacing: getProportionateScreenWidth(36),
-                          mainAxisSpacing: getProportionateScreenHeight(24),
-                        ),
+              // ✅ show grid if activeList has items OR (ongoing tab + downloading subjects exist)
+              final shouldShowGrid =
+                  activeList.isNotEmpty ||
+                  (selectedTab == 0 && downloadingSubjects.isNotEmpty);
 
-                        /// itemCount: activeList.length,
-                        itemCount:
-                            downloadingSubjects.length + activeList.length,
-                        padding: const EdgeInsets.only(bottom: 10),
-                        itemBuilder: (context, index) {
-                          if (index < downloadingSubjects.length) {
-                            return DownloadingSubjectCard(
-                              title: downloadingSubjects[index],
-                            );
-                          }
+              if (!shouldShowGrid) {
+                return MessageWidget(
+                  title:
+                      selectedTab == 0
+                          ? 'You haven’t started any courses yet.'
+                          : 'No completed courses yet.',
+                  subtitle:
+                      selectedTab == 0
+                          ? 'Let’s pick a course and get learning!'
+                          : 'Finish a course and it’ll show up here!',
+                );
+              }
 
-                          if (index < downloadingSubjects.length) {
-                            return DownloadingSubjectCard(
-                              title: downloadingSubjects[index],
-                            );
-                          }
-                          final progress =
-                              activeList[index - downloadingSubjects.length];
-
-                          return _buildSubjectCard(
-                            context: context,
-                            progress: progress,
-                            ref: ref,
-                          );
-                        },
-                      ),
+              return Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 27),
+                  child: GridView.builder(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      childAspectRatio: 0.7,
+                      crossAxisSpacing: getProportionateScreenWidth(36),
+                      mainAxisSpacing: getProportionateScreenHeight(24),
                     ),
-                  )
-                  : MessageWidget(
-                    title:
-                        selectedTab == 0
-                            ? 'You haven’t started any courses yet.'
-                            : 'No completed courses yet.',
-                    subtitle:
-                        selectedTab == 0
-                            ? 'Let’s pick a course and get learning!'
-                            : 'Finish a course and it’ll show up here!',
-                  );
+                    itemCount:
+                        (selectedTab == 0
+                            ? downloadingSubjects.length + activeList.length
+                            : activeList.length),
+                    padding: const EdgeInsets.only(bottom: 10),
+                    itemBuilder: (context, index) {
+                      if (selectedTab == 0 &&
+                          index < downloadingSubjects.length) {
+                        return DownloadingSubjectCard(
+                          title: downloadingSubjects[index],
+                        );
+                      }
+                      final progress =
+                          activeList[index -
+                              (selectedTab == 0
+                                  ? downloadingSubjects.length
+                                  : 0)];
+                      return _buildSubjectCard(
+                        context: context,
+                        progress: progress,
+                        ref: ref,
+                      );
+                    },
+                  ),
+                ),
+              );
             },
           ),
         ],

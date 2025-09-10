@@ -1,8 +1,5 @@
-import 'dart:developer';
-
 import 'package:cubix_app/core/utils/app_exports.dart';
 import 'package:cubix_app/features/ai_chatbot/data/chat_response_model.dart';
-
 import 'package:cubix_app/features/ai_chatbot/data/sample_model.dart';
 import 'package:cubix_app/features/ai_chatbot/services/chat_service.dart';
 import 'package:cubix_app/main.dart';
@@ -83,8 +80,11 @@ class ChatNotifier extends StateNotifier<List<ChatMessage>> {
     }
   }
 
-  /// Show a “Downloading…” indicator for a specific subject/message
   Future<void> startDownloading(String subjectTitle) async {
+    if (state.any((m) => m.isDownloading && m.content.contains(subjectTitle))) {
+      return;
+    }
+
     // Add downloading bubble
     final downloadingMessage = ChatMessage(
       role: "system",

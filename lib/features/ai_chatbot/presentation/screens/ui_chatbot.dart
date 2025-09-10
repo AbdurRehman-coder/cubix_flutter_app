@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import '../../../../core/utils/app_exports.dart';
 
 class ChatBotScreen extends ConsumerStatefulWidget {
@@ -114,6 +116,8 @@ class _ChatBotScreenState extends ConsumerState<ChatBotScreen> {
   }
 
   Widget _buildChatView(List<ChatMessage> chatMessages) {
+    final currentIndex = ref.watch(bottomNavIndexProvider);
+    final notifier = ref.read(bottomNavIndexProvider.notifier);
     return Column(
       children: [
         Align(
@@ -270,13 +274,16 @@ class _ChatBotScreenState extends ConsumerState<ChatBotScreen> {
                                     chatOption: option,
                                     onTap: () async {
                                       if (option.buttonColor == 'primary') {
-                                        await ref
+                                        ref
                                             .read(chatProvider.notifier)
                                             .startDownloading(
                                               msg.finalSubjectTitle ??
                                                   'Subject',
                                             );
-                                        _scrollToBottom();
+                                        if (currentIndex != 1) {
+                                          notifier.state = 1;
+                                        }
+                                        Navigator.pop(context);
                                       } else {
                                         controller.text = option.buttonMessage;
                                         hasText.value = true;
